@@ -1,0 +1,446 @@
+E:\ApiCarRent\api\bin\Debug\net8.0\appsettings.Development.json
+E:\ApiCarRent\api\bin\Debug\net8.0\appsettings.json
+E:\ApiCarRent\api\bin\Debug\net8.0\api.exe
+E:\ApiCarRent\api\bin\Debug\net8.0\api.deps.json
+E:\ApiCarRent\api\bin\Debug\net8.0\api.runtimeconfig.json
+E:\ApiCarRent\api\bin\Debug\net8.0\api.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\api.pdb
+E:\ApiCarRent\api\bin\Debug\net8.0\Azure.Core.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Azure.Identity.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Humanizer.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.OpenApi.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Mono.TextTemplating.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.CodeDom.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Convention.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Hosting.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Runtime.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Composition.TypedParts.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Drawing.Common.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Memory.Data.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Runtime.Caching.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Security.Permissions.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\System.Windows.Extensions.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+E:\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+E:\ApiCarRent\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
+E:\ApiCarRent\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
+E:\ApiCarRent\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
+E:\ApiCarRent\api\obj\Debug\net8.0\api.AssemblyInfo.cs
+E:\ApiCarRent\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
+E:\ApiCarRent\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cs
+E:\ApiCarRent\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cache
+E:\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.build.json
+E:\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.development.json
+E:\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
+E:\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.build.api.props
+E:\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.api.props
+E:\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.api.props
+E:\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.pack.json
+E:\ApiCarRent\api\obj\Debug\net8.0\scopedcss\bundle\api.styles.css
+E:\ApiCarRent\api\obj\Debug\net8.0\api.csproj.CopyComplete
+E:\ApiCarRent\api\obj\Debug\net8.0\api.dll
+E:\ApiCarRent\api\obj\Debug\net8.0\refint\api.dll
+E:\ApiCarRent\api\obj\Debug\net8.0\api.pdb
+E:\ApiCarRent\api\obj\Debug\net8.0\api.genruntimeconfig.cache
+E:\ApiCarRent\api\obj\Debug\net8.0\ref\api.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\appsettings.json
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\api.exe
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\api.deps.json
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\api.runtimeconfig.json
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\api.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\api.pdb
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Azure.Core.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Humanizer.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Memory.Data.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Runtime.Caching.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\System.Windows.Extensions.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.AssemblyInfo.cs
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.build.api.props
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.api.props
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.api.props
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\scopedcss\bundle\api.styles.css
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.csproj.CopyComplete
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\refint\api.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.pdb
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.genruntimeconfig.cache
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\ref\api.dll
+C:\Users\Admin\Desktop\NextJS Project\car_rent_with_api\backend\ApiCarRent\api\obj\Debug\net8.0\api.sourcelink.json
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\appsettings.Development.json
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\appsettings.json
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\api.exe
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\api.deps.json
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\api.runtimeconfig.json
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\api.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\api.pdb
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Azure.Core.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Azure.Identity.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Humanizer.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.OpenApi.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Mono.TextTemplating.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.CodeDom.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Convention.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Hosting.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.Runtime.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Composition.TypedParts.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Drawing.Common.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Memory.Data.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Runtime.Caching.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Security.Permissions.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\System.Windows.Extensions.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+E:\backend\ApiCarRent\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.AssemblyInfo.cs
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cs
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.MvcApplicationPartsAssemblyInfo.cache
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.sourcelink.json
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.build.json
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.development.json
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.build.api.props
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.api.props
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.api.props
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\staticwebassets.pack.json
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\scopedcss\bundle\api.styles.css
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.csproj.CopyComplete
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.dll
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\refint\api.dll
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.pdb
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\api.genruntimeconfig.cache
+E:\backend\ApiCarRent\api\obj\Debug\net8.0\ref\api.dll

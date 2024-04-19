@@ -33,3 +33,7 @@
 .footer__copyrights-link {
   @apply flex-1 flex sm:justify-end justify-center max-sm:mt-4 gap-10;
 }
+
+.content {
+  @apply sm:px-16 px-6 pt-48 pb-12 sm:pt-32;
+}

@@ -1,3 +1,4 @@
+import { CarProps } from "@/types";
 import { MutableRefObject, useState } from "react";
 import { create } from "zustand";
 
@@ -8,8 +9,8 @@ type BooleanStore = {
   setEmail: (username: string) => void;
   phone: string;
   setPhone: (phone: string) => void;
-  birthday: string;
-  setBirthday: (birthday: string) => void;
+  birthDate: string;
+  setBirthDate: (birthDate: string) => void;
   address: string;
   setAddress: (address: string) => void;
   gender: boolean;
@@ -34,16 +35,12 @@ type BooleanStore = {
   setShowAddNewBrand: (show: boolean) => void;
   brandName: string;
   setBrandName: (brandName: string) => void;
-  addressBrand: string;
-  setAddressBrand: (address: string) => void;
-  phoneBrand: string;
-  setPhoneBrand: (phone: string) => void;
   success: boolean;
   setSuccess: () => void;
   showAddNewCar: boolean;
   setShowAddNewCar: (show: boolean) => void;
-  showViewCar: boolean;
-  setShowViewCar: (show: boolean) => void;
+  showViewCar: CarProps;
+  setShowViewCar: (show: CarProps) => void;
   make: string;
   setMake: (make: string) => void;
   model: string;
@@ -62,6 +59,18 @@ type BooleanStore = {
   setFuel: (make: string) => void;
   transmission: string;
   setTransmission: (transmission: string) => void;
+  searchValue: string;
+  setSearchValue: (searchValue: string) => void;
+  itemsPerPage: number;
+  setItemsPerPage: (itemsPerPage: number) => void;
+  currentPage: number;
+  setCurrentPage: (currentPage: number) => void;
+  totalPages: number;
+  setTotalPages: (totalPages: number) => void;
+  isLocked: boolean;
+  setIsLocked: (isLocked: boolean) => void;
+  showSettings: boolean;
+  setShowSettings: (showSettings: boolean) => void;
 };
 
 export const useStore = create<BooleanStore>((set) => ({
@@ -89,9 +98,9 @@ export const useStore = create<BooleanStore>((set) => ({
   setUsername: (username: string) => {
     set(() => ({ username: username }));
   },
-  birthday: "",
-  setBirthday: (birthday: string) => {
-    set(() => ({ birthday: birthday }));
+  birthDate: "",
+  setBirthDate: (birthDate: string) => {
+    set(() => ({ birthDate: birthDate }));
   },
   phone: "",
   setPhone: (phone: string) => {
@@ -130,14 +139,6 @@ export const useStore = create<BooleanStore>((set) => ({
   setBrandName: (brandName: string) => {
     set(() => ({ brandName: brandName }));
   },
-  addressBrand: "",
-  setAddressBrand: (addressBrand: string) => {
-    set(() => ({ addressBrand: addressBrand }));
-  },
-  phoneBrand: "",
-  setPhoneBrand: (phoneBrand: string) => {
-    set(() => ({ phoneBrand: phoneBrand }));
-  },
   success: false,
   setSuccess: () => {
     set((state) => ({ success: !state.success }));
@@ -146,8 +147,8 @@ export const useStore = create<BooleanStore>((set) => ({
   setShowAddNewCar: (show: boolean) => {
     set(() => ({ showAddNewCar: show }));
   },
-  showViewCar: false,
-  setShowViewCar: (show: boolean) => {
+  showViewCar: {} as CarProps,
+  setShowViewCar: (show: CarProps) => {
     set(() => ({ showViewCar: show }));
   },
   make: "",
@@ -185,5 +186,29 @@ export const useStore = create<BooleanStore>((set) => ({
   transmission: "",
   setTransmission: (transmission: string) => {
     set(() => ({ transmission: transmission }));
+  },
+  searchValue: "",
+  setSearchValue: (searchValue: string) => {
+    set(() => ({ searchValue: searchValue }));
+  },
+  itemsPerPage: 8,
+  setItemsPerPage: (itemsPerPage: number) => {
+    set(() => ({ itemsPerPage: itemsPerPage }));
+  },
+  currentPage: 1,
+  setCurrentPage: (currentPage: number) => {
+    set(() => ({ currentPage: currentPage }));
+  },
+  totalPages: 1,
+  setTotalPages: (totalPages: number) => {
+    set(() => ({ totalPages: totalPages }));
+  },
+  isLocked: false,
+  setIsLocked: (isLocked: boolean) => {
+    set(() => ({ isLocked: isLocked }));
+  },
+  showSettings: false,
+  setShowSettings: (showSettings: boolean) => {
+    set(() => ({ showSettings: showSettings }));
   },
 }));

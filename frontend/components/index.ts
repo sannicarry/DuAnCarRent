@@ -15,7 +15,6 @@ import User from "./User";
 import Order from "./Order";
 import Dashboard from "./Dashboard";
 import PaymentManager from "./PaymentManager";
-import Settings from "./Settings";
 import FormAddBrand from "./FormAddBrand";
 import CarViewAll from "./CarViewAll";
 import FormAddCar from "./FormAddCar";
@@ -37,7 +36,6 @@ export {
   Car,
   User,
   Order,
-  Settings,
   PaymentManager,
   FormAddBrand,
   CarViewAll,

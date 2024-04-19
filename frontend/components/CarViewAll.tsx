@@ -1,9 +1,9 @@
 "use client";
 
-import { CarProps } from "@/types";
+import { CarProps, UploadPhoto } from "@/types";
 import { generateCarImageUrl, useClickOutside } from "@/utils";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "./Store";
 
 interface CarViewAllProps {
@@ -27,18 +27,59 @@ const CarViewAll = ({ car }: CarViewAllProps) => {
 
   const { showViewCar, setShowViewCar } = useStore();
 
-  useClickOutside(formRef, () => setShowViewCar(false));
+  const [photos, setPhotos] = useState<UploadPhoto[]>([]);
+
+  useEffect(() => {
+    if (car && car?.carId !== 0) {
+      const filePromises: Promise<UploadPhoto>[] = [];
+
+      car?.photos.forEach((photo) => {
+        const baseURL = process.env.SERVER_URL || "http://localhost:5290";
+        const photoUrl = `${baseURL}/${photo.photoUrl}`;
+
+        filePromises.push(
+          new Promise<UploadPhoto>(async (resolve, reject) => {
+            try {
+              const response = await fetch(photoUrl);
+              const blob = await response.blob();
+              const UploadPhoto: UploadPhoto = {
+                file: new File([blob], `image${Date.now()}.jpg`, {
+                  type: blob.type,
+                }),
+                photoId: photo.photoId,
+              };
+              resolve(UploadPhoto);
+            } catch (error) {
+              reject(error);
+            }
+          })
+        );
+      });
+
+      Promise.all(filePromises)
+        .then((photos) => {
+          setPhotos(photos);
+        })
+        .catch((error) => {
+          console.error("Error loading photos:", error);
+        });
+    }
+  }, [car?.carId]);
+
+  const getPhotoUrl = (photo: UploadPhoto) => {
+    if (photo && photo.file) {
+      return URL.createObjectURL(photo.file);
+    }
+    return null;
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
-      <div
-        className="overflow-y-auto flex flex-col justify-center px-6 py-12 lg:px-8 absolute h-[85%] w-[40%] top-[90px] bg-white rounded-md border-2 border-gray-300"
-        ref={formRef}
-      >
+      <div className="top-[40px] relative w-full max-w-lg max-h-[80vh] overflow-y-auto transform rounded-2xl bg-white p-6 text-left shadow-xl transition-all flex flex-col gap-5">
         <button
           type="button"
           className="absolute hover:bg-slate-400 top-2 right-4 z-10 w-fit p-2 bg-primary-blue-100 rounded-full"
-          onClick={() => setShowViewCar(false)}
+          onClick={() => setShowViewCar({} as CarProps)}
         >
           <Image
             src="/close.svg"
@@ -49,10 +90,10 @@ const CarViewAll = ({ car }: CarViewAllProps) => {
           />
         </button>
         <div className="flex flex-col">
-          <div className="flex flex-col gap-5 mt-10">
-            <div className="relative mt-[50px] w-full h-40 bg-pattern bg-cover bg-center bg-blue-500 rounded-lg">
+          <div className="flex flex-col gap-5">
+            <div className="relative w-full h-40 bg-pattern bg-cover bg-center bg-blue-500 rounded-lg">
               <Image
-                src={generateCarImageUrl(car)}
+                src={getPhotoUrl(photos[0]) ?? "/nophoto.png"}
                 alt="car model"
                 fill
                 priority
@@ -62,7 +103,7 @@ const CarViewAll = ({ car }: CarViewAllProps) => {
             <div className="flex gap-3">
               <div className="flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg">
                 <Image
-                  src={generateCarImageUrl(car, "29")}
+                  src={getPhotoUrl(photos[1]) ?? "/nophoto.png"}
                   alt="car model"
                   fill
                   priority
@@ -71,7 +112,7 @@ const CarViewAll = ({ car }: CarViewAllProps) => {
               </div>
               <div className="flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg">
                 <Image
-                  src={generateCarImageUrl(car, "33")}
+                  src={getPhotoUrl(photos[2]) ?? "/nophoto.png"}
                   alt="car model"
                   fill
                   priority
@@ -80,7 +121,7 @@ const CarViewAll = ({ car }: CarViewAllProps) => {
               </div>
               <div className="flex-1 relative w-full h-24 bg-primary-blue-100 rounded-lg">
                 <Image
-                  src={generateCarImageUrl(car, "13")}
+                  src={getPhotoUrl(photos[3]) ?? "/nophoto.png"}
                   alt="car model"
                   fill
                   priority

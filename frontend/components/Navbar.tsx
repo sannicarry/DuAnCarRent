@@ -5,8 +5,11 @@ import Link from "next/link";
 import { CustomButton, Login, Register } from ".";
 import { useStore } from "./Store";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+
   const {
     login,
     setLogin,
@@ -30,6 +33,7 @@ const Navbar = () => {
     setLogin(false);
     setUserRole(null);
     setShowLogoutOption(false);
+    router.push("/", { scroll: true });
   };
 
   useEffect(() => {
@@ -69,7 +73,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className=" w-full relative z-10 bg-white sm:px-16 p-6 border-b">
+    <header className=" w-full fixed z-10 bg-white sm:px-16 p-6 border-b">
       <nav className="relative flex max-sm:flex-col sm:grid sm:grid-cols-5 max-sm:gap-5 h-full">
         <div className="sm:col-span-4 grid grid-cols-4 max-sm:gap-4 items-center w-full">
           <div className="col-span-1 flex items-center max-sm:w-full">
@@ -122,7 +126,7 @@ const Navbar = () => {
                         width={40}
                       ></Image>
                     </Link>
-                    <Link href="/">
+                    <Link href="/Settings">
                       <Image
                         src="Settings.svg"
                         alt="Settings"

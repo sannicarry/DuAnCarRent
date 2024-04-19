@@ -11,15 +11,7 @@ const Brand = () => {
   const [allBrands, setAllBrands] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [searchValue, setSearchValue] = useState("");
-  const itemsPerPage: number = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
   const [brandId, setBrandId] = useState(0);
-  const [brandName, setBrandName] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
 
   const [idOptions, setIdOptions] = useState(0);
 
@@ -30,6 +22,21 @@ const Brand = () => {
     setSuccess,
     showOptions,
     setShowOptions,
+    searchValue,
+    setSearchValue,
+    itemsPerPage,
+    setItemsPerPage,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    setTotalPages,
+    token,
+    brandName,
+    setBrandName,
+    address,
+    setAddress,
+    phone,
+    setPhone,
   } = useStore();
 
   const getBrands = async (searchValue?: string, currentPage?: number) => {
@@ -42,6 +49,7 @@ const Brand = () => {
           address,
           phone,
         },
+        token,
         searchValue,
         currentPage,
         itemsPerPage
@@ -60,7 +68,7 @@ const Brand = () => {
 
   const getCountBrands = async () => {
     try {
-      const count = await fetchBrandCount();
+      const count = await fetchBrandCount(token);
       setTotalPages(Math.ceil(count / itemsPerPage));
     } catch (err) {
       console.error(err);
@@ -81,13 +89,25 @@ const Brand = () => {
     phone: "",
   });
 
+  const handleAddNewBrand = () => {
+    setShowAddNewBrand(true);
+    setBrandModel({
+      brandId: 0,
+      brandName: "",
+      address: "",
+      phone: "",
+    });
+  };
+
   const handleEdit = (brand: BrandProps) => {
     setShowAddNewBrand(true);
     setBrandModel({ ...brand });
+    setShowOptions(false);
   };
   const handleDelete = (id: number) => {
-    fetchDeleteBrand(id);
+    fetchDeleteBrand(id, token);
     setSuccess();
+    setShowOptions(false);
   };
 
   const isActivePage = (pageIndex: number) => {
@@ -112,7 +132,7 @@ const Brand = () => {
             <input
               type="text"
               className="border-none w-[100%] focus:outline-none truncate"
-              placeholder="Search Car"
+              placeholder="Search BrandName"
               value={searchValue}
               onChange={(e) => {
                 setSearchValue(e.target.value);
@@ -125,11 +145,11 @@ const Brand = () => {
           btnType="button"
           containerStyles="text-white text-white rounded-full bg-primary-blue bg-primary-blue min-w-[130px]"
           handleClick={() => {
-            setShowAddNewBrand(true);
+            handleAddNewBrand();
           }}
         />
       </div>
-      <div className="grid grid-cols-7 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="h-[50px] grid grid-cols-7 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <div className="col-span-2 px-6">Brand Name</div>
         <div className="col-span-2 px-6">Address</div>
         <div className="col-span-2 px-6 text-center">Phone</div>
@@ -138,8 +158,11 @@ const Brand = () => {
       <div className="flex flex-col justify-between h-[434px]">
         <div className="h-[400px]">
           {allBrands.length > 0 ? (
-            allBrands.map((brand: BrandProps) => (
-              <div className="h-[50px] grid grid-cols-7 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            allBrands.map((brand: BrandProps, index) => (
+              <div
+                key={index}
+                className="h-[50px] grid grid-cols-7 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              >
                 <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white capitalize">
                   {brand.brandName}
                 </div>

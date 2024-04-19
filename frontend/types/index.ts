@@ -21,13 +21,39 @@ export interface CarProps {
   cityMpg: number;
   fuel: string;
   transmission: string;
-  carImages: CarImageProps[];
+  photos: PhotoProps[];
+  brandId: number;
 }
 
-export interface CarImageProps {
-  carId: number;
-  carImageId: number;
-  imageUrl: string;
+export interface PhotoProps {
+  photoId: number;
+  photoUrl: string;
+  photoType: number;
+  entityId: string;
+}
+
+export interface UploadPhoto {
+  file: File;
+  photoId: number;
+}
+
+export interface CreatePhoto {
+  file: File;
+  photoId: number;
+  photoType: number;
+  entityId: string;
+}
+
+export interface UpdatePhoto {
+  file: File;
+  photoId: number;
+  photoType: number;
+  entityId: string;
+}
+
+export interface DeletePhoto {
+  entityId: string;
+  photoId: number;
 }
 
 export interface BrandProps {
@@ -37,7 +63,14 @@ export interface BrandProps {
   phone: string;
 }
 
-export interface UploadedImage {
-  file: File;
-  carImageId: number;
+export interface UserProps {
+  userId: string;
+  username: string;
+  email: string;
+  phone: string;
+  address: string;
+  birthDate: string;
+  gender: boolean;
+  isLocked: boolean;
+  photos: PhotoProps[];
 }

@@ -22,11 +22,8 @@ const FormAddBrand = ({ brand }: FormAddBrandProps) => {
     setShowAddNewBrand,
     setError,
     setSuccess,
+    token,
   } = useStore();
-
-  const initialBrandName = brand ? brand.brandName : "";
-  const initialAddress = brand ? brand.address : "";
-  const initialPhone = brand ? brand.phone : "";
 
   let url = "http://localhost:5290/api/brand";
   let method = "POST";
@@ -42,6 +39,7 @@ const FormAddBrand = ({ brand }: FormAddBrandProps) => {
         method: method,
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ brandName, address, phone }),
       });
@@ -59,8 +57,14 @@ const FormAddBrand = ({ brand }: FormAddBrandProps) => {
   };
 
   useEffect(() => {
-    clearBrand();
-  }, [showAddNewBrand === false]);
+    if (brand) {
+      setBrandName(brand.brandName || "");
+      setAddress(brand.address || "");
+      setPhone(brand.phone || "");
+    } else {
+      clearBrand();
+    }
+  }, [brand]);
 
   const clearBrand = () => {
     setBrandName("");
@@ -101,7 +105,7 @@ const FormAddBrand = ({ brand }: FormAddBrandProps) => {
                     autoComplete="brandName"
                     placeholder="Please type a new brand name ..."
                     required
-                    value={brandName || initialBrandName}
+                    value={brandName}
                     onChange={(e) => setBrandName(e.target.value)}
                     className="block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -124,7 +128,7 @@ const FormAddBrand = ({ brand }: FormAddBrandProps) => {
                     autoComplete="addressBrand"
                     placeholder="Please type a new address ..."
                     required
-                    value={address || initialAddress}
+                    value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     className="block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -147,7 +151,7 @@ const FormAddBrand = ({ brand }: FormAddBrandProps) => {
                     autoComplete="phoneBrand"
                     placeholder="Please type a new phone ..."
                     required
-                    value={phone || initialPhone}
+                    value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />

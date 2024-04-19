@@ -14,8 +14,8 @@ const Register = () => {
     setEmail,
     phone,
     setPhone,
-    birthday,
-    setBirthday,
+    birthDate,
+    setBirthDate,
     address,
     setAddress,
     gender,
@@ -27,33 +27,34 @@ const Register = () => {
     showLoginForm,
     showSignUpForm,
     setShowSignUpForm,
+    token,
   } = useStore();
 
   const formRef = useRef<HTMLDivElement | null>(null);
 
-  const [errorUsername, setErrorUsername] = useState(false);
+  const [errorusername, setErrorusername] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorRegexEmail, setErrorRegexEmail] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (errorUsername || errorEmail) {
+    if (errorusername || errorEmail) {
       return;
     }
 
     try {
-      const matchResult = birthday.match(
+      const matchResult = birthDate.match(
         /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
       );
       if (!matchResult) {
         throw new Error(
-          "Invalid birthday format. Please enter DD/MM/YYYY or DD-MM-YYYY."
+          "Invalid birthDate format. Please enter DD/MM/YYYY or DD-MM-YYYY."
         );
       }
 
       const [, day, month, year] = matchResult;
-      const isoBirthday = `${day}-${month}-${year}`;
+      const isobirthDate = `${day}-${month}-${year}`;
 
       const response = await fetch(
         "http://localhost:5290/api/account/register",
@@ -68,7 +69,7 @@ const Register = () => {
             password,
             address,
             phone,
-            birthday: isoBirthday,
+            birthDate: isobirthDate,
             gender,
           }),
         }
@@ -95,8 +96,8 @@ const Register = () => {
     const fetchData = async () => {
       if (username) {
         try {
-          const errUser = await fetchCheckUsername(username);
-          setErrorUsername(errUser);
+          const errUser = await fetchCheckUsername(username, token);
+          setErrorusername(errUser);
         } catch (error) {
           console.error("Error checking username:", error);
         }
@@ -119,7 +120,7 @@ const Register = () => {
             return;
           }
 
-          const errEmail = await fetchCheckEmail(email);
+          const errEmail = await fetchCheckEmail(email, token);
           setErrorEmail(errEmail);
         } catch (error) {
           console.error("Error checking Email:", error);
@@ -160,10 +161,10 @@ const Register = () => {
                   >
                     Username
                   </label>
-                  {errorUsername && (
+                  {errorusername && (
                     <>
                       <span className="text-red-700 font-normal text-sm">
-                        Username already exists!
+                        username already exists!
                       </span>
                     </>
                   )}
@@ -263,20 +264,20 @@ const Register = () => {
               </div>
               <div>
                 <label
-                  htmlFor="birthday"
+                  htmlFor="birthDate"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Birthday
+                  BirthDate
                 </label>
                 <div className="">
                   <input
-                    id="birthday"
-                    name="birthday"
+                    id="birthDate"
+                    name="birthDate"
                     type="text"
                     autoComplete="off"
                     required
-                    value={birthday}
-                    onChange={(e) => setBirthday(e.target.value)}
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
                     className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -292,7 +293,7 @@ const Register = () => {
                       type="radio"
                       autoComplete="off"
                       required
-                      checked={!gender} // Đảo ngược giá trị checked cho Female
+                      checked={!gender}
                       onChange={() => setGender(false)}
                       className=""
                     />

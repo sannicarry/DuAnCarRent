@@ -1,11 +1,19 @@
 "use client";
 
 import { useStore } from "@/components/Store";
-import { BrandProps, CarProps } from "@/types";
+import {
+  BrandProps,
+  CarProps,
+  CreatePhoto,
+  DeletePhoto,
+  UpdatePhoto,
+  UserProps,
+} from "@/types";
 import { useEffect } from "react";
 
 export async function fetchBrands(
   brands: BrandProps,
+  token?: string,
   searchValue?: string,
   currentPage?: number,
   itemsPerPage?: number
@@ -13,35 +21,38 @@ export async function fetchBrands(
   const { brandId, brandName, address, phone } = brands;
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
-  if (!searchValue && !currentPage && !itemsPerPage) {
-    url = "http://localhost:5290/api/brand";
+  if (!searchValue) {
+    url = `http://localhost:5290/api/brand?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
     url = `http://localhost:5290/api/brand?BrandName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      throw new Error("Failed to fetch brand data");
+
+  if (currentPage != 0) {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        throw new Error("Failed to fetch brand data");
+      }
+    } catch (error) {
+      throw new Error("An error occurred while fetching brand data: " + error);
     }
-  } catch (error) {
-    throw new Error("An error occurred while fetching brand data: " + error);
   }
 }
 
-export async function fetchBrandCount() {
+export async function fetchBrandCount(token: string) {
   try {
     const response = await fetch(`http://localhost:5290/api/brand/GetCount`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     if (response.ok) {
@@ -57,10 +68,13 @@ export async function fetchBrandCount() {
   }
 }
 
-export async function fetchDeleteBrand(id: number) {
+export async function fetchDeleteBrand(id: number, token: string) {
   try {
     const response = await fetch(`http://localhost:5290/api/brand/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) {
       throw new Error("Error deleting brand");
@@ -87,41 +101,41 @@ export async function fetchCars(
     cityMpg,
     fuel,
     transmission,
-    carImages,
+    photos,
+    brandId,
   } = cars;
-
-  const searchModel: string[] = searchValue?.split(" ") || [];
 
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
-  if (!searchValue && !currentPage && !itemsPerPage) {
-    url = "http://localhost:5290/api/car";
+  if (!searchValue) {
+    url = `http://localhost:5290/api/car?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
     url = `http://localhost:5290/api/car?CarName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
-
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      throw new Error("Failed to fetch brand data");
+  if (currentPage != 0) {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        throw new Error("Failed to fetch brand data");
+      }
+    } catch (error) {
+      throw new Error("An error occurred while fetching brand data: " + error);
     }
-  } catch (error) {
-    throw new Error("An error occurred while fetching brand data: " + error);
   }
 }
 
-export async function fetchDeleteCar(id: number) {
+export async function fetchDeleteCar(id: number, token: string) {
   try {
     const response = await fetch(`http://localhost:5290/api/car/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) {
       throw new Error("Error deleting car");
@@ -131,12 +145,12 @@ export async function fetchDeleteCar(id: number) {
   }
 }
 
-export async function fetchCarCount() {
+export async function fetchCarCount(token: string) {
   try {
     const response = await fetch(`http://localhost:5290/api/car/GetCount`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     if (response.ok) {
@@ -152,26 +166,108 @@ export async function fetchCarCount() {
   }
 }
 
-export async function fetchDeleteCarImage(carId: number, carImageId: number) {
-  let url = `http://localhost:5290/api/car/image/${carId}/${carImageId}`;
-  console.log(url);
+export async function fetchCreatePhoto(
+  photoCreate: CreatePhoto[],
+  token: string
+) {
   try {
-    const response = await fetch(url, {
-      method: "DELETE",
+    const formData = new FormData();
+    const { photoType, entityId } = photoCreate[0];
+    formData.append("PhotoType", String(photoType));
+    formData.append("EntityId", String(entityId));
+    for (const photo of photoCreate) {
+      formData.append("photos", photo.file);
+    }
+    const response = await fetch("http://localhost:5290/api/photo", {
+      method: "POST",
+      body: formData,
+
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    if (!response.ok) {
-      throw new Error("Error deleting carImage");
+
+    const data = await response.json();
+    if (response.ok) {
+      console.log("Add photo successfully");
+    } else {
+      console.error("Error Add photo:", data.message);
     }
   } catch (error) {
-    throw new Error("Error deleting carImage ");
+    console.error("Error Add photo:", error);
   }
 }
 
-export async function fetchCheckUsername(username: string) {
-  let url = `http://localhost:5290/api/account/checkUserName?username=${username}`;
+export async function fetchUpdatePhoto(
+  photoUpdate: UpdatePhoto[],
+  token: string
+) {
+  for (const photo of photoUpdate) {
+    if (photo) {
+      const formData = new FormData();
+      const { photoType, entityId, photoId, file } = photo;
+      formData.append("PhotoId", String(photoId));
+      formData.append("PhotoType", String(photoType));
+      formData.append("EntityId", String(entityId));
+      formData.append("photo", file);
+
+      try {
+        const response = await fetch("http://localhost:5290/api/photo", {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.log("succes");
+
+          console.log("Update photo successfully");
+        } else {
+          console.error("Error update photo:", data.message);
+        }
+      } catch (error) {
+        console.error("Error update photo:", error);
+      }
+    }
+  }
+}
+
+export async function fetchDeletePhoto(
+  photoDelete: DeletePhoto[],
+  token: string
+) {
+  for (const photo of photoDelete) {
+    const { entityId, photoId } = photo;
+    if (parseInt(entityId) > 0 || String(entityId) != "") {
+      let url = `http://localhost:5290/api/photo/${photoId}`;
+      try {
+        const response = await fetch(url, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error deleting photo");
+        }
+      } catch (error) {
+        throw new Error("Error deleting photo ");
+      }
+    }
+  }
+}
+
+export async function fetchCheckUsername(username: string, token: string) {
+  let url = `http://localhost:5290/api/account/checkusername?username=${username}`;
   try {
     const response = await fetch(url, {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) {
       throw new Error("Error check username");
@@ -183,12 +279,15 @@ export async function fetchCheckUsername(username: string) {
   }
 }
 
-export async function fetchCheckEmail(email: string) {
+export async function fetchCheckEmail(email: string, token: string) {
   let url = `http://localhost:5290/api/account/checkEmail?email=${email}`;
 
   try {
     const response = await fetch(url, {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) {
       throw new Error("Error check email");
@@ -197,6 +296,117 @@ export async function fetchCheckEmail(email: string) {
     return data;
   } catch (error) {
     throw new Error("Error check email ");
+  }
+}
+
+export async function fetchUsers(
+  users: UserProps,
+  token?: string,
+  searchValue?: string,
+  currentPage?: number,
+  itemsPerPage?: number
+) {
+  const {
+    userId,
+    username,
+    email,
+    phone,
+    address,
+    birthDate,
+    gender,
+    isLocked,
+  } = users;
+  searchValue = searchValue?.replace(/\s/g, "");
+  let url;
+  if (!searchValue) {
+    url = `http://localhost:5290/api/user?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+  } else {
+    url = `http://localhost:5290/api/user?SearchUser=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+  }
+  if (currentPage != 0) {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        throw new Error("Failed to fetch user data");
+      }
+    } catch (error) {
+      throw new Error("An error occurred while fetching user data: " + error);
+    }
+  }
+}
+
+export async function fetchUser(users: UserProps, token: string) {
+  const {
+    userId,
+    username,
+    email,
+    phone,
+    address,
+    birthDate,
+    gender,
+    isLocked,
+    photos,
+  } = users;
+  try {
+    const response = await fetch("http://localhost:5290/api/user/currentUser", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch user data");
+    }
+  } catch (error) {
+    throw new Error("An error occurred while fetching user data: " + error);
+  }
+}
+
+export async function fetchUserCount(token: string) {
+  try {
+    const response = await fetch(`http://localhost:5290/api/user/GetCount`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch count user data");
+    }
+  } catch (error) {
+    throw new Error(
+      "An error occurred while fetching count user data: " + error
+    );
+  }
+}
+
+export async function fetchDeleteUser(id: number, token: string) {
+  try {
+    const response = await fetch(`http://localhost:5290/api/user/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Error deleting user");
+    }
+  } catch (error) {
+    throw new Error("Error deleting user ");
   }
 }
 

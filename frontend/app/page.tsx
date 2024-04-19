@@ -2,7 +2,7 @@
 
 import { CarCard, Hero, Location, Sidebar } from "@/components";
 import { useStore } from "@/components/Store";
-import { CarImageProps } from "@/types";
+import { PhotoProps } from "@/types";
 import { fetchBrands, fetchCars } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,25 +12,40 @@ export default function Home() {
   const [allCars, setAllCars] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [searchValue, setSearchValue] = useState("");
-  const itemsPerPage: number = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const {
+    make,
+    setMake,
+    model,
+    setModel,
+    type,
+    setType,
+    gasoline,
+    setGasoline,
+    capacity,
+    setCapacity,
+    year,
+    setYear,
+    cityMpg,
+    setCityMpg,
+    fuel,
+    setFuel,
+    transmission,
+    setTransmission,
+    searchValue,
+    setSearchValue,
+    itemsPerPage,
+    setItemsPerPage,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    setTotalPages,
+    token,
+    userRole,
+  } = useStore();
 
   const [carId, setCarId] = useState(0);
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
-  const [type, setType] = useState("");
-  const [gasoline, setGasoline] = useState(0);
-  const [capacity, setCapacity] = useState(0);
-  const [year, setYear] = useState("");
-  const [cityMpg, setCityMpg] = useState(0);
-  const [fuel, setFuel] = useState("");
-  const [transmission, setTransmission] = useState("");
-  const [carImages, setCarImages] = useState<CarImageProps[]>([]);
-
   const [limit, setLimit] = useState(10);
-  const { userRole } = useStore();
+  const [photos, setPhotos] = useState<PhotoProps[]>([]);
 
   const getCars = async () => {
     setLoading(true);
@@ -47,7 +62,7 @@ export default function Home() {
           cityMpg,
           fuel,
           transmission,
-          carImages,
+          photos,
         },
         searchValue,
         currentPage,
@@ -69,7 +84,7 @@ export default function Home() {
     <main
       className={`${
         userRole == "Admin" ? "" : "bg-[#F6F7F9]"
-      } overflow-hidden sm:px-16 px-6 py-6 sm:py-10`}
+      } overflow-hidden content`}
     >
       {userRole == "Admin" ? (
         <Sidebar />
@@ -89,8 +104,8 @@ export default function Home() {
             {allCars.length > 0 ? (
               <section>
                 <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 w-full gap-8 pt-4">
-                  {allCars?.map((car) => (
-                    <CarCard car={car} />
+                  {allCars?.map((car, index) => (
+                    <CarCard key={index} car={car} />
                   ))}
                 </div>
                 {loading && (

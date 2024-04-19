@@ -4,11 +4,19 @@ import { useStore } from "./Store";
 import { CustomButton } from ".";
 import {
   fetchBrands,
-  fetchDeleteCar,
-  fetchDeleteCarImage,
+  fetchCreatePhoto,
+  fetchDeletePhoto,
+  fetchUpdatePhoto,
   useClickOutside,
 } from "@/utils";
-import { BrandProps, CarImageProps, CarProps, UploadedImage } from "@/types";
+import {
+  BrandProps,
+  CarProps,
+  UploadPhoto,
+  CreatePhoto,
+  UpdatePhoto,
+  DeletePhoto,
+} from "@/types";
 
 interface FormAddCarProps {
   car?: CarProps;
@@ -48,44 +56,48 @@ const FormAddCar = ({ car }: FormAddCarProps) => {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
 
-  let url = "http://localhost:5290/api/car";
-  if (brandId != 0) {
-    url += `/${brandId}`;
-  }
-  let method = "POST";
-  if (car?.carId != 0) {
-    url += `/${car?.carId}`;
-    method = "PUT";
-  }
-  const [carImages, setCarImages] = useState<UploadedImage[]>([]);
+  const [photos, setPhotos] = useState<UploadPhoto[]>([]);
+  const [photosCreate, setPhotosCreate] = useState<CreatePhoto[]>([]);
+  const [photosUpdate, setPhotosUpdate] = useState<UpdatePhoto[]>([]);
+  const [photosDelete, setPhotosDelete] = useState<DeletePhoto[]>([]);
+
+  const [countPhoto, setCountPhoto] = useState(4);
+
+  console.log(car);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("make", make);
-      formData.append("model", model);
-      formData.append("type", type);
-      formData.append("gasoline", String(gasoline));
-      formData.append("capacity", String(capacity));
-      formData.append("year", year);
-      formData.append("cityMpg", String(cityMpg));
-      formData.append("fuel", fuel);
-      formData.append("transmission", transmission);
-      carImages.forEach((carImage) => {
-        formData.append("images", carImage.file);
-      });
+      let url = "http://localhost:5290/api/car";
+      let method = "POST";
+      if (car?.carId != 0) {
+        url += `/${car?.carId}`;
+        method = "PUT";
+      }
 
       const response = await fetch(url, {
         method: method,
-        body: formData,
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          make,
+          model,
+          type,
+          gasoline,
+          capacity,
+          year,
+          cityMpg,
+          fuel,
+          transmission,
+          brandId,
+        }),
       });
 
       const data = await response.json();
       if (response.ok) {
+        await cud(data.carId);
         setSuccess();
         setShowAddNewCar(false);
       } else {
@@ -97,10 +109,12 @@ const FormAddCar = ({ car }: FormAddCarProps) => {
   };
 
   useEffect(() => {
-    clearBrand();
-  }, [showAddNewCar === false]);
+    if (car?.carId == 0) {
+      clearCar();
+    }
+  }, [car]);
 
-  const clearBrand = () => {
+  const clearCar = () => {
     setMake("");
     setModel("");
     setType("");
@@ -117,12 +131,15 @@ const FormAddCar = ({ car }: FormAddCarProps) => {
   useEffect(() => {
     const getBrands = async () => {
       try {
-        const result = await fetchBrands({
-          brandId,
-          brandName,
-          address,
-          phone,
-        });
+        const result = await fetchBrands(
+          {
+            brandId,
+            brandName,
+            address,
+            phone,
+          },
+          token
+        );
         setListBrands(result);
       } catch (err) {
         console.error(err);
@@ -130,23 +147,6 @@ const FormAddCar = ({ car }: FormAddCarProps) => {
     };
     getBrands();
   }, []);
-
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    carImageId: number,
-    index: number
-  ) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const updatedSelectedFiles = [...carImages];
-      console.log("carImageId = ", carImageId);
-      updatedSelectedFiles[index] = {
-        file: files[0],
-        carImageId: carImageId,
-      };
-      setCarImages(updatedSelectedFiles);
-    }
-  };
 
   useEffect(() => {
     if (car && car?.carId !== 0) {
@@ -159,31 +159,29 @@ const FormAddCar = ({ car }: FormAddCarProps) => {
       setFuel(car.fuel);
       setTransmission(car.transmission);
       setCityMpg(car.cityMpg);
+      setBrandId(car.brandId);
     }
 
     if (car && car?.carId !== 0) {
       // Tạo một mảng rỗng để lưu trữ các promise
-      const filePromises: Promise<UploadedImage>[] = [];
+      const filePromises: Promise<UploadPhoto>[] = [];
 
-      // Lặp qua từng carImage của car và tạo promise cho việc fetch ảnh
-      car?.carImages.forEach((image) => {
-        const imageUrl = image.imageUrl;
-        // Thêm promise vào mảng filePromises
+      car?.photos.forEach((photo) => {
+        const baseURL = process.env.SERVER_URL || "http://localhost:5290";
+        const photoUrl = `${baseURL}/${photo.photoUrl}`;
+
         filePromises.push(
-          new Promise<UploadedImage>(async (resolve, reject) => {
+          new Promise<UploadPhoto>(async (resolve, reject) => {
             try {
-              // Lấy dữ liệu từ URL
-              const response = await fetch(imageUrl);
-              // Chuyển đổi dữ liệu thành blob (binary large object)
+              const response = await fetch(photoUrl);
               const blob = await response.blob();
-              // Tạo một đối tượng UploadedImage từ blob và các thông tin khác
-              const uploadedImage: UploadedImage = {
+              const UploadPhoto: UploadPhoto = {
                 file: new File([blob], `image${Date.now()}.jpg`, {
                   type: blob.type,
                 }),
-                carImageId: image.carImageId,
+                photoId: photo.photoId,
               };
-              resolve(uploadedImage);
+              resolve(UploadPhoto);
             } catch (error) {
               reject(error);
             }
@@ -191,41 +189,132 @@ const FormAddCar = ({ car }: FormAddCarProps) => {
         );
       });
 
-      // Sử dụng Promise.all để chờ tất cả các promise được giải quyết
       Promise.all(filePromises)
-        .then((images) => {
-          // Gán mảng các UploadedImage vào setCarImages
-          setCarImages(images);
+        .then((photos) => {
+          setPhotos(photos);
         })
         .catch((error) => {
-          // Xử lý lỗi nếu có
           console.error("Error loading images:", error);
         });
     }
   }, [car?.carId]);
 
-  const getImageUrl = (carImage: UploadedImage) => {
-    if (carImage && carImage.file) {
-      return URL.createObjectURL(carImage.file);
+  const getPhotoUrl = (photo: UploadPhoto) => {
+    if (photo && photo.file) {
+      return URL.createObjectURL(photo.file);
     }
     return null;
   };
 
-  const handleRemoveImage = async (
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    photoId: number,
+    entityId: string,
+    photoType: number,
+    index: number
+  ) => {
+    const files = e.target.files;
+
+    if (files && files.length > 0) {
+      const updatedSelectedFiles = [...photos];
+      updatedSelectedFiles[index] = {
+        file: files[0],
+        photoId: photoId,
+      };
+      setPhotos(updatedSelectedFiles);
+      if (car?.carId != 0 && photoId > 0) {
+        if (photosUpdate[index]) {
+          const updatedPhotos = [...photosUpdate];
+          updatedPhotos[index] = {
+            file: files[0],
+            photoId: photoId,
+            photoType: photoType,
+            entityId: entityId,
+          };
+          setPhotosUpdate(updatedPhotos);
+        } else {
+          setPhotosUpdate((prevPhotosUpdate) => [
+            ...prevPhotosUpdate,
+            {
+              file: files[0],
+              photoId: photoId,
+              photoType: photoType,
+              entityId: entityId,
+            },
+          ]);
+        }
+      } else {
+        if (photosCreate[index]) {
+          const createdPhotos = [...photosCreate];
+          createdPhotos[index] = {
+            file: files[0],
+            photoId: photoId,
+            photoType: photoType,
+            entityId: entityId,
+          };
+          setPhotosCreate(createdPhotos);
+        } else {
+          setPhotosCreate((prevPhotosCreate) => [
+            ...prevPhotosCreate,
+            {
+              file: files[0],
+              photoId: photoId,
+              photoType: photoType,
+              entityId: entityId,
+            },
+          ]);
+        }
+      }
+    }
+  };
+
+  const handleRemovePhoto = async (
     event: React.MouseEvent<HTMLButtonElement>,
-    carId: number,
-    carImageId: number
+    entityId: string,
+    photoId: number,
+    index: number
   ) => {
     event.preventDefault();
     event.stopPropagation();
-    if (carId != 0 && carImageId != 0) {
-      await fetchDeleteCarImage(carId, carImageId);
 
-      setCarImages((prevImages) =>
-        prevImages.filter((image) => image.carImageId !== carImageId)
-      );
+    setPhotos((prePhoto) =>
+      prePhoto.filter((photo) => photo.photoId !== photoId)
+    );
 
-      setSuccess();
+    setPhotosCreate((prevPhotosCreate) =>
+      prevPhotosCreate.filter((photo) => photo.photoId !== photoId)
+    );
+
+    setPhotosUpdate((prevPhotosUpdate) =>
+      prevPhotosUpdate.filter((photo) => photo.photoId !== photoId)
+    );
+
+    if (photoId > 0) {
+      setPhotosDelete((prevPhotosDelete) => [
+        ...prevPhotosDelete,
+        {
+          entityId: entityId,
+          photoId: photoId,
+        },
+      ]);
+    }
+  };
+
+  const cud = async (entityId: string) => {
+    if (photosCreate.length > 0) {
+      const updatedPhotosCreate = photosCreate.map((photo) => {
+        return {
+          ...photo,
+          entityId: entityId,
+        };
+      });
+      await fetchCreatePhoto(updatedPhotosCreate, token);
+    }
+    if (photosUpdate.length > 0) {
+      await fetchUpdatePhoto(photosUpdate, token);
+    }
+    if (photosDelete.length > 0) {
+      await fetchDeletePhoto(photosDelete, token);
     }
   };
 
@@ -478,41 +567,44 @@ const FormAddCar = ({ car }: FormAddCarProps) => {
                   Image
                 </label>
                 <div className="w-[80%]">
-                  {Array.from({ length: 4 }).map((_, index) => {
-                    const currentCarImage = carImages[index];
+                  {Array.from({ length: countPhoto }).map((_, index) => {
+                    const currentPhoto = photos[index];
                     return (
                       <div
                         key={index}
                         className="relative inline-block w-24 h-24 mx-2"
                       >
                         <input
-                          id={`image${index}`}
-                          name={`image${index}`}
+                          id={`photos${index}`}
+                          name={`photos${index}`}
                           type="file"
-                          accept="image/*"
+                          accept="photos/*"
                           onChange={(e) =>
                             handleFileChange(
                               e,
-                              currentCarImage?.carImageId,
+                              currentPhoto?.photoId ?? 0,
+                              car?.carId.toString() ?? "0",
+                              1,
                               index
                             )
                           }
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
-                        {currentCarImage ? (
+                        {currentPhoto ? (
                           <>
                             <img
-                              src={getImageUrl(currentCarImage) ?? ""}
-                              alt={`Image ${index + 1}`}
+                              src={getPhotoUrl(currentPhoto) ?? ""}
+                              alt={`Photo ${index + 1}`}
                               className="w-24 h-24 object-cover rounded-md border border-gray-400"
                             />
                             <button
                               className="absolute top-[-1px] right-[-1px] bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center"
                               onClick={(e) => {
-                                handleRemoveImage(
+                                handleRemovePhoto(
                                   e,
-                                  car?.carId ?? 0,
-                                  currentCarImage.carImageId ?? 0
+                                  car?.carId.toString() ?? "0",
+                                  currentPhoto.photoId ?? 0,
+                                  index
                                 );
                               }}
                             >

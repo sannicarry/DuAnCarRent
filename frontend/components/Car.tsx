@@ -9,7 +9,7 @@ import {
   fetchDeleteBrand,
   fetchDeleteCar,
 } from "@/utils";
-import { BrandProps, CarImageProps, CarProps } from "@/types";
+import { BrandProps, PhotoProps, CarProps } from "@/types";
 import { CarViewAll, CustomButton, FormAddBrand, FormAddCar } from ".";
 import { useStore } from "./Store";
 import Image from "next/image";
@@ -18,22 +18,39 @@ const Car = () => {
   const [allCars, setAllCars] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [searchValue, setSearchValue] = useState("");
-  const itemsPerPage: number = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
   const [carId, setCarId] = useState(0);
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
-  const [type, setType] = useState("");
-  const [gasoline, setGasoline] = useState(0);
-  const [capacity, setCapacity] = useState(0);
-  const [year, setYear] = useState("");
-  const [cityMpg, setCityMpg] = useState(0);
-  const [fuel, setFuel] = useState("");
-  const [transmission, setTransmission] = useState("");
-  const [carImages, setCarImages] = useState<CarImageProps[]>([]);
+  const [brandId, setBrandId] = useState(0);
+  const [photos, setPhotos] = useState<PhotoProps[]>([]);
+
+  const {
+    make,
+    setMake,
+    model,
+    setModel,
+    type,
+    setType,
+    gasoline,
+    setGasoline,
+    capacity,
+    setCapacity,
+    year,
+    setYear,
+    cityMpg,
+    setCityMpg,
+    fuel,
+    setFuel,
+    transmission,
+    setTransmission,
+    searchValue,
+    setSearchValue,
+    itemsPerPage,
+    setItemsPerPage,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    setTotalPages,
+    token,
+  } = useStore();
 
   const [idOptions, setIdOptions] = useState(0);
 
@@ -63,7 +80,8 @@ const Car = () => {
           cityMpg,
           fuel,
           transmission,
-          carImages,
+          photos,
+          brandId,
         },
         searchValue,
         currentPage,
@@ -83,7 +101,7 @@ const Car = () => {
 
   const getCountCars = async () => {
     try {
-      const count = await fetchCarCount();
+      const count = await fetchCarCount(token);
       setTotalPages(Math.ceil(count / itemsPerPage));
     } catch (err) {
       console.log(err);
@@ -108,16 +126,37 @@ const Car = () => {
     cityMpg: 0,
     fuel: "",
     transmission: "",
-    carImages: [],
+    photos: [],
+    brandId: 0,
   });
+
+  const handleAddNewCar = () => {
+    setShowAddNewCar(true);
+    setCarModel({
+      carId: 0,
+      make: "",
+      model: "",
+      type: "",
+      gasoline: 0,
+      capacity: 0,
+      year: "",
+      cityMpg: 0,
+      fuel: "",
+      transmission: "",
+      photos: [],
+      brandId: 0,
+    });
+  };
 
   const handleEdit = (car: CarProps) => {
     setShowAddNewCar(true);
     setCarModel({ ...car });
+    setShowOptions(false);
   };
   const handleDelete = (id: number) => {
-    fetchDeleteCar(id);
+    fetchDeleteCar(id, token);
     setSuccess();
+    setShowOptions(false);
   };
 
   const isActivePage = (pageIndex: number) => {
@@ -155,11 +194,11 @@ const Car = () => {
           btnType="button"
           containerStyles="text-white text-white rounded-full bg-primary-blue bg-primary-blue min-w-[130px]"
           handleClick={() => {
-            setShowAddNewCar(true);
+            handleAddNewCar();
           }}
         />
       </div>
-      <div className="grid grid-cols-9 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="h-[50px] grid grid-cols-9 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <div className="col-span-2 px-6">MAKE</div>
         <div className="col-span-3 px-6">MODEL</div>
         <div className="col-span-1 px-6 text-center">TYPE</div>
@@ -169,9 +208,12 @@ const Car = () => {
       </div>
       <div className="flex flex-col justify-between h-[434px]">
         <div className="h-[400px]">
-          {allCars.length > 0 ? (
-            allCars.map((car: CarProps) => (
-              <div className="h-[50px] grid grid-cols-9 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          {allCars && allCars.length > 0 ? (
+            allCars.map((car: CarProps, index) => (
+              <div
+                key={index}
+                className="h-[50px] grid grid-cols-9 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              >
                 <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white capitalize">
                   {car.make}
                 </div>
@@ -188,7 +230,7 @@ const Car = () => {
                   <button
                     className="w-full flex justify-center items-center rounded-md hover:bg-slate-300"
                     onClick={() => {
-                      setShowViewCar(true);
+                      setShowViewCar(car);
                     }}
                   >
                     <Image
@@ -199,7 +241,9 @@ const Car = () => {
                       className=""
                     />
                   </button>
-                  {showViewCar && <CarViewAll car={car} />}
+                  {showViewCar && showViewCar.carId == car.carId && (
+                    <CarViewAll car={car} />
+                  )}
                 </div>
                 <div className="relative h-full flex items-center border-b  px-6 col-span-1 justify-center">
                   <button

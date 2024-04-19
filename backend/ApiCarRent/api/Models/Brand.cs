@@ -11,6 +11,6 @@ namespace api.Models
         public string BrandName { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
-        public List<Car> Cars { get; set; } = new List<Car>();
+        public virtual List<Car> Cars { get; set; } = new List<Car>();
     }
 }

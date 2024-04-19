@@ -15,7 +15,6 @@ namespace api.Interfaces
         Task<Car> CreateAsync(Car carModel);
         Task<Car?> UpdateAsync(Car carModel);
         Task<Car?> DeleteAsync(int id);
-        Task<List<string>?> GetCarImageByIdAsync(int id);
         Task<int> GetCountCarsAsync();
     }
 }

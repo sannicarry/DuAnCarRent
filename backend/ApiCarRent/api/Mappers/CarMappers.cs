@@ -23,11 +23,11 @@ namespace api.Mappers
                 CityMpg = car.CityMpg,
                 Fuel = car.Fuel,
                 Transmission = car.Transmission,
-                BrandId = car.BrandId,
-                CarImages = car.CarImages.Select(c => c.ToCarImageDto()).ToList(),
+                Photos = car.Photos.Where(c => c.PhotoType == 1).Select(c => c.ToPhotoDto()).ToList(),
+                BrandId = car.BrandId ?? 0
             };
         }
-        public static Car ToCarFromCreateDTO(this CreateCarDto car, int BrandId)
+        public static Car ToCarFromCreateDTO(this CreateCarDto car)
         {
             return new Car
             {
@@ -40,7 +40,7 @@ namespace api.Mappers
                 CityMpg = car.CityMpg,
                 Fuel = car.Fuel,
                 Transmission = car.Transmission,
-                BrandId = BrandId
+                BrandId = car.BrandId,
             };
         }
     }

@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\ApiCarRent",
+    "\\ApiCarRent\\api",
+    "\\ApiCarRent\\api\\Data",
+    "\\ApiCarRent\\api\\Dtos",
+    "\\ApiCarRent\\api\\Dtos\\Car",
+    "\\ApiCarRent\\api\\Helpers",
+    "\\ApiCarRent\\api\\Mappers",
+    "\\ApiCarRent\\api\\Models",
+    "\\ApiCarRent\\api\\Repository"
+  ],
+  "SelectedNode": "\\ApiCarRent\\api\\Controller\\AccountController.cs",
+  "PreviewInSolutionExplorer": false
+}

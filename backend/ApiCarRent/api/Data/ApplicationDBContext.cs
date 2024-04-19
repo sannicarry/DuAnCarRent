@@ -21,7 +21,7 @@ namespace api.Data
         public DbSet<Review> Review { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<Payment> Payment { get; set; }
-        public DbSet<CarImage> CarImage { get; set; }
+        public DbSet<Photo> Photo { get; set; }
         public DbSet<AppUser> AppUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

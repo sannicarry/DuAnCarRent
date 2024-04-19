@@ -19,7 +19,7 @@ namespace api.Models
         public string Fuel { get; set; } = string.Empty;
         public string Transmission { get; set; } = string.Empty;
         public int? BrandId { get; set; }
-        public Brand? Brand { get; set; }
-        public List<CarImage> CarImages { get; set; } = new List<CarImage>();
+        public virtual Brand? Brand { get; set; }
+        public virtual List<Photo> Photos { get; set; } = new List<Photo>();
     }
 }

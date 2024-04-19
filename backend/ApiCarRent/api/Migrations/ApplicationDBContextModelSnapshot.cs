@@ -51,13 +51,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e7fa2fda-f507-4d9d-999d-3c3bca7d6e8f",
+                            Id = "94b6235a-1615-48c6-8599-5d947c0126a4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "11db60c0-fb44-4840-a706-9fdaab39a88a",
+                            Id = "5dfe2860-0af0-46f6-833c-1059358a6dcd",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -181,7 +181,7 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BirthDay")
+                    b.Property<string>("BirthDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -214,10 +214,6 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -325,28 +321,6 @@ namespace api.Migrations
                     b.ToTable("Car");
                 });
 
-            modelBuilder.Entity("api.Models.CarImage", b =>
-                {
-                    b.Property<int>("CarImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarImageId"));
-
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CarImageId");
-
-                    b.HasIndex("CarId");
-
-                    b.ToTable("CarImage");
-                });
-
             modelBuilder.Entity("api.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -425,6 +399,36 @@ namespace api.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("Payment");
+                });
+
+            modelBuilder.Entity("api.Models.Photo", b =>
+                {
+                    b.Property<int>("PhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PhotoId"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PhotoType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhotoUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PhotoId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("api.Models.Review", b =>
@@ -512,17 +516,6 @@ namespace api.Migrations
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("api.Models.CarImage", b =>
-                {
-                    b.HasOne("api.Models.Car", "Car")
-                        .WithMany("CarImages")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
             modelBuilder.Entity("api.Models.Order", b =>
                 {
                     b.HasOne("api.Models.Car", "Car")
@@ -551,6 +544,21 @@ namespace api.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("api.Models.Photo", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("Photos")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("api.Models.Car", "Car")
+                        .WithMany("Photos")
+                        .HasForeignKey("CarId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Car");
+                });
+
             modelBuilder.Entity("api.Models.Review", b =>
                 {
                     b.HasOne("api.Models.Car", "Car")
@@ -560,6 +568,11 @@ namespace api.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("api.Models.AppUser", b =>
+                {
+                    b.Navigation("Photos");
+                });
+
             modelBuilder.Entity("api.Models.Brand", b =>
                 {
                     b.Navigation("Cars");
@@ -567,7 +580,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Car", b =>
                 {
-                    b.Navigation("CarImages");
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

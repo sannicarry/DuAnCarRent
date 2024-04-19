@@ -26,34 +26,6 @@ namespace api.Service
             _userManager = userManager;
         }
 
-        public string CreateToken(AppUser user)
-        {
-            //Tạo claim đại diện thông tin người dùng
-            var claims = new List<Claim> {
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
-            };
-
-            //Ký mã token
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-
-            //Mô tả các thuộc tính của mã token được tạo
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = creds,
-                Issuer = _config["JWT:Issuer"],
-                Audience = _config["JWT:Audience"]
-            };
-            //Tạo mã token
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
-
         public async Task<string> CreateTokenAsync(AppUser user)
         {
 
@@ -67,6 +39,7 @@ namespace api.Service
 
             //Tạo claim đại diện thông tin người dùng
             var claims = new List<Claim> {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
                 new Claim("userRole", userRole) // Thêm vai trò của người dùng vào claim

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Brand;
 using api.Dtos.Car;
+using api.Dtos.Photo;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using api.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,14 +23,14 @@ namespace api.Controller
     {
         private readonly ICarRepository _carRepo;
         private readonly IBrandRepository _brandRepo;
-        private readonly ICarImageRepository _carImageRepo;
+        private readonly IPhotoRepository<Car> _carPhotoRepo;
         private readonly ApplicationDBContext _context;
-        private readonly string _imageUploadDirectory = "Uploads";
-        public CarController(ICarRepository carRepo, IBrandRepository brandRepo, ICarImageRepository carImageRepo, ApplicationDBContext context)
+        private readonly string _PhotoUploadDirectory = "Uploads";
+        public CarController(ICarRepository carRepo, IBrandRepository brandRepo, IPhotoRepository<Car> carPhotoRepo, ApplicationDBContext context)
         {
             _carRepo = carRepo;
             _brandRepo = brandRepo;
-            _carImageRepo = carImageRepo;
+            _carPhotoRepo = carPhotoRepo;
             _context = context;
         }
 
@@ -58,48 +60,21 @@ namespace api.Controller
             return Ok(carModel.ToCarDto());
         }
 
-        [HttpPost("{BrandId:int}")]
+        [HttpPost]
         [Authorize]
-        [ProducesResponseType(typeof(CarDto), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create([FromRoute] int BrandId, [FromForm] CreateCarDto carDto, List<IFormFile> images)
+        public async Task<IActionResult> Create([FromBody] CreateCarDto carDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!await _brandRepo.BrandExists(BrandId))
+            if (!await _brandRepo.BrandExists(carDto.BrandId))
             {
                 return BadRequest("Brand does not exist");
             }
 
-            var carModel = carDto.ToCarFromCreateDTO(BrandId);
-
-            var carImages = new List<CarImage>();
-
-            var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), _imageUploadDirectory);
-            if (!Directory.Exists(uploadDirectory))
-            {
-                Directory.CreateDirectory(uploadDirectory);
-            }
-
-            foreach (var image in images)
-            {
-                var imageName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
-                var imagePath = Path.Combine(uploadDirectory, imageName);
-
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    await image.CopyToAsync(stream);
-                }
-
-                var imageUrl = $"{Request.Scheme}://{Request.Host}/{_imageUploadDirectory}/{imageName}";
-                carImages.Add(new CarImage { ImageUrl = imageUrl });
-            }
-
-            carModel.CarImages = carImages;
+            var carModel = carDto.ToCarFromCreateDTO();
 
             await _carRepo.CreateAsync(carModel);
 
@@ -109,7 +84,7 @@ namespace api.Controller
         [HttpPut]
         [Authorize]
         [Route("{CarId:int}")]
-        public async Task<IActionResult> Update([FromRoute] int CarId, [FromForm] UpdateCarDto carDto, List<IFormFile> images)
+        public async Task<IActionResult> Update([FromRoute] int CarId, [FromBody] UpdateCarDto carDto)
         {
             if (!ModelState.IsValid)
             {
@@ -131,12 +106,6 @@ namespace api.Controller
             carModel.Fuel = carDto.Fuel;
             carModel.Transmission = carDto.Transmission;
 
-            var updateImage = UpdateImage(CarId, images);
-            if (!await updateImage)
-            {
-                return BadRequest("You cannot be select over 4 images");
-            }
-
             await _carRepo.UpdateAsync(carModel);
 
             return Ok(carModel.ToCarDto());
@@ -144,12 +113,16 @@ namespace api.Controller
 
         [HttpDelete]
         [Route("{CarId:int}")]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int CarId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
+
+            await _carPhotoRepo.DeletePhotoByEntityId(CarId.ToString());
+
             var carModel = await _carRepo.DeleteAsync(CarId);
             if (carModel == null)
             {
@@ -158,73 +131,8 @@ namespace api.Controller
             return NoContent();
         }
 
-        [HttpGet("image/{id:int}")]
-        public async Task<IActionResult> GetImageById(int id)
-        {
-            var carImage = await _carRepo.GetCarImageByIdAsync(id);
-            if (carImage == null)
-            {
-                return NotFound();
-            }
-            return Ok(carImage);
-        }
-
-        [HttpPut("image/{CarId:int}")]
-        public async Task<bool> UpdateImage(int CarId, List<IFormFile> images)
-        {
-            if (images != null && images.Any())
-            {
-
-                var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), _imageUploadDirectory);
-
-                if (!Directory.Exists(uploadDirectory))
-                {
-                    Directory.CreateDirectory(uploadDirectory);
-                }
-
-                var countImgByCarId = await _carImageRepo.CountCarImagesByCarId(CarId);
-                Debugger.Break();
-                Console.WriteLine("countImgByCarId = " + countImgByCarId);
-                Console.WriteLine("images.Count = " + images.Count);
-                for (int i = 0; i < images.Count; i++)
-                {
-                    var imageName = $"{Guid.NewGuid()}{Path.GetExtension(images[i].FileName)}";
-                    var imagePath = Path.Combine(uploadDirectory, imageName);
-
-                    using (var stream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        await images[i].CopyToAsync(stream);
-                    }
-
-                    var imageUrl = $"{Request.Scheme}://{Request.Host}/{_imageUploadDirectory}/{imageName}";
-                    if (countImgByCarId < i + 1)
-                    {
-                        Console.WriteLine("true bao nhieu lan ");
-                        await _carImageRepo.CreateImageAsync(CarId, imageUrl);
-                    }
-                    else
-                    {
-                        await _carImageRepo.UpdateImageAsync(CarId, imageUrl, i);
-                    }
-                }
-                return true;
-            }
-            return false;
-        }
-
-        [HttpDelete("image/{CarId:int}/{CarImageId:int}")]
-        public async Task<IActionResult> DeleteImage(int CarId, int CarImageId)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            var carImage = await _carImageRepo.DeleteImageAsync(CarId, CarImageId);
-            if (carImage == null)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
-
         [HttpGet("GetCount")]
+
         public async Task<int> GetCountCars()
         {
             if (!ModelState.IsValid)

@@ -25,8 +25,7 @@ namespace api.Controller
         }
 
         [HttpGet]
-        // [Authorize]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
@@ -37,6 +36,7 @@ namespace api.Controller
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -51,6 +51,8 @@ namespace api.Controller
         }
 
         [HttpPost]
+        [Authorize]
+
         public async Task<IActionResult> Create([FromBody] CreateBrandDto brandDto)
         {
             if (!ModelState.IsValid)
@@ -64,6 +66,8 @@ namespace api.Controller
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
+
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateBrandDto brandDto)
         {
             if (!ModelState.IsValid)
@@ -78,6 +82,8 @@ namespace api.Controller
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
+
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)

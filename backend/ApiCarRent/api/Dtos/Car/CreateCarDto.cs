@@ -31,5 +31,7 @@ namespace api.Dtos.Car
         public string Fuel { get; set; } = string.Empty;
         [Required]
         public string Transmission { get; set; } = string.Empty;
+        [Required]
+        public int BrandId { get; set; }
     }
 }

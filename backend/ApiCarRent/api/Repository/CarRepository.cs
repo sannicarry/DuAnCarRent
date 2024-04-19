@@ -45,7 +45,7 @@ namespace api.Repository
 
         public async Task<List<Car>> GetAllAsync(QueryObject query)
         {
-            var cars = await _context.Car.Include(c => c.CarImages)
+            var cars = await _context.Car.Include(c => c.Photos)
                 .Where(s => string.IsNullOrWhiteSpace(query.CarName) || (s.Make + s.Model).Replace(" ", "").Contains(query.CarName))
                 .Skip((query.PageNumber - 1) * query.PageSize)
                 .Take(query.PageSize)
@@ -58,14 +58,6 @@ namespace api.Repository
         public async Task<Car?> GetByIdAsync(int id)
         {
             return await _context.Car.FirstOrDefaultAsync(x => x.CarId == id);
-        }
-
-        public async Task<List<string>?> GetCarImageByIdAsync(int id)
-        {
-            return await _context.CarImage
-                               .Where(x => x.CarId == id)
-                               .Select(x => x.ImageUrl)
-                               .ToListAsync();
         }
 
         public async Task<int> GetCountCarsAsync()

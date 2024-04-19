@@ -8,9 +8,9 @@ namespace api.Models
 {
     public class AppUser : IdentityUser
     {
-        public string BirthDay { get; set; } = string.Empty;
-        public string Phone { get; set; } = string.Empty;
+        public string BirthDate { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public Boolean Gender { get; set; }
+        public bool Gender { get; set; }
+        public virtual List<Photo> Photos { get; set; } = new List<Photo>();
     }
 }

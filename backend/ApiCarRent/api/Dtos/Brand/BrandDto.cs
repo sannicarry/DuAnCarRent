@@ -13,6 +13,6 @@ namespace api.Dtos.Brand
         public string BrandName { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
-        public List<CarDto> Cars { get; set; }
+        public List<CarDto>? Cars { get; set; }
     }
 }

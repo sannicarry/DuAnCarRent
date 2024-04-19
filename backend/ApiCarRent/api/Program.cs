@@ -5,11 +5,13 @@ using api.Repository;
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using YourNamespace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,7 +69,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
 })
 .AddEntityFrameworkStores<ApplicationDBContext>()
-.AddUserValidator<UserValidator<AppUser>>();
+.AddUserValidator<UserValidator<AppUser>>()
+.AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.MaxFailedAccessAttempts = 5; // Số lần thất bại trước khi khóa tài khoản
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15); // Thời gian khóa mặc định
+});
+
+
 
 //cấu hình xác thực JWT
 builder.Services.AddAuthentication(options =>
@@ -96,8 +108,10 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
-builder.Services.AddScoped<ICarImageRepository, CarImageRepository>();
-
+builder.Services.AddScoped<IPhotoRepository<Car>, CarPhotoRepository>();
+builder.Services.AddScoped<IPhotoRepository<AppUser>, AppUserPhotoRepository>();
+builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 {
     build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
@@ -124,6 +138,8 @@ app.UseStaticFiles(new StaticFileOptions
         Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
     RequestPath = "/Uploads"
 });
+
+// app.UseMiddleware<SetUserAfterLoginMiddleware>();
 
 app.MapControllers();
 

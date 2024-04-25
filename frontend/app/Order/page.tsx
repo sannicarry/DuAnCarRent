@@ -1,63 +1,83 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchUserCount, fetchUsers } from "@/utils";
-import { PhotoProps, UserProps } from "@/types";
-import { CustomButton } from ".";
-import { useStore } from "./Store";
+import {
+  fetchBrandCount,
+  fetchBrands,
+  fetchCarCount,
+  fetchCars,
+  fetchDeleteBrand,
+  fetchDeleteCar,
+  fetchDeleteOrder,
+  fetchOrderCount,
+  fetchOrders,
+} from "@/utils";
 import Image from "next/image";
+import Link from "next/link";
+import { useStore } from "@/components/Store";
+import { OrderProps } from "@/types";
 
-const User = () => {
-  const [allUsers, setAllUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+const page = () => {
+  const [allOrders, setAllOrders] = useState([]);
 
-  const [userId, setUserId] = useState("");
-  const [photos, setPhotos] = useState<PhotoProps[]>([]);
+  const [orderId, setOrderId] = useState(0);
 
   const {
-    success,
+    user,
+    car,
+    locationFrom,
+    dateFrom,
+    timeFrom,
+    locationTo,
+    dateTo,
+    timeTo,
+    totalPrice,
+    status,
     searchValue,
     setSearchValue,
     itemsPerPage,
+    setItemsPerPage,
     currentPage,
     setCurrentPage,
     totalPages,
     setTotalPages,
     token,
-    username,
-    email,
-    birthDate,
-    gender,
-    isLocked,
-    address,
-    phone,
+    loading,
+    setLoading,
+    success,
+    setSuccess,
+    showViewOrder,
+    setShowViewOrder,
+    setCurrentPageAdmin,
   } = useStore();
 
-  const getUsers = async (
-    searchValue?: string,
-    currentPage?: number,
-    itemsPerPage?: number
-  ) => {
+  useEffect(() => {
+    setCurrentPageAdmin("Order");
+  }, []);
+
+  const getOrders = async (searchValue?: string, currentPage?: number) => {
     setLoading(true);
     try {
-      const result = await fetchUsers(
+      const result = await fetchOrders(
         {
-          userId,
-          username,
-          email,
-          phone,
-          address,
-          birthDate,
-          gender,
-          isLocked,
-          photos,
+          orderId,
+          user,
+          car,
+          locationFrom,
+          dateFrom,
+          timeFrom,
+          locationTo,
+          dateTo,
+          timeTo,
+          totalPrice,
+          status,
         },
         token,
         currentPage,
         itemsPerPage,
         searchValue
       );
-      setAllUsers(result);
+      setAllOrders(result);
     } catch (err) {
       console.error(err);
     } finally {
@@ -66,20 +86,20 @@ const User = () => {
   };
 
   useEffect(() => {
-    getUsers(searchValue, currentPage, itemsPerPage);
-  }, [success, searchValue, currentPage, itemsPerPage]);
+    getOrders(searchValue, currentPage);
+  }, [success, searchValue, currentPage]);
 
-  const getCountUsers = async () => {
+  const getCountOrder = async () => {
     try {
-      const count = await fetchUserCount(token);
+      const count = await fetchOrderCount(token);
       setTotalPages(Math.ceil(count / itemsPerPage));
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
 
   useEffect(() => {
-    getCountUsers();
+    getCountOrder();
     if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
@@ -88,12 +108,13 @@ const User = () => {
   const isActivePage = (pageIndex: number) => {
     return pageIndex === currentPage;
   };
+
   return (
     <div className="relative flex flex-col h-full">
       <div className="flex justify-between items-center border-b px-6 py-4 bg-gray-50 dark:bg-gray-700">
         <div className="flex items-center justify-between w-[60%]">
           <h1 className="text-left text-lg font-bold text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            User
+            Order
           </h1>
           <div className="flex w-[80%] h-[40px] bg-white border-2 focus-within:border-blue-500 rounded-lg sm:rounded-3xl px-3">
             <Image
@@ -106,7 +127,7 @@ const User = () => {
             <input
               type="text"
               className="border-none w-[100%] focus:outline-none truncate"
-              placeholder="Search User"
+              placeholder="Search Order"
               value={searchValue}
               onChange={(e) => {
                 setSearchValue(e.target.value);
@@ -115,43 +136,57 @@ const User = () => {
           </div>
         </div>
       </div>
-      <div className="h-[50px] grid grid-cols-12 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <div className="col-span-2 px-6">Username</div>
-        <div className="col-span-2">Email</div>
-        <div className="col-span-2">Phone</div>
-        <div className="col-span-2">Address</div>
-        <div className="col-span-2">BirthDate</div>
-        <div className="col-span-1">Gender</div>
-        <div className="col-span-1">Account Locked?</div>
+      <div className="h-[50px] grid grid-cols-11 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="col-span-2 px-6">Customer Name</div>
+        <div className="col-span-2 px-6">Phone</div>
+        <div className="col-span-2 px-6">Email</div>
+        <div className="col-span-2 px-6">Car Rented</div>
+        <div className="col-span-2 px-6 text-center">Status</div>
+        <div className="col-span-1 px-6">VIEW MORE</div>
       </div>
       <div className="flex flex-col justify-between h-[434px]">
         <div className="h-[400px]">
-          {allUsers.length > 0 ? (
-            allUsers.map((User: UserProps, index) => (
+          {allOrders && allOrders.length > 0 ? (
+            allOrders.map((order: OrderProps, index) => (
               <div
                 key={index}
-                className="h-[50px] grid grid-cols-12 items-center text-sm font-medium text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                className="h-[50px] grid grid-cols-11 items-center text-sm font-medium text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
               >
-                <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.username}
+                <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {order.user.username}
                 </div>
-                <div className="h-full flex items-center border-b  col-span-2 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.email}
+                <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {order.user.phone}
                 </div>
-                <div className="h-full flex items-center border-b  col-span-2 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.phone}
+                <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {order.user.email}
                 </div>
-                <div className="h-full flex items-center border-b  col-span-2 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.address}
+                <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {`${order.car.make} ${order.car.model}`}
                 </div>
-                <div className="h-full flex items-center border-b  col-span-2 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.birthDate}
+
+                <div className="h-full text-center flex justify-center items-center border-b px-6 col-span-2 font-bold text-gray-900 whitespace-nowrap dark:text-white">
+                  {order.status == 0 && <>Pending approval</>}
+                  {order.status == 1 && <>Approved</>}
+                  {order.status == 2 && <>Rejected</>}
                 </div>
-                <div className="h-full flex items-center border-b  col-span-1 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.gender ? "Male" : "Female"}
-                </div>
-                <div className="h-full flex items-center border-b  col-span-1 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.isLocked && "&checkmark"}
+                <div className="h-full flex justify-center items-center border-b  px-6 col-span-1">
+                  <Link
+                    href={{
+                      pathname: `/Order/View`,
+                      query: { order: JSON.stringify(order) },
+                    }}
+                  >
+                    <button className="w-full flex justify-center items-center rounded-md hover:bg-slate-300">
+                      <Image
+                        src="/ArrowRight.svg"
+                        alt="view more"
+                        width={20}
+                        height={20}
+                        className=""
+                      />
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))
@@ -215,4 +250,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default page;

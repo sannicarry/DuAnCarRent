@@ -6,17 +6,20 @@ import {
   fetchBrands,
   fetchCarCount,
   fetchCars,
+  fetchCheckCarExistsFromOrders,
   fetchDeleteBrand,
   fetchDeleteCar,
 } from "@/utils";
 import { BrandProps, PhotoProps, CarProps } from "@/types";
-import { CarViewAll, CustomButton, FormAddBrand, FormAddCar } from ".";
-import { useStore } from "./Store";
 import Image from "next/image";
+import { useStore } from "@/components/Store";
+import { CustomButton } from "@/components";
+import Link from "next/link";
 
 const Car = () => {
   const [allCars, setAllCars] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [checkingExists, setCheckingExists] = useState(false);
 
   const [carId, setCarId] = useState(0);
   const [brandId, setBrandId] = useState(0);
@@ -50,6 +53,8 @@ const Car = () => {
     totalPages,
     setTotalPages,
     token,
+    exists,
+    setExists,
   } = useStore();
 
   const [idOptions, setIdOptions] = useState(0);
@@ -63,6 +68,8 @@ const Car = () => {
     setSuccess,
     showOptions,
     setShowOptions,
+    confirmDelete,
+    setConfirmDelete,
   } = useStore();
 
   const getCars = async (searchValue?: string, currentPage?: number) => {
@@ -83,9 +90,9 @@ const Car = () => {
           photos,
           brandId,
         },
-        searchValue,
         currentPage,
-        itemsPerPage
+        itemsPerPage,
+        searchValue
       );
       setAllCars(result);
     } catch (err) {
@@ -96,6 +103,7 @@ const Car = () => {
   };
 
   useEffect(() => {
+    console.log("success2 = ", success);
     getCars(searchValue, currentPage);
   }, [success, searchValue, currentPage]);
 
@@ -130,34 +138,19 @@ const Car = () => {
     brandId: 0,
   });
 
-  const handleAddNewCar = () => {
-    setShowAddNewCar(true);
-    setCarModel({
-      carId: 0,
-      make: "",
-      model: "",
-      type: "",
-      gasoline: 0,
-      capacity: 0,
-      year: "",
-      cityMpg: 0,
-      fuel: "",
-      transmission: "",
-      photos: [],
-      brandId: 0,
-    });
+  const handleCheckCarFromOrders = async (id: number) => {
+    const result = await fetchCheckCarExistsFromOrders(id);
+    setExists(result);
+    setCheckingExists(true);
   };
 
-  const handleEdit = (car: CarProps) => {
-    setShowAddNewCar(true);
-    setCarModel({ ...car });
-    setShowOptions(false);
-  };
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     fetchDeleteCar(id, token);
-    setSuccess();
-    setShowOptions(false);
+    setSuccess(!success);
+    setConfirmDelete(false);
   };
+
+  console.log("success1 = ", success);
 
   const isActivePage = (pageIndex: number) => {
     return pageIndex === currentPage;
@@ -189,14 +182,18 @@ const Car = () => {
             />
           </div>
         </div>
-        <CustomButton
-          title="Add New Car"
-          btnType="button"
-          containerStyles="text-white text-white rounded-full bg-primary-blue bg-primary-blue min-w-[130px]"
-          handleClick={() => {
-            handleAddNewCar();
+        <Link
+          href={{
+            pathname: `/Car/CreateUpdateCar`,
+            query: { car: JSON.stringify(carModel) },
           }}
-        />
+        >
+          <CustomButton
+            title="Add New Car"
+            btnType="button"
+            containerStyles="text-white text-white rounded-full bg-primary-blue bg-primary-blue min-w-[130px]"
+          />
+        </Link>
       </div>
       <div className="h-[50px] grid grid-cols-9 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <div className="col-span-2 px-6">MAKE</div>
@@ -226,24 +223,25 @@ const Car = () => {
                 <div className="h-full flex justify-center items-center border-b  px-6 col-span-1">
                   {car.capacity}
                 </div>
+
                 <div className="h-full flex justify-center items-center border-b  px-6 col-span-1">
-                  <button
-                    className="w-full flex justify-center items-center rounded-md hover:bg-slate-300"
-                    onClick={() => {
-                      setShowViewCar(car);
+                  <Link
+                    href={{
+                      pathname: `/Car/View`,
+                      query: { car: JSON.stringify(car) },
                     }}
+                    className=""
                   >
-                    <Image
-                      src="ArrowRight.svg"
-                      alt="view more"
-                      width={20}
-                      height={20}
-                      className=""
-                    />
-                  </button>
-                  {showViewCar && showViewCar.carId == car.carId && (
-                    <CarViewAll car={car} />
-                  )}
+                    <button className="flex justify-center items-center rounded-md hover:bg-slate-300">
+                      <Image
+                        src="/ArrowRight.svg"
+                        alt="view more"
+                        width={20}
+                        height={20}
+                        className=""
+                      />
+                    </button>
+                  </Link>
                 </div>
                 <div className="relative h-full flex items-center border-b  px-6 col-span-1 justify-center">
                   <button
@@ -252,6 +250,8 @@ const Car = () => {
                       if (idOptions === car.carId) {
                         setShowOptions(false);
                         setIdOptions(0);
+                        setConfirmDelete(false);
+                        setCheckingExists(false);
                       } else {
                         setShowOptions(true);
                         setIdOptions(car.carId);
@@ -269,21 +269,82 @@ const Car = () => {
                   {showOptions && idOptions === car.carId && (
                     <>
                       <div className="flex h-full gap-[2px] flex-col absolute top-0 left-[-28px]">
-                        <button
-                          className="w-full h-full border border-slate-600 bg-yellow-600 hover:bg-yellow-400 rounded-md px-2 text-start text-white"
-                          onClick={() => handleEdit(car)}
+                        <Link
+                          href={{
+                            pathname: `/Car/CreateUpdateCar`,
+                            query: { car: JSON.stringify(car) },
+                          }}
                         >
-                          Edit
-                        </button>
+                          <button className="w-full h-full border border-slate-600 bg-yellow-600 hover:bg-yellow-400 rounded-md px-2 text-start text-white">
+                            Edit
+                          </button>
+                        </Link>
                         <button
                           className="w-full h-full border border-slate-600 bg-red-600 hover:bg-red-400 rounded-md px-2 text-start text-white"
-                          onClick={() => handleDelete(car.carId)}
+                          onClick={() => {
+                            setShowOptions(false);
+                            handleCheckCarFromOrders(car.carId);
+                            setConfirmDelete(true);
+                          }}
                         >
                           Delete
                         </button>
                       </div>
                     </>
                   )}
+                  {idOptions === car.carId &&
+                    checkingExists &&
+                    confirmDelete && (
+                      <>
+                        {exists == false ? (
+                          <div className="z-10 absolute rounded-md h-[120px] w-[214px] p-3 bg-slate-400 flex flex-col gap-4 top-[50px] right-0">
+                            <h1 className="text-sm text-center font-semibold text-red-600 uppercase">
+                              Do you want to delete this order ?
+                            </h1>
+                            <div className="flex justify-between items-center">
+                              <button
+                                className="font-semibold border border-black rounded-md p-2 text-slate-100 bg-yellow-400 hover:bg-yellow-600"
+                                onClick={() => {
+                                  setConfirmDelete(false);
+                                  setCheckingExists(false);
+                                  setIdOptions(0);
+                                }}
+                              >
+                                NO
+                              </button>
+                              <button
+                                className="font-semibold border border-black rounded-md p-2 text-slate-100 bg-blue-400 hover:bg-blue-600"
+                                onClick={() => {
+                                  handleDelete(car.carId);
+                                }}
+                              >
+                                YES
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="z-10 absolute rounded-md h-[140px] w-[214px] p-3 bg-slate-400 flex flex-col gap-4 top-[50px] right-0">
+                            <h1 className="text-sm text-center font-semibold text-red-600 uppercase">
+                              This car is associated with some orders and cannot
+                              be deleted !
+                            </h1>
+                            <div className="flex items-center">
+                              <button
+                                className="font-semibold w-full border border-black rounded-md p-2 text-slate-100 bg-yellow-400 hover:bg-yellow-600"
+                                onClick={() => {
+                                  setConfirmDelete(false);
+                                  setCheckingExists(false);
+                                  setExists(false);
+                                  setIdOptions(0);
+                                }}
+                              >
+                                Back
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
                 </div>
               </div>
             ))
@@ -343,7 +404,6 @@ const Car = () => {
           </div>
         </div>
       </div>
-      {showAddNewCar && <FormAddCar car={carModel} />}
     </div>
   );
 };

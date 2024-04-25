@@ -110,14 +110,19 @@ const CarCard = ({ car }: CarCardProps) => {
             </div>
           </div>
         </div>
-        <CustomButton
-          title="Rent Now"
-          containerStyles="text-white rounded-md max-xl:bg-primary-blue bg-primary-blue w-[120px]"
-          handleClick={handleRentNow}
-          btnType="button"
-        />
+        <Link
+          href={{
+            pathname: "/RentNow",
+            query: { car: JSON.stringify(car) },
+          }}
+        >
+          <CustomButton
+            title="Rent Now"
+            containerStyles="text-white rounded-md max-xl:bg-primary-blue bg-primary-blue w-[120px]"
+            btnType="button"
+          />
+        </Link>
       </div>
-      <Payment isOpen={isOpen} closeModal={() => setIsOpen(false)} car={car} />
     </div>
   );
 };

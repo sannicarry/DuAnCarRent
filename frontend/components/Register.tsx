@@ -28,18 +28,22 @@ const Register = () => {
     showSignUpForm,
     setShowSignUpForm,
     token,
+    errorUsername,
+    setErrorUsername,
+    errorEmail,
+    setErrorEmail,
+    errorRegexEmail,
+    setErrorRegexEmail,
+    emailBlurred,
+    setEmailBlurred,
   } = useStore();
 
   const formRef = useRef<HTMLDivElement | null>(null);
 
-  const [errorusername, setErrorusername] = useState(false);
-  const [errorEmail, setErrorEmail] = useState(false);
-  const [errorRegexEmail, setErrorRegexEmail] = useState(false);
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (errorusername || errorEmail) {
+    if (errorUsername || errorEmail) {
       return;
     }
 
@@ -75,16 +79,13 @@ const Register = () => {
         }
       );
 
-      // Kiểm tra nếu không thể phân tích cú pháp JSON hoặc có lỗi khác từ phía server
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message);
       }
 
-      // Nếu mọi thứ thành công, ẩn form đăng ký
       setShowSignUpForm(false);
     } catch (error) {
-      // Xử lý lỗi bằng cách hiển thị thông báo hoặc thực hiện các hành động khác
       alert(error);
     }
   };
@@ -97,7 +98,7 @@ const Register = () => {
       if (username) {
         try {
           const errUser = await fetchCheckUsername(username, token);
-          setErrorusername(errUser);
+          setErrorUsername(errUser);
         } catch (error) {
           console.error("Error checking username:", error);
         }
@@ -161,10 +162,10 @@ const Register = () => {
                   >
                     Username
                   </label>
-                  {errorusername && (
+                  {errorUsername && (
                     <>
                       <span className="text-red-700 font-normal text-sm">
-                        username already exists!
+                        Username already exists!
                       </span>
                     </>
                   )}
@@ -218,7 +219,7 @@ const Register = () => {
                         </span>
                       </>
                     )}
-                    {errorRegexEmail && (
+                    {errorRegexEmail && emailBlurred && (
                       <>
                         <span className="text-red-700 font-normal text-sm">
                           Incorrect Email Format!
@@ -235,6 +236,7 @@ const Register = () => {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      onBlur={() => setEmailBlurred(true)}
                       className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>

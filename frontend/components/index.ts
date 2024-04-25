@@ -10,14 +10,10 @@ import Payment from "./Payment";
 import CarDetails from "./CarDetails";
 import Sidebar from "./Sidebar";
 import Brand from "./Brand";
-import Car from "./Car";
 import User from "./User";
-import Order from "./Order";
-import Dashboard from "./Dashboard";
 import PaymentManager from "./PaymentManager";
 import FormAddBrand from "./FormAddBrand";
-import CarViewAll from "./CarViewAll";
-import FormAddCar from "./FormAddCar";
+import Comment from "./Comment";
 
 export {
   Navbar,
@@ -31,13 +27,9 @@ export {
   Payment,
   CarDetails,
   Sidebar,
-  Dashboard,
   Brand,
-  Car,
   User,
-  Order,
   PaymentManager,
   FormAddBrand,
-  CarViewAll,
-  FormAddCar,
+  Comment,
 };

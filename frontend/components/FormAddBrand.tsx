@@ -46,7 +46,7 @@ const FormAddBrand = ({ brand }: FormAddBrandProps) => {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccess();
+        setSuccess(true);
         setShowAddNewBrand(false);
       } else {
         setError(data.message);

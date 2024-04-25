@@ -50,9 +50,9 @@ const Brand = () => {
           phone,
         },
         token,
-        searchValue,
         currentPage,
-        itemsPerPage
+        itemsPerPage,
+        searchValue
       );
       setAllBrands(result);
     } catch (err) {
@@ -106,7 +106,7 @@ const Brand = () => {
   };
   const handleDelete = (id: number) => {
     fetchDeleteBrand(id, token);
-    setSuccess();
+    setSuccess(true);
     setShowOptions(false);
   };
 

@@ -1,8 +1,20 @@
-import { CarProps } from "@/types";
+import { CarProps, OrderProps, PhotoProps, UserProps } from "@/types";
 import { MutableRefObject, useState } from "react";
 import { create } from "zustand";
 
 type BooleanStore = {
+  userId: string;
+  setUserId: (userId: string) => void;
+  carId: number;
+  setCarId: (carId: number) => void;
+  orderId: number;
+  setOrderId: (orderId: number) => void;
+  user: UserProps;
+  setUser: (user: UserProps) => void;
+  car: CarProps;
+  setCar: (car: CarProps) => void;
+  order: OrderProps;
+  setOrder: (order: OrderProps) => void;
   username: string;
   setUsername: (username: string) => void;
   email: string;
@@ -15,6 +27,8 @@ type BooleanStore = {
   setAddress: (address: string) => void;
   gender: boolean;
   setGender: (gender: boolean) => void;
+  photos: PhotoProps[];
+  setPhotos: (photos: PhotoProps[]) => void;
   password: string;
   setPassword: (username: string) => void;
   error: string;
@@ -36,7 +50,7 @@ type BooleanStore = {
   brandName: string;
   setBrandName: (brandName: string) => void;
   success: boolean;
-  setSuccess: () => void;
+  setSuccess: (success: boolean) => void;
   showAddNewCar: boolean;
   setShowAddNewCar: (show: boolean) => void;
   showViewCar: CarProps;
@@ -71,6 +85,46 @@ type BooleanStore = {
   setIsLocked: (isLocked: boolean) => void;
   showSettings: boolean;
   setShowSettings: (showSettings: boolean) => void;
+  errorUsername: boolean;
+  setErrorUsername: (errorUsername: boolean) => void;
+  errorEmail: boolean;
+  setErrorEmail: (errorUsername: boolean) => void;
+  errorRegexEmail: boolean;
+  setErrorRegexEmail: (errorUsername: boolean) => void;
+  emailBlurred: boolean;
+  setEmailBlurred: (emailBlurred: boolean) => void;
+  showRentNow: boolean;
+  setShowRentNow: (showRentNow: boolean) => void;
+  locationFrom: string;
+  setLocationFrom: (locations: string) => void;
+  locationTo: string;
+  setLocationTo: (locations: string) => void;
+  dateFrom: string;
+  setDateFrom: (date: string) => void;
+  dateTo: string;
+  setDateTo: (date: string) => void;
+  timeFrom: string;
+  setTimeFrom: (time: string) => void;
+  timeTo: string;
+  setTimeTo: (time: string) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  status: number;
+  setStatus: (status: number) => void;
+  totalPrice: number;
+  setTotalPrice: (totalPrice: number) => void;
+  showViewOrder: boolean;
+  setShowViewOrder: (showViewOrder: boolean) => void;
+  currentPageAdmin: string;
+  setCurrentPageAdmin: (currentPageAdmin: string) => void;
+  approve: number;
+  setApprove: (approve: number) => void;
+  reject: number;
+  setReject: (reject: number) => void;
+  confirmDelete: boolean;
+  setConfirmDelete: (confirmDelete: boolean) => void;
+  exists: boolean;
+  setExists: (exists: boolean) => void;
 };
 
 export const useStore = create<BooleanStore>((set) => ({
@@ -93,6 +147,30 @@ export const useStore = create<BooleanStore>((set) => ({
   userRole: null,
   setUserRole: (role: string | null) => {
     set(() => ({ userRole: role }));
+  },
+  userId: "",
+  setUserId: (userId: string) => {
+    set(() => ({ userId }));
+  },
+  carId: 0,
+  setCarId: (carId: number) => {
+    set(() => ({ carId }));
+  },
+  orderId: 0,
+  setOrderId: (orderId: number) => {
+    set(() => ({ orderId }));
+  },
+  user: {} as UserProps,
+  setUser: (user: UserProps) => {
+    set(() => ({ user }));
+  },
+  car: {} as CarProps,
+  setCar: (car: CarProps) => {
+    set(() => ({ car }));
+  },
+  order: {} as OrderProps,
+  setOrder: (order: OrderProps) => {
+    set(() => ({ order }));
   },
   username: "",
   setUsername: (username: string) => {
@@ -118,6 +196,10 @@ export const useStore = create<BooleanStore>((set) => ({
   setGender: (gender: boolean) => {
     set(() => ({ gender: gender }));
   },
+  photos: [] as PhotoProps[],
+  setPhotos: (photos: PhotoProps[]) => {
+    set(() => ({ photos: photos }));
+  },
   password: "",
   setPassword: (password: string) => {
     set(() => ({ password: password }));
@@ -140,8 +222,8 @@ export const useStore = create<BooleanStore>((set) => ({
     set(() => ({ brandName: brandName }));
   },
   success: false,
-  setSuccess: () => {
-    set((state) => ({ success: !state.success }));
+  setSuccess: (success: boolean) => {
+    set(() => ({ success: success }));
   },
   showAddNewCar: false,
   setShowAddNewCar: (show: boolean) => {
@@ -210,5 +292,85 @@ export const useStore = create<BooleanStore>((set) => ({
   showSettings: false,
   setShowSettings: (showSettings: boolean) => {
     set(() => ({ showSettings: showSettings }));
+  },
+  errorUsername: false,
+  setErrorUsername: (errorUsername: boolean) => {
+    set(() => ({ errorUsername: errorUsername }));
+  },
+  errorEmail: false,
+  setErrorEmail: (errorEmail: boolean) => {
+    set(() => ({ errorEmail: errorEmail }));
+  },
+  errorRegexEmail: false,
+  setErrorRegexEmail: (errorRegexEmail: boolean) => {
+    set(() => ({ errorRegexEmail: errorRegexEmail }));
+  },
+  emailBlurred: false,
+  setEmailBlurred: (emailBlurred: boolean) => {
+    set(() => ({ emailBlurred: emailBlurred }));
+  },
+  showRentNow: false,
+  setShowRentNow: (showRentNow: boolean) => {
+    () => ({ showRentNow: showRentNow });
+  },
+  locationFrom: "",
+  setLocationFrom: (location: string) => {
+    set(() => ({ locationFrom: location }));
+  },
+  locationTo: "",
+  setLocationTo: (location: string) => {
+    set(() => ({ locationTo: location }));
+  },
+  dateFrom: "",
+  setDateFrom: (date: string) => {
+    set(() => ({ dateFrom: date }));
+  },
+  dateTo: "",
+  setDateTo: (date: string) => {
+    set(() => ({ dateTo: date }));
+  },
+  timeFrom: "",
+  setTimeFrom: (time: string) => {
+    set(() => ({ timeFrom: time }));
+  },
+  timeTo: "",
+  setTimeTo: (time: string) => {
+    set(() => ({ timeTo: time }));
+  },
+  loading: false,
+  setLoading: (loading: boolean) => {
+    set(() => ({ loading: loading }));
+  },
+  status: 0,
+  setStatus: (status: number) => {
+    set(() => ({ status: status }));
+  },
+  totalPrice: 0,
+  setTotalPrice: (totalPrice: number) => {
+    set(() => ({ totalPrice: totalPrice }));
+  },
+  showViewOrder: false,
+  setShowViewOrder: (showViewOrder: boolean) => {
+    set(() => ({ showViewOrder: showViewOrder }));
+  },
+  currentPageAdmin: "Dashboard",
+  setCurrentPageAdmin: (currentPageAdmin: string) => {
+    set(() => ({ currentPageAdmin: currentPageAdmin }));
+  },
+  approve: 1,
+  setApprove: (approve: number) => {
+    set(() => ({ approve }));
+  },
+  reject: 2,
+  setReject: (reject: number) => {
+    set(() => ({ reject }));
+  },
+  confirmDelete: false,
+  setConfirmDelete: (confirmDelete: boolean) => {
+    set(() => ({ confirmDelete }));
+  },
+  exists: false,
+  setExists: (exists: boolean) => {
+    set(() => ({ exists }));
   },
 }));

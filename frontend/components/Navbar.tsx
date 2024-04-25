@@ -6,9 +6,12 @@ import { CustomButton, Login, Register } from ".";
 import { useStore } from "./Store";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { fetchUser, useClickOutside } from "@/utils";
 
 const Navbar = () => {
   const router = useRouter();
+
+  const formRef = useRef<HTMLDivElement | null>(null);
 
   const {
     login,
@@ -21,6 +24,29 @@ const Navbar = () => {
     setToken,
     userRole,
     setUserRole,
+    showSettings,
+    setShowSettings,
+    userId,
+    setUserId,
+    user,
+    setUser,
+    username,
+    setUsername,
+    email,
+    setEmail,
+    birthDate,
+    setBirthDate,
+    gender,
+    setGender,
+    isLocked,
+    setIsLocked,
+    address,
+    setAddress,
+    phone,
+    setPhone,
+    photos,
+    setLoading,
+    success,
   } = useStore();
 
   const [showLogoutOption, setShowLogoutOption] = useState(false);
@@ -41,7 +67,7 @@ const Navbar = () => {
     if (isLogged) {
       setToken(isLogged);
     }
-  }, [showLoginForm]);
+  }, [showLoginForm == false]);
 
   useEffect(() => {
     if (token) {
@@ -57,7 +83,7 @@ const Navbar = () => {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -71,6 +97,39 @@ const Navbar = () => {
       console.error("Error fetching user role:", error);
     }
   };
+
+  const getUser = async () => {
+    setLoading(true);
+    try {
+      const result = await fetchUser(
+        {
+          userId,
+          username,
+          email,
+          phone,
+          address,
+          birthDate,
+          gender,
+          isLocked,
+          photos,
+        },
+        token
+      );
+      setUser(result);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (token != "") {
+      getUser();
+    }
+  }, [token, success]);
+
+  useClickOutside(formRef, () => setShowSettings(false));
 
   return (
     <header className=" w-full fixed z-10 bg-white sm:px-16 p-6 border-b">
@@ -89,7 +148,7 @@ const Navbar = () => {
           </div>
           <div className="col-span-3 flex border-2 focus-within:border-blue-500 rounded-lg sm:rounded-3xl w-full sm:w-[80%] h-[40px] px-3 sm:ml-16">
             <Image
-              src="search.svg"
+              src="/search.svg"
               alt="search"
               height={20}
               width={20}
@@ -110,7 +169,7 @@ const Navbar = () => {
                   <>
                     <Link href="/">
                       <Image
-                        src="Like.svg"
+                        src="/Like.svg"
                         alt="Like"
                         className="mx-2"
                         height={40}
@@ -119,28 +178,69 @@ const Navbar = () => {
                     </Link>
                     <Link href="/">
                       <Image
-                        src="Notification.svg"
+                        src="/Notification.svg"
                         alt="Notification"
                         className="mx-2"
                         height={40}
                         width={40}
                       ></Image>
                     </Link>
-                    <Link href="/Settings">
+                    <button onClick={() => setShowSettings(!showSettings)}>
                       <Image
-                        src="Settings.svg"
+                        src="/Settings.svg"
                         alt="Settings"
-                        className="mx-2"
+                        className="mx-2 hover:bg-slate-400 rounded-full"
                         height={40}
                         width={40}
                       ></Image>
-                    </Link>
+                    </button>
+                    {showSettings && (
+                      <>
+                        <div
+                          className="absolute top-[66px] right-0 flex flex-col bg-slate-200 rounded-md"
+                          ref={formRef}
+                        >
+                          <Link
+                            href="/ChangePassword"
+                            className="flex gap-4 items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-400 py-4 px-6"
+                            onClick={() => setShowSettings(false)}
+                          >
+                            <Image
+                              src="/key.svg"
+                              alt="changePassword"
+                              width={20}
+                              height={20}
+                              className=""
+                            />
+                            <span className="text-[082431] font-semibold text-base opacity-60">
+                              Change Password
+                            </span>
+                          </Link>
+                          <Link
+                            href="/EditProfile"
+                            className="flex gap-4 items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-400 py-4 px-6"
+                            onClick={() => setShowSettings(false)}
+                          >
+                            <Image
+                              src="/User.svg"
+                              alt="Profile"
+                              width={20}
+                              height={20}
+                              className=""
+                            />
+                            <span className="text-[082431] font-semibold text-base opacity-60">
+                              Profile
+                            </span>
+                          </Link>
+                        </div>
+                      </>
+                    )}
                   </>
                 )}
               </div>
               <div className="flex sm:invisible">
                 <Image
-                  src="menu.svg"
+                  src="/menu.svg"
                   alt="menu"
                   width={20}
                   height={20}
@@ -154,7 +254,7 @@ const Navbar = () => {
                   onClick={() => setShowLogoutOption(!showLogoutOption)}
                 >
                   <Image
-                    src="Profil.svg"
+                    src="/Profil.svg"
                     alt="LogoUser"
                     className="sm:mx-2 object-contain"
                     height={40}

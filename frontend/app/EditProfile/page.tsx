@@ -11,6 +11,8 @@ import {
   UserProps,
 } from "@/types";
 import {
+  fetchCheckEmail,
+  fetchCheckUsername,
   fetchCreatePhoto,
   fetchDeletePhoto,
   fetchUpdatePhoto,
@@ -28,6 +30,12 @@ const page = () => {
     success,
     setSuccess,
     token,
+    userId,
+    setUserId,
+    user,
+    setUser,
+    photos,
+    setPhotos,
     username,
     setUsername,
     email,
@@ -42,46 +50,38 @@ const page = () => {
     setAddress,
     phone,
     setPhone,
+    errorUsername,
+    setErrorUsername,
+    errorEmail,
+    setErrorEmail,
+    errorRegexEmail,
+    setErrorRegexEmail,
+    emailBlurred,
+    setEmailBlurred,
+    loading,
   } = useStore();
-
-  const [userId, setUserId] = useState("");
-
-  const [user, setUser] = useState<UserProps>();
-
-  const [photos, setPhotos] = useState<PhotoProps[]>([]);
 
   const [photosByUser, setPhotosByUser] = useState<UploadPhoto[]>([]);
   const [photosCreate, setPhotosCreate] = useState<CreatePhoto[]>([]);
   const [photosUpdate, setPhotosUpdate] = useState<UpdatePhoto[]>([]);
   const [photosDelete, setPhotosDelete] = useState<DeletePhoto[]>([]);
 
-  const getUser = async () => {
-    try {
-      const result = await fetchUser(
-        {
-          userId,
-          username,
-          email,
-          phone,
-          address,
-          birthDate,
-          gender,
-          isLocked,
-          photos,
-        },
-        token
-      );
-      setUser(result);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      let url = `http://localhost:5290/api/car/${userId}`;
-      console.log(url);
+      const matchResult = birthDate.match(
+        /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
+      );
+      if (!matchResult) {
+        throw new Error(
+          "Invalid birthDate format. Please enter DD/MM/YYYY or DD-MM-YYYY."
+        );
+      }
+
+      const [, day, month, year] = matchResult;
+      const isobirthDate = `${day}-${month}-${year}`;
+
+      let url = `http://localhost:5290/api/user/${userId}`;
       const response = await fetch(url, {
         method: "PUT",
         headers: {
@@ -91,7 +91,7 @@ const page = () => {
         body: JSON.stringify({
           username,
           email,
-          birthDate,
+          birthDate: isobirthDate,
           phone,
           address,
           gender,
@@ -100,8 +100,8 @@ const page = () => {
 
       const data = await response.json();
       if (response.ok) {
-        await cud(data.carId);
-        setSuccess();
+        await cud(data.userId);
+        setSuccess(true);
         router.push("/", { scroll: true });
       } else {
         console.error("error update profile");
@@ -112,13 +112,7 @@ const page = () => {
   };
 
   useEffect(() => {
-    if (token != "") {
-      getUser();
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (user && user?.userId !== "") {
+    if (user && user?.userId !== undefined) {
       setUserId(user.userId);
       setUsername(user.username);
       setEmail(user.email);
@@ -130,11 +124,9 @@ const page = () => {
       setPhotos(user.photos);
 
       const filePromises: Promise<UploadPhoto>[] = [];
-
       user?.photos.forEach((photo) => {
         const baseURL = process.env.SERVER_URL || "http://localhost:5290";
         const photoUrl = `${baseURL}/${photo.photoUrl}`;
-
         filePromises.push(
           new Promise<UploadPhoto>(async (resolve, reject) => {
             try {
@@ -162,7 +154,7 @@ const page = () => {
           console.error("Error loading images:", error);
         });
     }
-  }, [user?.userId]);
+  }, [user]);
 
   const getPhotoUrl = (photo: UploadPhoto) => {
     if (photo && photo.file) {
@@ -242,7 +234,7 @@ const page = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    setPhotos((prePhoto) =>
+    setPhotosByUser((prePhoto) =>
       prePhoto.filter((photo) => photo.photoId !== photoId)
     );
 
@@ -283,6 +275,46 @@ const page = () => {
     }
   };
 
+  //Check username
+  useEffect(() => {
+    const fetchData = async () => {
+      if (username && user?.username && username !== user?.username) {
+        try {
+          const errUser = await fetchCheckUsername(username, token);
+          setErrorUsername(errUser);
+        } catch (error) {
+          console.error("Error checking username:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [username, user?.username]);
+  //Check email
+  useEffect(() => {
+    const fetchData = async () => {
+      if (email && user?.email && email !== user?.email) {
+        try {
+          setErrorRegexEmail(false);
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          const isValidEmail = emailRegex.test(email);
+
+          if (!isValidEmail) {
+            setErrorRegexEmail(true);
+            return;
+          }
+
+          const errEmail = await fetchCheckEmail(email, token);
+          setErrorEmail(errEmail);
+        } catch (error) {
+          console.error("Error checking Email:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [email, user?.email]);
+
   return (
     <div className="content">
       <div className="border rounded-md h-[80vh] py-6 px-6 bg-slate-100 flex flex-col gap-16">
@@ -299,20 +331,27 @@ const page = () => {
           <div className="grid grid-cols-4 gap-5">
             <div className="col-span-3 flex flex-col gap-10">
               <div className="flex gap-16 items-center">
-                <div className="flex gap-4 items-center w-full">
+                <div className="relative flex gap-4 items-center w-full">
                   <label
                     htmlFor="username"
                     className="font-bold text-lg uppercase text-[#808080] w-[30%]"
                   >
                     Username
                   </label>
+                  {errorUsername && (
+                    <>
+                      <span className="absolute top-[42px] left-[132px] text-red-700 font-normal text-sm">
+                        Username already exists!
+                      </span>
+                    </>
+                  )}
                   <div className="w-[70%]">
                     <input
                       className="rounded-md border border-blue-300 px-2 h-10 w-full"
                       id="username"
                       name="username"
                       type="text"
-                      autoComplete="username"
+                      autoComplete="off"
                       placeholder="Please type a new username ..."
                       required
                       value={username}
@@ -322,13 +361,27 @@ const page = () => {
                     />
                   </div>
                 </div>
-                <div className="flex gap-4 items-center w-full">
+                <div className="relative flex gap-4 items-center w-full">
                   <label
                     htmlFor="email"
                     className="font-bold text-lg uppercase text-[#808080] w-[30%]"
                   >
                     Email
                   </label>
+                  {errorEmail && (
+                    <>
+                      <span className="absolute top-[42px] left-[132px] text-red-700 font-normal text-sm">
+                        Email already exists!
+                      </span>
+                    </>
+                  )}
+                  {errorRegexEmail && emailBlurred && (
+                    <>
+                      <span className="absolute top-[42px] left-[132px] text-red-700 font-normal text-sm">
+                        Incorrect Email Format!
+                      </span>
+                    </>
+                  )}
                   <div className="w-[70%]">
                     <input
                       className="rounded-md border border-blue-300 px-2 h-10 w-full"
@@ -342,6 +395,7 @@ const page = () => {
                       onChange={(e) => {
                         setEmail(e.target.value);
                       }}
+                      onBlur={() => setEmailBlurred(true)}
                     />
                   </div>
                 </div>
@@ -444,7 +498,7 @@ const page = () => {
                         type="radio"
                         autoComplete="off"
                         required
-                        checked={!gender}
+                        checked={gender}
                         onChange={() => setGender(true)}
                         className=""
                       />
@@ -480,7 +534,7 @@ const page = () => {
                                 e,
                                 currentPhoto?.photoId ?? 0,
                                 user?.userId ?? "",
-                                1,
+                                2,
                                 index
                               )
                             }

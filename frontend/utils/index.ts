@@ -6,6 +6,7 @@ import {
   CarProps,
   CreatePhoto,
   DeletePhoto,
+  OrderProps,
   UpdatePhoto,
   UserProps,
 } from "@/types";
@@ -14,14 +15,16 @@ import { useEffect } from "react";
 export async function fetchBrands(
   brands: BrandProps,
   token?: string,
-  searchValue?: string,
   currentPage?: number,
-  itemsPerPage?: number
+  itemsPerPage?: number,
+  searchValue?: string
 ) {
   const { brandId, brandName, address, phone } = brands;
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
-  if (!searchValue) {
+  if (!searchValue && !currentPage && !itemsPerPage) {
+    url = `http://localhost:5290/api/brand`;
+  } else if (!searchValue) {
     url = `http://localhost:5290/api/brand?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
     url = `http://localhost:5290/api/brand?BrandName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
@@ -86,9 +89,9 @@ export async function fetchDeleteBrand(id: number, token: string) {
 
 export async function fetchCars(
   cars: CarProps,
-  searchValue?: string,
   currentPage?: number,
-  itemsPerPage?: number
+  itemsPerPage?: number,
+  searchValue?: string
 ) {
   let {
     carId,
@@ -129,9 +132,29 @@ export async function fetchCars(
   }
 }
 
+export async function fetchCheckCarExistsFromOrders(carId: number) {
+  try {
+    const url = `http://localhost:5290/api/car/orderExists?carId=${carId}`;
+    console.log("url = ", url);
+    const response = await fetch(url, {
+      method: "GET",
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch check car from order");
+    }
+  } catch (error) {
+    throw new Error("An error occurred while check car from order: " + error);
+  }
+}
+
 export async function fetchDeleteCar(id: number, token: string) {
   try {
-    const response = await fetch(`http://localhost:5290/api/car/${id}`, {
+    const url = `http://localhost:5290/api/car/${id}`;
+    console.log("url = ", url);
+    const response = await fetch(url, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -302,9 +325,9 @@ export async function fetchCheckEmail(email: string, token: string) {
 export async function fetchUsers(
   users: UserProps,
   token?: string,
-  searchValue?: string,
   currentPage?: number,
-  itemsPerPage?: number
+  itemsPerPage?: number,
+  searchValue?: string
 ) {
   const {
     userId,
@@ -394,19 +417,87 @@ export async function fetchUserCount(token: string) {
   }
 }
 
-export async function fetchDeleteUser(id: number, token: string) {
+export async function fetchOrders(
+  orders: OrderProps,
+  token?: string,
+  currentPage?: number,
+  itemsPerPage?: number,
+  searchValue?: string
+) {
+  const {
+    orderId,
+    user,
+    car,
+    locationFrom,
+    dateFrom,
+    timeFrom,
+    locationTo,
+    dateTo,
+    timeTo,
+    totalPrice,
+    status,
+  } = orders;
+  searchValue = searchValue?.replace(/\s/g, "");
+  let url;
+  if (!searchValue) {
+    url = `http://localhost:5290/api/order?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+  } else {
+    url = `http://localhost:5290/api/order?Search=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+  }
+  if (currentPage != 0) {
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        throw new Error("Failed to fetch order data");
+      }
+    } catch (error) {
+      throw new Error("An error occurred while fetching order data: " + error);
+    }
+  }
+}
+
+export async function fetchOrderCount(token: string) {
   try {
-    const response = await fetch(`http://localhost:5290/api/user/${id}`, {
+    const response = await fetch(`http://localhost:5290/api/order/GetCount`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch count order data");
+    }
+  } catch (error) {
+    throw new Error(
+      "An error occurred while fetching count order data: " + error
+    );
+  }
+}
+
+export async function fetchDeleteOrder(id: number, token: string) {
+  try {
+    const response = await fetch(`http://localhost:5290/api/order/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) {
-      throw new Error("Error deleting user");
+      throw new Error("Error deleting order");
     }
   } catch (error) {
-    throw new Error("Error deleting user ");
+    throw new Error("Error deleting order ");
   }
 }
 
@@ -424,6 +515,72 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
 
   return rentalRatePerDay.toFixed(2);
 };
+
+export const listProvince = [
+  "An Giang",
+  "Bà Rịa - Vũng Tàu",
+  "Bạc Liêu",
+  "Bắc Giang",
+  "Bắc Kạn",
+  "Bắc Ninh",
+  "Bến Tre",
+  "Bình Dương",
+  "Bình Định",
+  "Bình Phước",
+  "Bình Thuận",
+  "Cà Mau",
+  "Cao Bằng",
+  "Cần Thơ",
+  "Đà Nẵng",
+  "Đắk Lắk",
+  "Đắk Nông",
+  "Điện Biên",
+  "Đồng Nai",
+  "Đồng Tháp",
+  "Gia Lai",
+  "Hà Giang",
+  "Hà Nam",
+  "Hà Nội",
+  "Hà Tĩnh",
+  "Hải Dương",
+  "Hải Phòng",
+  "Hậu Giang",
+  "Hòa Bình",
+  "Hồ Chí Minh",
+  "Hưng Yên",
+  "Khánh Hòa",
+  "Kiên Giang",
+  "Kon Tum",
+  "Lai Châu",
+  "Lâm Đồng",
+  "Lạng Sơn",
+  "Lào Cai",
+  "Long An",
+  "Nam Định",
+  "Nghệ An",
+  "Ninh Bình",
+  "Ninh Thuận",
+  "Phú Thọ",
+  "Phú Yên",
+  "Quảng Bình",
+  "Quảng Nam",
+  "Quảng Ngãi",
+  "Quảng Ninh",
+  "Quảng Trị",
+  "Sóc Trăng",
+  "Sơn La",
+  "Tây Ninh",
+  "Thái Bình",
+  "Thái Nguyên",
+  "Thanh Hóa",
+  "Thừa Thiên Huế",
+  "Tiền Giang",
+  "Trà Vinh",
+  "Tuyên Quang",
+  "Vĩnh Long",
+  "Vĩnh Phúc",
+  "Yên Bái",
+];
 
 export const generateCarImageUrl = (car: CarProps, angle: string = "1") => {
   // url.searchParams.append('customer', process.env.NEXT_PUBLIC_IMAGIN_API_KEY || '');

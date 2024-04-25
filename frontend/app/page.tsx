@@ -6,11 +6,13 @@ import { PhotoProps } from "@/types";
 import { fetchBrands, fetchCars } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [allCars, setAllCars] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const {
     make,
@@ -41,9 +43,14 @@ export default function Home() {
     setTotalPages,
     token,
     userRole,
+    success,
+    loading,
+    setLoading,
   } = useStore();
 
   const [carId, setCarId] = useState(0);
+  const [brandId, setBrandId] = useState(0);
+
   const [limit, setLimit] = useState(10);
   const [photos, setPhotos] = useState<PhotoProps[]>([]);
 
@@ -63,10 +70,11 @@ export default function Home() {
           fuel,
           transmission,
           photos,
+          brandId,
         },
-        searchValue,
         currentPage,
-        itemsPerPage
+        itemsPerPage,
+        searchValue
       );
       setAllCars(result);
     } catch (err) {
@@ -78,7 +86,13 @@ export default function Home() {
 
   useEffect(() => {
     getCars();
-  }, []);
+  }, [success]);
+
+  useEffect(() => {
+    if (userRole === "Admin") {
+      router.push("/Dashboard");
+    }
+  }, [userRole]);
 
   return (
     <main
@@ -86,7 +100,7 @@ export default function Home() {
         userRole == "Admin" ? "" : "bg-[#F6F7F9]"
       } overflow-hidden content`}
     >
-      {userRole == "Admin" ? (
+      {/* {userRole == "Admin" ? (
         <Sidebar />
       ) : (
         <>
@@ -129,7 +143,7 @@ export default function Home() {
             )}
           </div>
         </>
-      )}
+      )} */}
     </main>
   );
 }

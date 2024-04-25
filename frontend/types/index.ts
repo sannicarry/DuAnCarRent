@@ -74,3 +74,17 @@ export interface UserProps {
   isLocked: boolean;
   photos: PhotoProps[];
 }
+
+export interface OrderProps {
+  orderId: number;
+  user: UserProps;
+  car: CarProps;
+  locationFrom: string;
+  dateFrom: string;
+  timeFrom: string;
+  locationTo: string;
+  dateTo: string;
+  timeTo: string;
+  totalPrice: number;
+  status: number;
+}

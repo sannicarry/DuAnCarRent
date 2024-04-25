@@ -99,7 +99,7 @@ namespace api.Controller
 
                 if (createUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Admin");
                     if (roleResult.Succeeded)
                     {
                         return Ok(
@@ -131,40 +131,50 @@ namespace api.Controller
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized(new { message = "User ID not found." });
+                }
+
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return Unauthorized(new { message = "User not found." });
+                }
+
+                var result = await _signInManager.CheckPasswordSignInAsync(user, changePasswordDto.OldPassword, false);
+                if (!result.Succeeded)
+                {
+                    return Unauthorized(new { message = "Old Password incorrect." });
+                }
+
+                if (changePasswordDto.NewPassword != changePasswordDto.ConfirmNewPassword)
+                {
+                    return Unauthorized(new { message = "New password confirmation does not match." });
+                }
+
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
+                if (changePasswordResult.Succeeded)
+                {
+                    return Ok(new { message = "Change Password successfully." });
+                }
+                else
+                {
+                    return BadRequest(new { message = "An error occurred while changing the password." });
+                }
             }
-
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
+            catch (Exception ex)
             {
-                return Unauthorized(new { message = "User ID not found." });
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return Unauthorized(new { message = "User not found." });
-            }
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, changePasswordDto.OldPassword, false);
-
-            if (!result.Succeeded) return Unauthorized(new { message = "Old Password incorrect." });
-
-            if (changePasswordDto.NewPassword != changePasswordDto.ConfirmNewPassword)
-            {
-                return Unauthorized(new { message = "New password confirmation does not match." });
-            }
-
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
-            if (changePasswordResult.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(new { message = "An error occurred while changing the password." });
+                return StatusCode(500, new { message = "An unexpected error occurred." });
             }
         }
 
@@ -242,12 +252,12 @@ namespace api.Controller
         }
 
         [HttpGet("checkusername")]
-        public async Task<IActionResult> Checkusername([FromQuery] string username)
+        public async Task<IActionResult> CheckUsername([FromQuery] string username)
         {
             try
             {
-                var existingusername = await _userManager.FindByNameAsync(username);
-                return Ok(existingusername != null);
+                var existingUsername = await _userManager.FindByNameAsync(username);
+                return Ok(existingUsername != null);
             }
             catch (Exception e)
             {

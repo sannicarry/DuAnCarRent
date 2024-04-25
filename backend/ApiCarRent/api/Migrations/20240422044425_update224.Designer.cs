@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240422044425_update224")]
+    partial class update224
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ca986973-fcdd-43be-9c3b-e524469adb35",
+                            Id = "688b68c2-d1bd-4052-907c-b2c321bf19a9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "df112a5f-3848-4bad-9fc1-14fdc5d0f29c",
+                            Id = "34ebe316-0105-4a2a-a68d-12f10859c0f6",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -329,7 +332,7 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<int?>("CarId")
+                    b.Property<int>("CarId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateFrom")
@@ -349,23 +352,27 @@ namespace api.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("TimeFrom")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("TimeFrom")
+                        .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan>("TimeTo")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("TimeTo")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("UserId")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderId");
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Order");
                 });
@@ -516,11 +523,15 @@ namespace api.Migrations
                 {
                     b.HasOne("api.Models.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("api.Models.AppUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Car");
 

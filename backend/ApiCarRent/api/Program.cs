@@ -112,6 +112,7 @@ builder.Services.AddScoped<IPhotoRepository<Car>, CarPhotoRepository>();
 builder.Services.AddScoped<IPhotoRepository<AppUser>, AppUserPhotoRepository>();
 builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 {
     build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();

@@ -28,8 +28,8 @@ namespace api.Repository
                         (s.Email != null && s.Email.Contains(query.SearchUser)) ||
                         (s.PhoneNumber != null && s.PhoneNumber.Contains(query.SearchUser))
                 )
-                .Skip((query.PageNumber - 1) * query.PageSize)
-                .Take(query.PageSize)
+                .Skip((query.PageSize > 0 ? (query.PageNumber - 1) * query.PageSize : 0))
+                .Take((query.PageSize > 0 ? query.PageSize : int.MaxValue))
                 .ToListAsync();
 
             return users;

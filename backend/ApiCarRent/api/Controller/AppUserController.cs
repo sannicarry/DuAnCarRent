@@ -21,17 +21,12 @@ namespace api.Controller
     public class AppUserController : ControllerBase
     {
         private readonly IAppUserRepository _appUserRepo;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private static UserManager<AppUser> _userManager;
 
-        private readonly ApplicationDBContext _context;
-
-        public AppUserController(IAppUserRepository appUserRepo, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, ApplicationDBContext context)
+        public AppUserController(IAppUserRepository appUserRepo, UserManager<AppUser> userManager)
         {
             _appUserRepo = appUserRepo;
-            _roleManager = roleManager;
             _userManager = userManager;
-            _context = context;
         }
 
         [HttpGet]
@@ -87,7 +82,7 @@ namespace api.Controller
         [HttpPut]
         [Authorize]
         [Route("{AppUserId}")]
-        public async Task<IActionResult> Update([FromRoute] string AppUserId, [FromForm] UpdateAppUserDto appUserDto)
+        public async Task<IActionResult> Update([FromRoute] string AppUserId, [FromBody] UpdateAppUserDto appUserDto)
         {
             if (!ModelState.IsValid)
             {

@@ -13,6 +13,7 @@ namespace api.Mappers
         public static AppUserDto ToAppUserDto(this AppUser appUser, string roleName)
         {
             var localLockoutEnd = appUser.LockoutEnd?.ToLocalTime();
+
             return new AppUserDto
             {
                 UserId = appUser.Id,

@@ -12,7 +12,7 @@ namespace api.Models
         public int? CarId { get; set; }
         public Car? Car { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal rating { get; set; }
+        public decimal Rating { get; set; }
         public string Comment { get; set; } = string.Empty;
     }
 }

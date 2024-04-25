@@ -24,8 +24,8 @@ namespace api.Repository
             var brands = await _context.Brand
                                 .Include(c => c.Cars)
                                 .Where(s => string.IsNullOrWhiteSpace(query.BrandName) || s.BrandName.Contains(query.BrandName))
-                                .Skip((query.PageNumber - 1) * query.PageSize)
-                                .Take(query.PageSize)
+                                .Skip((query.PageSize > 0 ? (query.PageNumber - 1) * query.PageSize : 0))
+                                .Take((query.PageSize > 0 ? query.PageSize : int.MaxValue))
                                 .ToListAsync();
 
             return brands;

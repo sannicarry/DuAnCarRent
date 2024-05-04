@@ -105,5 +105,33 @@ namespace api.Controller
             return countBrands;
         }
 
+        [HttpGet("brandExists")]
+        public async Task<IActionResult> CheckBrandFromCar([FromQuery] int brandId)
+        {
+            try
+            {
+                var existingBrand = await _brandRepo.BrandExistsFromCar(brandId);
+                return Ok(existingBrand != false);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
+
+        [HttpGet("checkBrandName")]
+        public async Task<IActionResult> CheckBrandName([FromQuery] string brandName)
+        {
+            try
+            {
+                var existingBrandName = await _brandRepo.BrandNameExists(brandName);
+                return Ok(existingBrandName != false);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
+
     }
 }

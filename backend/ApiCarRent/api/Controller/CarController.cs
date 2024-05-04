@@ -24,15 +24,13 @@ namespace api.Controller
         private readonly ICarRepository _carRepo;
         private readonly IBrandRepository _brandRepo;
         private readonly IPhotoRepository<Car> _carPhotoRepo;
-        private readonly IOrderRepository _orderRepo;
         private readonly ApplicationDBContext _context;
         private readonly string _PhotoUploadDirectory = "Uploads";
-        public CarController(ICarRepository carRepo, IBrandRepository brandRepo, IPhotoRepository<Car> carPhotoRepo, IOrderRepository orderRepo, ApplicationDBContext context)
+        public CarController(ICarRepository carRepo, IBrandRepository brandRepo, IPhotoRepository<Car> carPhotoRepo, ApplicationDBContext context)
         {
             _carRepo = carRepo;
             _brandRepo = brandRepo;
             _carPhotoRepo = carPhotoRepo;
-            _orderRepo = orderRepo;
             _context = context;
         }
 
@@ -148,7 +146,7 @@ namespace api.Controller
         {
             try
             {
-                var existingCar = await _orderRepo.CarExists(carId);
+                var existingCar = await _carRepo.CarExistsFromOrders(carId);
                 return Ok(existingCar != false);
             }
             catch (Exception e)

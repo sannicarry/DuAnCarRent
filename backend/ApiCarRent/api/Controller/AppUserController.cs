@@ -57,6 +57,7 @@ namespace api.Controller
         public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine("userId = " + userId);
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { message = "User not found." });
@@ -109,6 +110,7 @@ namespace api.Controller
         }
 
         [HttpGet("GetCount")]
+        [Authorize]
         public async Task<int> GetCountUsers()
         {
             if (!ModelState.IsValid)

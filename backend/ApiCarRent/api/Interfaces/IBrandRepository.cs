@@ -18,5 +18,7 @@ namespace api.Interfaces
         Task<Brand?> DeleteAsync(int id);
         Task<bool> BrandExists(int id);
         Task<int> GetCountBrandsAsync();
+        Task<bool> BrandExistsFromCar(int brandId);
+        Task<bool> BrandNameExists(string brandName);
     }
 }

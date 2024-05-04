@@ -29,7 +29,12 @@ namespace api.Repository
         public async Task<List<Order>> GetAllAsync(QueryObject query)
         {
             var orders = await _context.Order.Include(c => c.User).ThenInclude(c => c.Photos).Include(c => c.Car).ThenInclude(c => c.Photos)
-                .Where(s => string.IsNullOrWhiteSpace(query.Search) || s.Car != null && (s.Car.Make + s.Car.Model).Replace(" ", "").Contains(query.CarName))
+                .Where(s => string.IsNullOrWhiteSpace(query.Search)
+                || (s.Car != null && (s.Car.Make + s.Car.Model).Replace(" ", "").Contains(query.Search))
+                || (s.User.UserName != null && s.User.UserName.Contains(query.Search))
+                || (s.User.Email != null && s.User.Email.Contains(query.Search))
+                || (s.User.PhoneNumber != null && s.User.PhoneNumber.Contains(query.Search)))
+
                 .Skip((query.PageSize > 0 ? (query.PageNumber - 1) * query.PageSize : 0))
                 .Take((query.PageSize > 0 ? query.PageSize : int.MaxValue))
                 .ToListAsync();
@@ -90,11 +95,6 @@ namespace api.Repository
         {
             await _context.SaveChangesAsync();
             return order;
-        }
-
-        public async Task<bool> CarExists(int carId)
-        {
-            return await _context.Order.AnyAsync(x => x.Car.CarId == carId);
         }
     }
 }

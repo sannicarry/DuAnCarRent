@@ -80,5 +80,15 @@ namespace api.Repository
             var count = await _context.Brand.CountAsync();
             return count;
         }
+
+        public async Task<bool> BrandExistsFromCar(int brandId)
+        {
+            return await _context.Car.AnyAsync(x => x.BrandId == brandId);
+        }
+
+        public async Task<bool> BrandNameExists(string brandName)
+        {
+            return await _context.Brand.AnyAsync(x => x.BrandName == brandName);
+        }
     }
 }

@@ -65,5 +65,12 @@ namespace api.Repository
             var count = await _context.Car.CountAsync();
             return count;
         }
+
+
+        public async Task<bool> CarExistsFromOrders(int carId)
+        {
+            return await _context.Order.AnyAsync(x => x.Car.CarId == carId);
+        }
+
     }
 }

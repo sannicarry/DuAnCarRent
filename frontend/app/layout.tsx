@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Footer, Navbar } from "@/components";
-import { useStore } from "@/components/Store";
-import { useState } from "react";
+import { Footer, Navbar } from "@/src/components";
 
 export const metadata: Metadata = {
   title: "Car Rent",

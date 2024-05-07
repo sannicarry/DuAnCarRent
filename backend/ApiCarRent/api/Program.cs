@@ -15,6 +15,8 @@ using YourNamespace;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var serverUrl = builder.Configuration["SERVER_URL"];
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
@@ -53,6 +55,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
+
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
@@ -95,9 +98,11 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        // ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidIssuer = serverUrl,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["JWT:Audience"],
+        // ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidAudience = serverUrl,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
@@ -143,6 +148,9 @@ app.UseStaticFiles(new StaticFileOptions
 // app.UseMiddleware<SetUserAfterLoginMiddleware>();
 
 app.MapControllers();
+
+// app.Urls.Add(serverUrl);
+builder.WebHost.UseUrls(serverUrl);
 
 app.Run();
 

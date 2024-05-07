@@ -1,17 +1,18 @@
 "use client";
 
-import { CarProps, UploadPhoto } from "@/src/types";
-import {
-  createUploadPhotoPromises,
-  fetchCarByCarId,
-  getPhotoUrl,
-} from "@/src/utils";
+import { useStore } from "@/components/Store";
+import { CarProps, UploadPhoto } from "@/types";
+import { createUploadPhotoPromises, getPhotoUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const CarView = ({ car }: { car: CarProps }) => {
   const [photos, setPhotos] = useState<UploadPhoto[]>([]);
+  const { success } = useStore();
+
+  console.log("success = ", success);
+  console.log("car view = ", car);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -31,7 +32,9 @@ const CarView = ({ car }: { car: CarProps }) => {
       }
     };
     fetchPhotos();
-  }, [car?.carId]);
+  }, [car, success]);
+
+  console.log("photos = ", photos);
 
   return (
     <div className="flex flex-col gap-4 px-6 py-4">

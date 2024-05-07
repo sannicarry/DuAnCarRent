@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useStore } from "@/src/components/Store";
-import { OrderProps } from "@/src/types";
+import { useStore } from "@/components/Store";
+import { OrderProps } from "@/types";
 
 interface OrderManagementProps {
   allOrders: OrderProps[];

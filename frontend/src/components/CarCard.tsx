@@ -1,16 +1,14 @@
 "use client";
-
-import { CarProps, UploadPhoto } from "@/src/types";
-import {
-  calculateCarRent,
-  createUploadPhotoPromises,
-  generateCarImageUrl,
-  getPhotoUrl,
-} from "@/src/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CustomButton, Payment } from ".";
+import { CarProps, UploadPhoto } from "@/types";
+import {
+  calculateCarRent,
+  createUploadPhotoPromises,
+  getPhotoUrl,
+} from "@/utils";
 
 interface CarCardProps {
   car: CarProps;
@@ -38,7 +36,7 @@ const CarCard = ({ car }: CarCardProps) => {
     const fetchPhoto = async () => {
       if (car && car?.carId !== undefined) {
         try {
-          const baseURL = process.env.SERVER_URL || "http://localhost:5290";
+          const baseURL = process.env.SERVER_URL;
 
           const uploadPromises = createUploadPhotoPromises(
             car?.photos,

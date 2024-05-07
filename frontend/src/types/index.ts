@@ -73,6 +73,7 @@ export interface UserProps {
   gender: boolean;
   isLocked: boolean;
   photos: PhotoProps[];
+  role: string;
 }
 
 export interface OrderProps {

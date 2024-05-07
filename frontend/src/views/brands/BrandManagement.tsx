@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchCheckBrandExistsFromCars, fetchDeleteBrand } from "@/src/utils";
-import { BrandProps } from "@/src/types";
+import { useState } from "react";
 import Image from "next/image";
-import { useStore } from "@/src/components/Store";
-import { CustomButton } from "@/src/components";
 import Link from "next/link";
+import { BrandProps } from "@/types";
+import { useStore } from "@/components/Store";
+import { fetchCheckBrandExistsFromCars, fetchDeleteBrand } from "@/utils";
+import { CustomButton } from "@/components";
 
 interface BrandManagementProps {
   allBrands: BrandProps[];

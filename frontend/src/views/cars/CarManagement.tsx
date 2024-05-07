@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { fetchCheckCarExistsFromOrders, fetchDeleteCar } from "@/src/utils";
-import { CarProps } from "@/src/types";
+import { fetchCheckCarExistsFromOrders, fetchDeleteCar } from "@/utils";
+import { CarProps } from "@/types";
 import Image from "next/image";
-import { useStore } from "@/src/components/Store";
-import { CustomButton } from "@/src/components";
+import { useStore } from "@/components/Store";
+import { CustomButton } from "@/components";
 import Link from "next/link";
 
 interface CarManagementProps {

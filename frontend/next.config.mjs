@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['cdn.imagin.studio']
-    },
     typescript: {
         ignoreBuildErrors: true,
+    },
+    env: {
+        SERVER_URL: "http://localhost:5290",
     },
 };
 

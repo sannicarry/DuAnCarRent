@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchUserCount, fetchUsers } from "@/src/utils";
-import { PhotoProps, UserProps } from "@/src/types";
+import { fetchUserCount, fetchUsers } from "@/utils";
+import { PhotoProps, UserProps } from "@/types";
 import Image from "next/image";
-import { useStore } from "@/src/components/Store";
+import { useStore } from "@/components/Store";
 
 interface UserManagementProps {
   allUsers: UserProps[];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "@/src/components/Store";
+import { SERVER_URL } from "@/constants";
 import {
   BrandProps,
   CarProps,
@@ -11,7 +11,7 @@ import {
   UpdatePhoto,
   UploadPhoto,
   UserProps,
-} from "@/src/types";
+} from "@/types";
 import { useEffect } from "react";
 
 export async function fetchBrands(
@@ -25,11 +25,11 @@ export async function fetchBrands(
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
   if (!searchValue && !currentPage && !itemsPerPage) {
-    url = `http://localhost:5290/api/brand`;
+    url = `${SERVER_URL}/api/brand`;
   } else if (!searchValue) {
-    url = `http://localhost:5290/api/brand?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/brand?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
-    url = `http://localhost:5290/api/brand?BrandName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/brand?BrandName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
 
   if (token != "" && currentPage != 0) {
@@ -53,7 +53,7 @@ export async function fetchBrands(
 }
 
 export async function fetchBrandByBrandId(brandId?: number, token?: string) {
-  let url = `http://localhost:5290/api/brand/${brandId}`;
+  let url = `${SERVER_URL}/api/brand/${brandId}`;
   if (token != "" && brandId != 0) {
     try {
       const response = await fetch(url, {
@@ -76,7 +76,7 @@ export async function fetchBrandByBrandId(brandId?: number, token?: string) {
 
 export async function fetchBrandCount(token: string) {
   try {
-    const response = await fetch(`http://localhost:5290/api/brand/GetCount`, {
+    const response = await fetch(`${SERVER_URL}/api/brand/GetCount`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ export async function fetchBrandCount(token: string) {
 
 export async function fetchDeleteBrand(id: number, token: string) {
   try {
-    const response = await fetch(`http://localhost:5290/api/brand/${id}`, {
+    const response = await fetch(`${SERVER_URL}/api/brand/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -113,7 +113,7 @@ export async function fetchDeleteBrand(id: number, token: string) {
 
 export async function fetchCheckBrandExistsFromCars(brandId: number) {
   try {
-    const url = `http://localhost:5290/api/brand/brandExists?brandId=${brandId}`;
+    const url = `${SERVER_URL}/api/brand/brandExists?brandId=${brandId}`;
     const response = await fetch(url, {
       method: "GET",
     });
@@ -152,9 +152,9 @@ export async function fetchCars(
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
   if (!searchValue) {
-    url = `http://localhost:5290/api/car?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/car?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
-    url = `http://localhost:5290/api/car?CarName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/car?CarName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
   if (currentPage != 0) {
     try {
@@ -174,7 +174,7 @@ export async function fetchCars(
 }
 
 export async function fetchCarByCarId(carId?: number, token?: string) {
-  let url = `http://localhost:5290/api/car/${carId}`;
+  let url = `${SERVER_URL}/api/car/${carId}`;
   if (token != "" && carId != 0) {
     try {
       const response = await fetch(url, {
@@ -198,7 +198,7 @@ export async function fetchCarByCarId(carId?: number, token?: string) {
 
 export async function fetchCheckCarExistsFromOrders(carId: number) {
   try {
-    const url = `http://localhost:5290/api/car/orderExists?carId=${carId}`;
+    const url = `${SERVER_URL}/api/car/orderExists?carId=${carId}`;
     console.log("url = ", url);
     const response = await fetch(url, {
       method: "GET",
@@ -216,7 +216,7 @@ export async function fetchCheckCarExistsFromOrders(carId: number) {
 
 export async function fetchDeleteCar(id: number, token: string) {
   try {
-    const url = `http://localhost:5290/api/car/${id}`;
+    const url = `${SERVER_URL}/api/car/${id}`;
     console.log("url = ", url);
     const response = await fetch(url, {
       method: "DELETE",
@@ -234,7 +234,7 @@ export async function fetchDeleteCar(id: number, token: string) {
 
 export async function fetchCarCount(token: string) {
   try {
-    const response = await fetch(`http://localhost:5290/api/car/GetCount`, {
+    const response = await fetch(`${SERVER_URL}/api/car/GetCount`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -265,7 +265,7 @@ export async function fetchCreatePhoto(
     for (const photo of photoCreate) {
       formData.append("photos", photo.file);
     }
-    const response = await fetch("http://localhost:5290/api/photo", {
+    const response = await fetch(`${SERVER_URL}/api/photo`, {
       method: "POST",
       body: formData,
 
@@ -299,7 +299,7 @@ export async function fetchUpdatePhoto(
       formData.append("photo", file);
 
       try {
-        const response = await fetch("http://localhost:5290/api/photo", {
+        const response = await fetch(`${SERVER_URL}/api/photo`, {
           method: "PUT",
           body: formData,
           headers: {
@@ -329,7 +329,7 @@ export async function fetchDeletePhoto(
   for (const photo of photoDelete) {
     const { entityId, photoId } = photo;
     if (parseInt(entityId) > 0 || String(entityId) != "") {
-      let url = `http://localhost:5290/api/photo/${photoId}`;
+      let url = `${SERVER_URL}/api/photo/${photoId}`;
       try {
         const response = await fetch(url, {
           method: "DELETE",
@@ -348,7 +348,7 @@ export async function fetchDeletePhoto(
 }
 
 export async function fetchCheckUsername(username: string, token: string) {
-  let url = `http://localhost:5290/api/account/checkusername?username=${username}`;
+  let url = `${SERVER_URL}/api/account/checkusername?username=${username}`;
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -367,7 +367,7 @@ export async function fetchCheckUsername(username: string, token: string) {
 }
 
 export async function fetchCheckEmail(email: string, token: string) {
-  let url = `http://localhost:5290/api/account/checkEmail?email=${email}`;
+  let url = `${SERVER_URL}/api/account/checkEmail?email=${email}`;
 
   try {
     const response = await fetch(url, {
@@ -406,9 +406,9 @@ export async function fetchUsers(
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
   if (!searchValue) {
-    url = `http://localhost:5290/api/user?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/user?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
-    url = `http://localhost:5290/api/user?SearchUser=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/user?SearchUser=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
   if (currentPage != 0 && token != "") {
     try {
@@ -446,15 +446,12 @@ export async function fetchUser(users: UserProps, token: string) {
     console.log("token index = ", token);
     console.log("vao day khong1 ?");
     try {
-      const response = await fetch(
-        "http://localhost:5290/api/user/currentUser",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${SERVER_URL}/api/user/currentUser`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.ok) {
         console.log("vao day khong2 ?");
 
@@ -472,7 +469,7 @@ export async function fetchUser(users: UserProps, token: string) {
 export async function fetchUserCount(token: string) {
   try {
     console.log("token Count = ", token);
-    const response = await fetch(`http://localhost:5290/api/user/GetCount`, {
+    const response = await fetch(`${SERVER_URL}/api/user/GetCount`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -514,9 +511,9 @@ export async function fetchOrders(
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
   if (!searchValue) {
-    url = `http://localhost:5290/api/order?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/order?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
-    url = `http://localhost:5290/api/order?Search=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/order?Search=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
   if (currentPage != 0) {
     try {
@@ -539,7 +536,7 @@ export async function fetchOrders(
 }
 
 export async function fetchOrderByOrderId(orderId?: number, token?: string) {
-  let url = `http://localhost:5290/api/order/${orderId}`;
+  let url = `${SERVER_URL}/api/order/${orderId}`;
   console.log("url = ", url);
   if (token != "" && orderId != 0) {
     try {
@@ -563,7 +560,7 @@ export async function fetchOrderByOrderId(orderId?: number, token?: string) {
 
 export async function fetchOrderCount(token: string) {
   try {
-    const response = await fetch(`http://localhost:5290/api/order/GetCount`, {
+    const response = await fetch(`${SERVER_URL}/api/order/GetCount`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -584,7 +581,7 @@ export async function fetchOrderCount(token: string) {
 
 export async function fetchDeleteOrder(id: number, token: string) {
   try {
-    const response = await fetch(`http://localhost:5290/api/order/${id}`, {
+    const response = await fetch(`${SERVER_URL}/api/order/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -600,7 +597,7 @@ export async function fetchDeleteOrder(id: number, token: string) {
 
 export async function createUploadPhotoPromises(
   photos: PhotoProps[],
-  baseUrl: string
+  baseUrl: string | undefined
 ) {
   const filePromises: Promise<UploadPhoto>[] = [];
 

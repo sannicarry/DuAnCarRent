@@ -34,3 +34,5 @@ export const features = {
   steering: "Steering",
   gasoline: "Gasoline",
 };
+
+export const SERVER_URL = process.env.SERVER_URL;

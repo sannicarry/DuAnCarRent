@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useStore } from "@/src/components/Store";
+import { useStore } from "@/components/Store";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CustomButton } from "@/src/components";
+import { CustomButton } from "@/components";
 import Link from "next/link";
-import { BrandProps } from "@/src/types";
+import { BrandProps } from "@/types";
 
 const CreateUpdateBrand = ({ brand }: { brand: BrandProps }) => {
   const brandNameInputRef = useRef<HTMLInputElement>(null);

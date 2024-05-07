@@ -4,8 +4,7 @@ import {
   OrderProps,
   PhotoProps,
   UserProps,
-} from "@/src/types";
-import { MutableRefObject, useState } from "react";
+} from "@/types";
 import { create } from "zustand";
 
 type BooleanStore = {
@@ -95,6 +94,8 @@ type BooleanStore = {
   setTotalPages: (totalPages: number) => void;
   isLocked: boolean;
   setIsLocked: (isLocked: boolean) => void;
+  role: string;
+  setRole: (role: string) => void;
   showSettings: boolean;
   setShowSettings: (showSettings: boolean) => void;
   errorUsername: boolean;
@@ -414,5 +415,9 @@ export const useStore = create<BooleanStore>((set) => ({
   hrefAfterLogin: "/",
   setHrefAfterLogin: (hrefAfterLogin: string) => {
     set(() => ({ hrefAfterLogin }));
+  },
+  role: "",
+  setRole: (role: string) => {
+    set(() => ({ role }));
   },
 }));

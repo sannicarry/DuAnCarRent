@@ -1,20 +1,14 @@
 "use client";
 
-import { CarProps, UploadPhoto } from "@/src/types";
-import {
-  createUploadPhotoPromises,
-  generateCarImageUrl,
-  getPhotoUrl,
-} from "@/src/utils";
 import Image from "next/image";
 import { useStore } from "./Store";
 import { useEffect, useState } from "react";
+import { CarProps, UploadPhoto } from "@/types";
+import { createUploadPhotoPromises, getPhotoUrl } from "@/utils";
 
 interface CarDetailsProps {
   car: CarProps;
 }
-
-// const { showRentNow, setShowRentNow } = useStore();
 
 const CarDetails = ({ car }: CarDetailsProps) => {
   const [photos, setPhotos] = useState<UploadPhoto[]>([
@@ -25,7 +19,7 @@ const CarDetails = ({ car }: CarDetailsProps) => {
     const fetchPhotos = async () => {
       if (car && car?.carId !== 0) {
         try {
-          const baseURL = process.env.SERVER_URL || "http://localhost:5290";
+          const baseURL = process.env.SERVER_URL;
 
           const uploadPromises = createUploadPhotoPromises(
             car?.photos,

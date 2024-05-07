@@ -7,7 +7,7 @@ import {
   fetchDeletePhoto,
   fetchUpdatePhoto,
   getPhotoUrl,
-} from "@/src/utils";
+} from "@/utils";
 import {
   BrandProps,
   UploadPhoto,
@@ -15,11 +15,12 @@ import {
   UpdatePhoto,
   DeletePhoto,
   CarProps,
-} from "@/src/types";
-import { useStore } from "@/src/components/Store";
-import { CustomButton } from "@/src/components";
+} from "@/types";
+import { useStore } from "@/components/Store";
+import { CustomButton } from "@/components";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 const CreateUpdateCar = ({ car }: { car: CarProps }) => {
   const router = useRouter();
@@ -59,8 +60,6 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
   const [photosCreate, setPhotosCreate] = useState<CreatePhoto[]>([]);
   const [photosUpdate, setPhotosUpdate] = useState<UpdatePhoto[]>([]);
   const [photosDelete, setPhotosDelete] = useState<DeletePhoto[]>([]);
-
-  const [countPhoto, setCountPhoto] = useState(4);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -177,6 +176,18 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
     fetchData();
   }, [car]);
 
+  //CreatedPhotos copy từ photos => duyệt những phần tử có photoId = 0
+  useEffect(() => {
+    const newPhotosCreate = photos.map((photo, index) => ({
+      file: photo.file,
+      photoId: photo.photoId,
+      photoType: 1,
+      entityId: car.carId.toString(),
+    }));
+
+    setPhotosCreate(newPhotosCreate);
+  }, [photos]);
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     photoId: number,
@@ -194,7 +205,8 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
       };
       setPhotos(updatedSelectedFiles);
       if (car?.carId != 0 && photoId > 0) {
-        if (photosUpdate[index]) {
+        const photoSelect = photosUpdate.find((x) => x.photoId === photoId);
+        if (photoSelect) {
           const updatedPhotos = [...photosUpdate];
           updatedPhotos[index] = {
             file: files[0],
@@ -215,26 +227,7 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
           ]);
         }
       } else {
-        if (photosCreate[index]) {
-          const createdPhotos = [...photosCreate];
-          createdPhotos[index] = {
-            file: files[0],
-            photoId: photoId,
-            photoType: photoType,
-            entityId: entityId,
-          };
-          setPhotosCreate(createdPhotos);
-        } else {
-          setPhotosCreate((prevPhotosCreate) => [
-            ...prevPhotosCreate,
-            {
-              file: files[0],
-              photoId: photoId,
-              photoType: photoType,
-              entityId: entityId,
-            },
-          ]);
-        }
+        // thay đổi logic cập nhật createPhotos (copy từ photos)
       }
     }
   };
@@ -248,19 +241,13 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
     event.preventDefault();
     event.stopPropagation();
 
-    setPhotos((prePhoto) =>
-      prePhoto.filter((photo) => photo.photoId !== photoId)
-    );
-
-    setPhotosCreate((prevPhotosCreate) =>
-      prevPhotosCreate.filter((photo) => photo.photoId !== photoId)
-    );
-
-    setPhotosUpdate((prevPhotosUpdate) =>
-      prevPhotosUpdate.filter((photo) => photo.photoId !== photoId)
-    );
+    setPhotos((prePhoto) => prePhoto.filter((photo, i) => i !== index));
 
     if (photoId > 0) {
+      setPhotosUpdate((prevPhotosUpdate) =>
+        prevPhotosUpdate.filter((photo) => photo.photoId !== photoId)
+      );
+
       setPhotosDelete((prevPhotosDelete) => [
         ...prevPhotosDelete,
         {
@@ -268,18 +255,26 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
           photoId: photoId,
         },
       ]);
+    } else {
+      setPhotosCreate((prevPhotosCreate) =>
+        prevPhotosCreate.filter((photo, i) => i !== index)
+      );
     }
   };
 
   const cud = async (entityId: string) => {
     if (photosCreate.length > 0) {
-      const updatedPhotosCreate = photosCreate.map((photo) => {
-        return {
-          ...photo,
-          entityId: entityId,
-        };
-      });
-      await fetchCreatePhoto(updatedPhotosCreate, token);
+      const updatedPhotosCreate = photosCreate
+        .filter((x) => x.photoId === 0)
+        .map((photo) => {
+          return {
+            ...photo,
+            entityId: entityId,
+          };
+        });
+      if (updatedPhotosCreate.length > 0) {
+        await fetchCreatePhoto(updatedPhotosCreate, token);
+      }
     }
     if (photosUpdate.length > 0) {
       await fetchUpdatePhoto(photosUpdate, token);
@@ -506,64 +501,168 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
             />
           </div>
         </div>
-        <div className="flex items-center">
-          <label
-            htmlFor="addImage"
-            className="block text-base font-medium leading-6 text-gray-900 w-[20%]"
-          >
-            Image
-          </label>
-          <div className="flex w-[80%] gap-1">
-            {Array.from({ length: countPhoto }).map((_, index) => {
-              const currentPhoto = photos[index];
-              return (
-                <div key={index} className="w-24 h-24">
-                  <input
-                    id={`photos${index}`}
-                    name={`photos${index}`}
-                    type="file"
-                    accept="photos/*"
-                    onChange={(e) => {
+        <div className="flex flex-col gap-5">
+          <div className="flex relative h-[160px]">
+            <label
+              htmlFor="addMainImage"
+              className="text-base font-medium leading-6 text-gray-900 w-[20%]"
+            >
+              Main Car Image
+            </label>
+            <div className="relative w-[80%]">
+              <input
+                id="mainImage"
+                name="mainImage"
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  handleFileChange(
+                    e,
+                    photos[0]?.photoId ?? 0,
+                    car?.carId.toString() ?? "0",
+                    1,
+                    0
+                  )
+                }
+                className="z-10 absolute w-[90%] h-full opacity-0 cursor-pointer"
+              />
+              {photos[0] ? (
+                <div className="absolute w-full h-full border border-gray-400 flex items-center justify-center overflow-hidden">
+                  <Image
+                    src={getPhotoUrl(photos[0]) ?? "/loader.svg"}
+                    alt="Main Image Car"
+                    height={240}
+                    width={240}
+                    className="object-cover"
+                  ></Image>
+                  <button
+                    className="z-20 absolute top-0 right-0 hover:bg-gray-600 bg-gray-300 text-black rounded-full w-10 h-10 flex items-center justify-center"
+                    onClick={(e) => {
                       e.preventDefault();
-                      handleFileChange(
+                      e.stopPropagation();
+                      handleRemovePhoto(
                         e,
-                        currentPhoto?.photoId ?? 0,
                         car?.carId.toString() ?? "0",
-                        1,
-                        index
+                        photos[0].photoId ?? 0,
+                        0
                       );
                     }}
-                    className="w-full h-full opacity-0 cursor-pointer"
-                  />
-                  {currentPhoto ? (
-                    <>
-                      <img
-                        src={getPhotoUrl(currentPhoto) ?? "/loader.svg"}
-                        alt={`Photo ${index + 1}`}
-                        className="w-24 h-24 object-cover rounded-md border border-gray-400"
-                      />
+                  >
+                    <Image
+                      src="/xmark.svg"
+                      alt="remove"
+                      width={16}
+                      height={16}
+                    ></Image>
+                  </button>
+                </div>
+              ) : (
+                <div className="absolute w-full h-full border border-gray-400 flex flex-col gap-4 items-center justify-center overflow-hidden">
+                  <Image
+                    src="/HandPointer.svg"
+                    alt="Add"
+                    height={70}
+                    width={70}
+                  ></Image>
+                  <span className="text-base font-medium">
+                    Choose main car image !
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex">
+            <label
+              htmlFor="addOthersImage"
+              className="text-base font-medium leading-6 text-gray-900 w-[20%]"
+            >
+              Others Car Image
+            </label>
+            <div className="w-[80%] gap-4 flex flex-col">
+              <div className="relative h-[140px]">
+                <input
+                  id="othersImage"
+                  name="othersImage"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => {
+                    handleFileChange(
+                      e,
+                      0,
+                      car?.carId.toString() ?? "0",
+                      1,
+                      photos.length
+                    );
+                  }}
+                  className="z-10 absolute w-full h-full opacity-0 cursor-pointer"
+                />
+                <div className="absolute w-full h-full border border-gray-400 flex flex-col gap-4 items-center justify-center overflow-hidden">
+                  <Image
+                    src="/HandPointer.svg"
+                    alt="Add"
+                    height={70}
+                    width={70}
+                  ></Image>
+                  <span className="text-base font-medium">
+                    Choose others car image !
+                  </span>
+                </div>
+              </div>
+
+              <div className="relative flex flex-wrap items-center gap-2">
+                {photos.slice(1).map((photo, index) => (
+                  <div
+                    key={index}
+                    className="relative w-24 h-24 border border-gray-400 flex items-center justify-center overflow-hidden"
+                  >
+                    <input
+                      id="othersImage"
+                      name="othersImage"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        handleFileChange(
+                          e,
+                          photo?.photoId ?? 0,
+                          car?.carId.toString() ?? "0",
+                          1,
+                          index + 1
+                        );
+                      }}
+                      className="z-10 absolute w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="absolute top-0 w-full h-full flex items-center justify-center">
+                      <Image
+                        src={getPhotoUrl(photo) ?? "/loader.svg"}
+                        alt="Others Image Car"
+                        height={80}
+                        width={80}
+                        className="object-cover"
+                      ></Image>
                       <button
-                        className="absolute top-[-1px] right-[-1px] bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center"
+                        className="z-20 absolute top-0 right-0 hover:bg-gray-600 bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center"
                         onClick={(e) => {
                           handleRemovePhoto(
                             e,
                             car?.carId.toString() ?? "0",
-                            currentPhoto.photoId ?? 0,
-                            index
+                            photo.photoId ?? 0,
+                            index + 1
                           );
                         }}
                       >
-                        X
+                        <Image
+                          src="/xmark.svg"
+                          alt="remove"
+                          width={16}
+                          height={16}
+                        ></Image>
                       </button>
-                    </>
-                  ) : (
-                    <div className="w-24 h-24 border border-gray-400 flex items-center justify-center overflow-hidden">
-                      <img src="/Plus.svg" alt="Add" />
                     </div>
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex justify-end gap-2">
@@ -587,63 +686,3 @@ const CreateUpdateCar = ({ car }: { car: CarProps }) => {
 };
 
 export default CreateUpdateCar;
-
-// <div className="flex items-center">
-//   <label
-//     htmlFor="addImage"
-//     className="block text-base font-medium leading-6 text-gray-900 w-[20%]"
-//   >
-//     Image
-//   </label>
-//   <div className="flex w-[80%] gap-1">
-//     {Array.from({ length: countPhoto }).map((_, index) => {
-//       const currentPhoto = photos[index];
-//       return (
-//         <div key={index} className="w-24 h-24">
-//           <input
-//             id={`photos${index}`}
-//             name={`photos${index}`}
-//             type="file"
-//             accept="photos/*"
-//             onChange={(e) =>
-//               handleFileChange(
-//                 e,
-//                 currentPhoto?.photoId ?? 0,
-//                 car?.carId.toString() ?? "0",
-//                 1,
-//                 index
-//               )
-//             }
-//             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-//           />
-//           {currentPhoto ? (
-//             <>
-//               <img
-//                 src={getPhotoUrl(currentPhoto) ?? "/loader.svg"}
-//                 alt={`Photo ${index + 1}`}
-//                 className="w-24 h-24 object-cover rounded-md border border-gray-400"
-//               />
-//               <button
-//                 className="absolute top-[-1px] right-[-1px] bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center"
-//                 onClick={(e) => {
-//                   handleRemovePhoto(
-//                     e,
-//                     car?.carId.toString() ?? "0",
-//                     currentPhoto.photoId ?? 0,
-//                     index
-//                   );
-//                 }}
-//               >
-//                 X
-//               </button>
-//             </>
-//           ) : (
-//             <div className="w-24 h-24 border border-gray-400 flex items-center justify-center overflow-hidden">
-//               <img src="/Plus.svg" alt="Add" />
-//             </div>
-//           )}
-//         </div>
-//       );
-//     })}
-//   </div>
-// </div>;

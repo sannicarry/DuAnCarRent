@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useStore } from "./Store";
-import { listProvince, useClickOutside } from "@/src/utils";
 import { useEffect, useRef, useState } from "react";
+import { listProvince } from "@/utils";
 
 const Location = () => {
   const {

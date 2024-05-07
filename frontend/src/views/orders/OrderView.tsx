@@ -1,14 +1,13 @@
 "use client";
 
-import "../../../app/globals.css";
-import { useStore } from "@/src/components/Store";
-import { OrderProps, UploadPhoto } from "@/src/types";
+import { useStore } from "@/components/Store";
+import { OrderProps, UploadPhoto } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { createUploadPhotoPromises, getPhotoUrl } from "@/src/utils";
+import { createUploadPhotoPromises, getPhotoUrl } from "@/utils";
 
 const OrderView = ({ order }: { order: OrderProps }) => {
   const router = useRouter();

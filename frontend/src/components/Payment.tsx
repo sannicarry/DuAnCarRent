@@ -1,7 +1,7 @@
-import { CarProps } from "@/src/types";
+import { features } from "@/constants";
+import { CarProps } from "@/types";
+import { calculateCarRent } from "@/utils";
 import { CarDetails, CustomButton } from ".";
-import { features } from "@/src/constants";
-import { calculateCarRent } from "@/src/utils";
 
 interface PaymentProps {
   isOpen: boolean;
@@ -52,7 +52,7 @@ const Payment = ({ isOpen, closeModal, car }: PaymentProps) => {
             className="relative w-full max-w-lg max-h-[100vh] overflow-y-auto transform rounded-2xl bg-white p-6 
         text-left shadow-xl transition-all flex flex-col gap-5"
           >
-            <CarDetails isOpen={isOpen} closeModal={closeModal} car={car} />
+            <CarDetails car={car} />
             <div className="flex flex-col bg-white border rounded-lg p-2 sm:p-5">
               <h1 className="font-bold text-lg capitalize">
                 {make} {model}

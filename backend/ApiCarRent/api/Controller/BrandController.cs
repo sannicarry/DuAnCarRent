@@ -25,7 +25,8 @@ namespace api.Controller
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy = "ManageBrand")]
+
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
@@ -36,7 +37,7 @@ namespace api.Controller
         }
 
         [HttpGet("{id:int}")]
-        [Authorize]
+        [Authorize(Policy = "ManageBrand")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -51,7 +52,7 @@ namespace api.Controller
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Policy = "ManageBrand")]
 
         public async Task<IActionResult> Create([FromBody] CreateBrandDto brandDto)
         {
@@ -66,7 +67,7 @@ namespace api.Controller
 
         [HttpPut]
         [Route("{id:int}")]
-        [Authorize]
+        [Authorize(Policy = "ManageBrand")]
 
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateBrandDto brandDto)
         {
@@ -82,7 +83,7 @@ namespace api.Controller
 
         [HttpDelete]
         [Route("{id:int}")]
-        [Authorize]
+        [Authorize(Policy = "ManageBrand")]
 
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -97,6 +98,7 @@ namespace api.Controller
         }
 
         [HttpGet("GetCount")]
+        [Authorize(Policy = "ManageBrand")]
         public async Task<int> GetCountBrands()
         {
             if (!ModelState.IsValid)
@@ -106,6 +108,7 @@ namespace api.Controller
         }
 
         [HttpGet("brandExists")]
+        [Authorize(Policy = "ManageBrand")]
         public async Task<IActionResult> CheckBrandFromCar([FromQuery] int brandId)
         {
             try
@@ -120,6 +123,7 @@ namespace api.Controller
         }
 
         [HttpGet("checkBrandName")]
+        [Authorize(Policy = "ManageBrand")]
         public async Task<IActionResult> CheckBrandName([FromQuery] string brandName)
         {
             try

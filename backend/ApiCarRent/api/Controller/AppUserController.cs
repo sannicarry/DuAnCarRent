@@ -37,16 +37,17 @@ namespace api.Controller
                 return BadRequest(ModelState);
             var users = await _appUserRepo.GetAllAsync(query);
             List<AppUserDto> listUserDtos = new List<AppUserDto>();
+
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                var roleName = roles.FirstOrDefault();
-                if (roleName == null)
+                List<ClaimInfo> claims = new List<ClaimInfo>();
+
+                foreach (var claim in SettingUserRoleClaims.RoleClaims)
                 {
-                    return null;
+                    claims.Add(new ClaimInfo { Type = claim.Type, Value = claim.Value });
                 }
 
-                var userDto = user.ToAppUserDto(roleName);
+                var userDto = user.ToAppUserDto(claims);
                 listUserDtos.Add(userDto);
             }
             return Ok(listUserDtos);
@@ -57,7 +58,7 @@ namespace api.Controller
         public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            Console.WriteLine("userId = " + userId);
+
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { message = "User not found." });
@@ -68,14 +69,14 @@ namespace api.Controller
             {
                 return NotFound();
             }
-            var roles = await _userManager.GetRolesAsync(user);
-            var roleName = roles.FirstOrDefault();
-            if (roleName == null)
+
+            List<ClaimInfo> claims = new List<ClaimInfo>();
+            foreach (var claim in SettingUserRoleClaims.RoleClaims)
             {
-                return null;
+                claims.Add(new ClaimInfo { Type = claim.Type, Value = claim.Value });
             }
 
-            var userDto = user.ToAppUserDto(roleName);
+            var userDto = user.ToAppUserDto(claims);
 
             return Ok(userDto);
         }
@@ -103,10 +104,13 @@ namespace api.Controller
 
             await _userManager.UpdateAsync(userModel);
 
-            var roles = await _userManager.GetRolesAsync(userModel);
-            var roleName = roles.FirstOrDefault();
+            List<ClaimInfo> claims = new List<ClaimInfo>();
+            foreach (var claim in SettingUserRoleClaims.RoleClaims)
+            {
+                claims.Add(new ClaimInfo { Type = claim.Type, Value = claim.Value });
+            }
 
-            return Ok(userModel.ToAppUserDto(roleName));
+            return Ok(userModel.ToAppUserDto(claims));
         }
 
         [HttpGet("GetCount")]

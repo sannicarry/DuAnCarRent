@@ -15,7 +15,7 @@ namespace api.Dtos.AppUser
         public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public bool Gender { get; set; }
-        public string Role { get; set; } = string.Empty;
+        public List<ClaimInfo> Claims { get; set; } = new List<ClaimInfo>();
         public bool IsLocked { get; set; }
         public List<PhotoDto>? Photos { get; set; }
     }

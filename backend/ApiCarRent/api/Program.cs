@@ -37,17 +37,17 @@ builder.Services.AddSwaggerGen(option =>
     });
     option.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
-        {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
+                new OpenApiSecurityScheme
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
+                    Reference = new OpenApiReference
+                    {
+                        Type=ReferenceType.SecurityScheme,
+                        Id="Bearer"
+                    }
+                },
+                new string[]{}
+            }
     });
 });
 
@@ -118,10 +118,25 @@ builder.Services.AddScoped<IPhotoRepository<AppUser>, AppUserPhotoRepository>();
 builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IRoleClaimService, RoleClaimService>();
+builder.Services.AddScoped<IUserClaimService, UserClaimService>();
 builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 {
     build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
 }));
+
+builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("ManageDashboard", policy => policy.RequireClaim("Permission", "ManageDashboard"));
+        options.AddPolicy("ManageBrand", policy => policy.RequireClaim("Permission", "ManageBrand"));
+        options.AddPolicy("ManageCar", policy => policy.RequireClaim("Permission", "ManageCar"));
+        options.AddPolicy("ManageUser", policy => policy.RequireClaim("Permission", "ManageUser"));
+        options.AddPolicy("ManageOrder", policy => policy.RequireClaim("Permission", "ManageOrder"));
+        options.AddPolicy("ChangePassword", policy => policy.RequireClaim("Permission", "ChangePassword"));
+        options.AddPolicy("UpdateProfile", policy => policy.RequireClaim("Permission", "UpdateProfile"));
+        options.AddPolicy("PlaceOrder", policy => policy.RequireClaim("Permission", "CreateOrder"));
+        options.AddPolicy("ViewCarDetails", policy => policy.RequireClaim("Permission", "ViewCarDetails"));
+    });
 
 
 var app = builder.Build();
@@ -153,4 +168,14 @@ app.MapControllers();
 builder.WebHost.UseUrls(serverUrl);
 
 app.Run();
+
+//Chạy SeedData khi chạy ứng dụng
+
+var serviceProvider = builder.Services.BuildServiceProvider();
+
+var dbContext = serviceProvider.GetRequiredService<ApplicationDBContext>();
+var seedDataService = serviceProvider.GetRequiredService<IRoleClaimService>();
+
+await dbContext.Database.MigrateAsync();
+await seedDataService.SeedData();
 

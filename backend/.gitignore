@@ -1,3 +1,5 @@
 .vs
 ApiCarRent/ApiCarRent.sln
 ApiCarRent/api/Uploads
+ApiCarRent/api/bin
+ApiCarRent/api/obj

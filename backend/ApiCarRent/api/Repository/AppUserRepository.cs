@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Data;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +16,16 @@ namespace api.Repository
     public class AppUserRepository : IAppUserRepository
     {
         private readonly ApplicationDBContext _context;
-        public AppUserRepository(ApplicationDBContext context)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
+
+
+        public AppUserRepository(ApplicationDBContext context, RoleManager<IdentityRole> roleManager,
+        UserManager<AppUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task<List<AppUser>> GetAllAsync(QueryObject query)
@@ -42,23 +51,50 @@ namespace api.Repository
             return user;
         }
 
+        public async Task CreateRole(string roleName)
+        {
+            if (!await _roleManager.RoleExistsAsync(roleName))
+            {
+                var role = new IdentityRole { Name = roleName };
+                await _roleManager.CreateAsync(role);
+            }
+        }
 
+        public async Task CreateAdmin()
+        {
+            var admin = await _userManager.FindByEmailAsync("sannicarry@gmail.com");
+            if (admin == null)
+            {
+                admin = new AppUser { UserName = "admin", Email = "sannicarry@gmail.com" };
+                var result = await _userManager.CreateAsync(admin, "lenny270102@Nhan");
 
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(admin, "Admin");
+                }
+                else
+                {
+                    throw new Exception("Failed to create admin user.");
+                }
+            }
+        }
 
+        public async Task CreateRoleClaims(string roleName, List<Claim> roleClaims)
+        {
+            var role = await _roleManager.FindByNameAsync(roleName);
 
+            if (role != null)
+            {
+                foreach (var claim in roleClaims)
+                {
+                    await _roleManager.AddClaimAsync(role, claim);
+                }
+            }
+        }
 
-        // public async Task<AppUser?> UpdateAsync(AppUser user)
-        // {
-        //     var userModel = await _context.AppUser.FirstOrDefaultAsync(x => x.username == user.username);
-        //     if (userModel == null)
-        //     {
-        //         return null;
-        //     }
-        //     userModel.BrandName = brandDto.BrandName;
-        //     brandModel.Address = brandDto.Address;
-        //     brandModel.Phone = brandDto.Phone;
-        //     await _context.SaveChangesAsync();
-        //     return brandModel;
-        // }
+        public async Task<bool> RoleExists(string roleName)
+        {
+            return await _roleManager.RoleExistsAsync(roleName);
+        }
     }
 }

@@ -11,6 +11,7 @@ using api.Interfaces;
 using api.Service;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using api.Data;
 
 namespace api.Controller
 {
@@ -18,17 +19,25 @@ namespace api.Controller
     [ApiController]
     public class AccountController : ControllerBase
     {
+        private readonly ApplicationDBContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailService _emailService;
+        private readonly IUserClaimService _userClaimService;
+        private readonly IRoleClaimService _roleClaimService;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, IEmailService emailService)
+        public AccountController(ApplicationDBContext context, UserManager<AppUser> userManager, ITokenService tokenService,
+        SignInManager<AppUser> signInManager, IEmailService emailService,
+        IUserClaimService userClaimService, IRoleClaimService roleClaimService)
         {
+            _context = context;
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _emailService = emailService;
+            _userClaimService = userClaimService;
+            _roleClaimService = roleClaimService;
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
@@ -99,6 +108,15 @@ namespace api.Controller
 
                 if (createUser.Succeeded)
                 {
+                    var claims = new List<Claim>
+                    {
+                        new Claim("Permission", "ChangePassword"),
+                        new Claim("Permission", "UpdateProfile"),
+                        new Claim("Permission", "CreateOrder"),
+                        new Claim("Permission", "ViewCarDetails"),
+                    };
+                    await _userClaimService.SetUserClaimsAsync(appUser, claims);
+
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
                     if (roleResult.Succeeded)
                     {
@@ -251,7 +269,7 @@ namespace api.Controller
             }
         }
 
-        [HttpGet("checkusername")]
+        [HttpGet("checkUsername")]
         public async Task<IActionResult> CheckUsername([FromQuery] string username)
         {
             try
@@ -276,6 +294,24 @@ namespace api.Controller
             catch (Exception e)
             {
                 return StatusCode(500, e);
+            }
+        }
+
+        [HttpGet("getAllRoleClaims")]
+        [Authorize]
+        public async Task<IActionResult> GetAllRoleClaims()
+        {
+            try
+            {
+                var roleClaims = await _context.RoleClaims.ToListAsync();
+
+                var claimValues = roleClaims.Select(rc => rc.ClaimValue).Distinct().ToList();
+
+                return Ok(claimValues);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving role claims.", error = ex.Message });
             }
         }
     }

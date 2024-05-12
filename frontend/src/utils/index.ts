@@ -348,7 +348,7 @@ export async function fetchDeletePhoto(
 }
 
 export async function fetchCheckUsername(username: string, token: string) {
-  let url = `${SERVER_URL}/api/account/checkusername?username=${username}`;
+  let url = `${SERVER_URL}/api/account/checkUsername?username=${username}`;
   try {
     const response = await fetch(url, {
       method: "GET",

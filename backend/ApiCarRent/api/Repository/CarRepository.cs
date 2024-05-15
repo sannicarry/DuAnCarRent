@@ -46,9 +46,10 @@ namespace api.Repository
         public async Task<List<Car>> GetAllAsync(QueryObject query)
         {
             var cars = await _context.Car.Include(c => c.Photos)
-                .Where(s => string.IsNullOrWhiteSpace(query.CarName) || (s.Make + s.Model).Replace(" ", "").Contains(query.CarName))
-                .Skip((query.PageSize > 0 ? (query.PageNumber - 1) * query.PageSize : 0))
-                .Take((query.PageSize > 0 ? query.PageSize : int.MaxValue))
+                .Where(s => string.IsNullOrWhiteSpace(query.Search) || (s.Make + s.Model).Replace(" ", "").Contains(query.Search)
+                || s.Type.Contains(query.Search))
+                .Skip((query.PageNumber - 1) * query.PageSize)
+                .Take(query.PageSize)
                 .ToListAsync();
 
             return cars;

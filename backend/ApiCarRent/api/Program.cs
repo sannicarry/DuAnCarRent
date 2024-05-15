@@ -113,6 +113,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<ICarFavoriteRepository, CarFavoriteRepository>();
 builder.Services.AddScoped<IPhotoRepository<Car>, CarPhotoRepository>();
 builder.Services.AddScoped<IPhotoRepository<AppUser>, AppUserPhotoRepository>();
 builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
@@ -120,6 +121,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IRoleClaimService, RoleClaimService>();
 builder.Services.AddScoped<IUserClaimService, UserClaimService>();
+builder.Services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
 builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 {
     build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();

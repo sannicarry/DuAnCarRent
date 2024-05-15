@@ -22,11 +22,13 @@ namespace api.Controller
     {
         private readonly IAppUserRepository _appUserRepo;
         private static UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AppUserController(IAppUserRepository appUserRepo, UserManager<AppUser> userManager)
+        public AppUserController(IAppUserRepository appUserRepo, UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _appUserRepo = appUserRepo;
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [HttpGet]
@@ -71,7 +73,32 @@ namespace api.Controller
             }
 
             List<ClaimInfo> claims = new List<ClaimInfo>();
-            foreach (var claim in SettingUserRoleClaims.RoleClaims)
+            var userRole = _tokenService.GetUserRole();
+
+            foreach (var claim in userRole)
+            {
+                claims.Add(new ClaimInfo { Type = claim.Type, Value = claim.Value });
+            }
+
+            var userDto = user.ToAppUserDto(claims);
+
+            return Ok(userDto);
+        }
+
+        [HttpGet("userId")]
+        [Authorize]
+        public async Task<IActionResult> GetCurrentUser(string userId)
+        {
+            var user = await _appUserRepo.GetUserById(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            List<ClaimInfo> claims = new List<ClaimInfo>();
+            var userRole = _tokenService.GetUserRole();
+
+            foreach (var claim in userRole)
             {
                 claims.Add(new ClaimInfo { Type = claim.Type, Value = claim.Value });
             }

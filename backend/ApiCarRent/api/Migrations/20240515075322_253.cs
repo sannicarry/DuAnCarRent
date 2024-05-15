@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class update : Migration
+    public partial class _253 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -177,6 +175,27 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserNotifications",
+                columns: table => new
+                {
+                    UserNotificationsId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserIdCreate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CarId = table.Column<int>(type: "int", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserNotifications", x => x.UserNotificationsId);
+                    table.ForeignKey(
+                        name: "FK_UserNotifications_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Car",
                 columns: table => new
                 {
@@ -204,20 +223,43 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CarFavorites",
+                columns: table => new
+                {
+                    CarFavoritesId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CarId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarFavorites", x => x.CarFavoritesId);
+                    table.ForeignKey(
+                        name: "FK_CarFavorites_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CarFavorites_Car_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Car",
+                        principalColumn: "CarId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Order",
                 columns: table => new
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CarId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CarId = table.Column<int>(type: "int", nullable: true),
                     LocationFrom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeFrom = table.Column<TimeSpan>(type: "time", nullable: false),
                     LocationTo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeTo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeTo = table.Column<TimeSpan>(type: "time", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
@@ -225,17 +267,15 @@ namespace api.Migrations
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Order_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Order_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Order_Car_CarId",
                         column: x => x.CarId,
                         principalTable: "Car",
-                        principalColumn: "CarId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CarId");
                 });
 
             migrationBuilder.CreateTable(
@@ -271,7 +311,7 @@ namespace api.Migrations
                     ReviewId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CarId = table.Column<int>(type: "int", nullable: true),
-                    rating = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Rating = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -303,15 +343,6 @@ namespace api.Migrations
                         column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "OrderId");
-                });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "7a316330-d786-4af7-8cba-042328a4851d", null, "Admin", "ADMIN" },
-                    { "b2ddd401-5925-44c7-8aed-7b7d74c31979", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -359,14 +390,24 @@ namespace api.Migrations
                 column: "BrandId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CarFavorites_AppUserId",
+                table: "CarFavorites",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarFavorites_CarId",
+                table: "CarFavorites",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_CarId",
                 table: "Order",
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_UserId1",
+                name: "IX_Order_UserId",
                 table: "Order",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payment_OrderId",
@@ -387,6 +428,11 @@ namespace api.Migrations
                 name: "IX_Review_CarId",
                 table: "Review",
                 column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNotifications_UserId",
+                table: "UserNotifications",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -408,6 +454,9 @@ namespace api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CarFavorites");
+
+            migrationBuilder.DropTable(
                 name: "Payment");
 
             migrationBuilder.DropTable(
@@ -415,6 +464,9 @@ namespace api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Review");
+
+            migrationBuilder.DropTable(
+                name: "UserNotifications");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

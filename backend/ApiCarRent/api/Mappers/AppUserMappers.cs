@@ -25,7 +25,9 @@ namespace api.Mappers
                 Gender = appUser.Gender,
                 Claims = claim,
                 IsLocked = localLockoutEnd.HasValue && localLockoutEnd.Value > DateTimeOffset.Now,
-                Photos = appUser.Photos.Where(c => c.PhotoType == 2).Select(c => c.ToPhotoDto()).ToList()
+                Photos = appUser.Photos.Where(c => c.PhotoType == 2).Select(c => c.ToPhotoDto()).ToList(),
+                CarFavorites = appUser.CarFavorites?.Select(x => x.ToCarFavoriteDto()).ToList(),
+                UserNotifications = appUser.UserNotifications?.Select(x => x.ToUserNotificationDto()).ToList(),
             };
         }
 

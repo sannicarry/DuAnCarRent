@@ -30,39 +30,46 @@ namespace api.Service
         }
         public async Task SeedData()
         {
-            var adminRoleExists = await _userRepository.RoleExists("Admin");
-            if (!adminRoleExists)
+            try
             {
-                await _userRepository.CreateRole("Admin");
-
-                var adminRoleClaims = new List<Claim>();
-
-                foreach (var claim in SettingAdminRoleClaims.RoleClaims)
+                var adminRoleExists = await _userRepository.RoleExists("Admin");
+                if (!adminRoleExists)
                 {
-                    adminRoleClaims.Add(new Claim(claim.Type, claim.Value));
-                };
+                    await _userRepository.CreateRole("Admin");
 
-                await _userRepository.CreateRoleClaims("Admin", adminRoleClaims);
-            }
+                    await _userRepository.CreateAdmin();
 
-            var userRoleExists = await _userRepository.RoleExists("User");
-            if (!userRoleExists)
-            {
-                await _userRepository.CreateRole("User");
+                    var adminRoleClaims = new List<Claim>();
 
-                var userRoleClaims = new List<Claim>();
+                    foreach (var claim in SettingAdminRoleClaims.RoleClaims)
+                    {
+                        adminRoleClaims.Add(new Claim(claim.Type, claim.Value));
+                    };
 
-                foreach (var claim in SettingUserRoleClaims.RoleClaims)
+                    await _userRepository.CreateRoleClaims("Admin", adminRoleClaims);
+                }
+
+
+                var userRoleExists = await _userRepository.RoleExists("User");
+                if (!userRoleExists)
                 {
-                    userRoleClaims.Add(new Claim(claim.Type, claim.Value));
-                };
-                await _userRepository.CreateRoleClaims("User", userRoleClaims);
-            }
+                    await _userRepository.CreateRole("User");
 
-            var admin = await _userManager.FindByNameAsync("admin");
-            if (admin == null)
+                    var userRoleClaims = new List<Claim>();
+
+                    foreach (var claim in SettingUserRoleClaims.RoleClaims)
+                    {
+                        userRoleClaims.Add(new Claim(claim.Type, claim.Value));
+                    };
+                    await _userRepository.CreateRoleClaims("User", userRoleClaims);
+                }
+
+            }
+            catch (Exception ex)
             {
-                await _userRepository.CreateAdmin();
+                Console.WriteLine($"An error occurred in SeedData: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                throw;
             }
         }
 

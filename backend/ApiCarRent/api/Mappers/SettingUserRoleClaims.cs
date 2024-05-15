@@ -14,6 +14,7 @@ namespace api.Mappers
             new ClaimInfo { Type = "Permission", Value = "UpdateProfile" },
             new ClaimInfo { Type = "Permission", Value = "CreateOrder" },
             new ClaimInfo { Type = "Permission", Value = "ViewCarDetails" },
+            new ClaimInfo { Type = "Permission", Value = "UserFeatures" },
         };
     }
 }

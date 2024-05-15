@@ -12,5 +12,8 @@ namespace api.Models
         public string Address { get; set; } = string.Empty;
         public bool Gender { get; set; }
         public virtual List<Photo> Photos { get; set; } = new List<Photo>();
+        public virtual List<CarFavorites> CarFavorites { get; set; } = new List<CarFavorites>();
+        public virtual List<UserNotifications> UserNotifications { get; set; } = new List<UserNotifications>();
+
     }
 }

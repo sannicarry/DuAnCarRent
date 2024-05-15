@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240423025911_update234")]
-    partial class update234
+    [Migration("20240515075322_253")]
+    partial class _253
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,20 +50,6 @@ namespace api.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "ca986973-fcdd-43be-9c3b-e524469adb35",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "df112a5f-3848-4bad-9fc1-14fdc5d0f29c",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -324,6 +310,29 @@ namespace api.Migrations
                     b.ToTable("Car");
                 });
 
+            modelBuilder.Entity("api.Models.CarFavorites", b =>
+                {
+                    b.Property<int>("CarFavoritesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarFavoritesId"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarFavoritesId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("CarFavorites");
+                });
+
             modelBuilder.Entity("api.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -455,6 +464,34 @@ namespace api.Migrations
                     b.ToTable("Review");
                 });
 
+            modelBuilder.Entity("api.Models.UserNotifications", b =>
+                {
+                    b.Property<int>("UserNotificationsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserNotificationsId"));
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserIdCreate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserNotificationsId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserNotifications");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -515,6 +552,21 @@ namespace api.Migrations
                     b.Navigation("Brand");
                 });
 
+            modelBuilder.Entity("api.Models.CarFavorites", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("CarFavorites")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("api.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Car");
+                });
+
             modelBuilder.Entity("api.Models.Order", b =>
                 {
                     b.HasOne("api.Models.Car", "Car")
@@ -563,9 +615,22 @@ namespace api.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("api.Models.UserNotifications", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "User")
+                        .WithMany("UserNotifications")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
+                    b.Navigation("CarFavorites");
+
                     b.Navigation("Photos");
+
+                    b.Navigation("UserNotifications");
                 });
 
             modelBuilder.Entity("api.Models.Brand", b =>

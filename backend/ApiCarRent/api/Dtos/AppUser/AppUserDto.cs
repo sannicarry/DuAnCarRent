@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Car;
+using api.Dtos.CarFavorite;
 using api.Dtos.Photo;
+using api.Dtos.UserNotification;
+using api.Models;
 
 namespace api.Dtos.AppUser
 {
@@ -18,5 +22,7 @@ namespace api.Dtos.AppUser
         public List<ClaimInfo> Claims { get; set; } = new List<ClaimInfo>();
         public bool IsLocked { get; set; }
         public List<PhotoDto>? Photos { get; set; }
+        public List<CarFavoriteDto>? CarFavorites { get; set; }
+        public List<UserNotificationDto>? UserNotifications { get; set; }
     }
 }

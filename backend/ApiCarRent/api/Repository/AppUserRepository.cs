@@ -30,7 +30,8 @@ namespace api.Repository
 
         public async Task<List<AppUser>> GetAllAsync(QueryObject query)
         {
-            var users = await _context.AppUser.Include(c => c.Photos)
+            var users = await _context.AppUser.Include(c => c.Photos).Include(c => c.CarFavorites).ThenInclude(c => c.Car)
+                .Include(c => c.UserNotifications)
                 .Where(s =>
                     string.IsNullOrWhiteSpace(query.SearchUser) ||
                         (s.UserName != null && s.UserName.Contains(query.SearchUser)) ||
@@ -46,7 +47,8 @@ namespace api.Repository
 
         public async Task<AppUser> GetUserById(string userId)
         {
-            var user = await _context.AppUser.Include(u => u.Photos).FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await _context.AppUser.Include(u => u.Photos).Include(c => c.CarFavorites).ThenInclude(c => c.Car)
+            .Include(c => c.UserNotifications).FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null) return null;
             return user;
         }
@@ -67,6 +69,7 @@ namespace api.Repository
             {
                 admin = new AppUser { UserName = "admin", Email = "sannicarry@gmail.com" };
                 var result = await _userManager.CreateAsync(admin, "lenny270102@Nhan");
+                Console.WriteLine("result = " + result);
 
                 if (result.Succeeded)
                 {
@@ -77,6 +80,14 @@ namespace api.Repository
                     throw new Exception("Failed to create admin user.");
                 }
             }
+            // else
+            // {
+            //     var isAdmin = await _userManager.IsInRoleAsync(admin, "Admin");
+            //     if (!isAdmin)
+            //     {
+            //         await _userManager.AddToRoleAsync(admin, "Admin");
+            //     }
+            // }
         }
 
         public async Task CreateRoleClaims(string roleName, List<Claim> roleClaims)

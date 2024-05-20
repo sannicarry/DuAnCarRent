@@ -30,8 +30,8 @@ namespace api.Repository
 
         public async Task<List<AppUser>> GetAllAsync(QueryObject query)
         {
-            var users = await _context.AppUser.Include(c => c.Photos).Include(c => c.CarFavorites).ThenInclude(c => c.Car)
-                .Include(c => c.UserNotifications)
+            var users = await _context.AppUser.Where(c => c.UserName != "admin").Include(c => c.Photos).Include(c => c.CarFavorites).ThenInclude(c => c.Car)
+                .Include(c => c.UserNotifications).Include(c => c.OrderRecipient)
                 .Where(s =>
                     string.IsNullOrWhiteSpace(query.SearchUser) ||
                         (s.UserName != null && s.UserName.Contains(query.SearchUser)) ||
@@ -48,7 +48,7 @@ namespace api.Repository
         public async Task<AppUser> GetUserById(string userId)
         {
             var user = await _context.AppUser.Include(u => u.Photos).Include(c => c.CarFavorites).ThenInclude(c => c.Car)
-            .Include(c => c.UserNotifications).FirstOrDefaultAsync(x => x.Id == userId);
+            .Include(c => c.UserNotifications).Include(c => c.OrderRecipient).FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null) return null;
             return user;
         }

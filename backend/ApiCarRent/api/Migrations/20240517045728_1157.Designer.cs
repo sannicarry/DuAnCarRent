@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240515075322_253")]
-    partial class _253
+    [Migration("20240517045728_1157")]
+    partial class _1157
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -185,8 +185,16 @@ namespace api.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Gender")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -358,7 +366,16 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("OrderRecipientId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusPayment")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan>("TimeFrom")
@@ -367,9 +384,6 @@ namespace api.Migrations
                     b.Property<TimeSpan>("TimeTo")
                         .HasColumnType("time");
 
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -377,9 +391,43 @@ namespace api.Migrations
 
                     b.HasIndex("CarId");
 
+                    b.HasIndex("OrderRecipientId");
+
+                    b.HasIndex("PaymentId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("api.Models.OrderRecipient", b =>
+                {
+                    b.Property<int>("OrderRecipientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderRecipientId"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderRecipientId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("OrderRecipient");
                 });
 
             modelBuilder.Entity("api.Models.Payment", b =>
@@ -390,21 +438,25 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("Method")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("PaymentId");
+                    b.Property<string>("PaymentReference")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("OrderId");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentId");
 
                     b.ToTable("Payment");
                 });
@@ -573,22 +625,34 @@ namespace api.Migrations
                         .WithMany()
                         .HasForeignKey("CarId");
 
+                    b.HasOne("api.Models.OrderRecipient", "OrderRecipient")
+                        .WithMany()
+                        .HasForeignKey("OrderRecipientId");
+
+                    b.HasOne("api.Models.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId");
+
                     b.HasOne("api.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Car");
 
+                    b.Navigation("OrderRecipient");
+
+                    b.Navigation("Payment");
+
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("api.Models.Payment", b =>
+            modelBuilder.Entity("api.Models.OrderRecipient", b =>
                 {
-                    b.HasOne("api.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("OrderRecipient")
+                        .HasForeignKey("AppUserId");
 
-                    b.Navigation("Order");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("api.Models.Photo", b =>
@@ -627,6 +691,8 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Navigation("CarFavorites");
+
+                    b.Navigation("OrderRecipient");
 
                     b.Navigation("Photos");
 

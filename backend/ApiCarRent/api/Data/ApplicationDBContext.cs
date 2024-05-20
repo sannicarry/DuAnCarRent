@@ -25,6 +25,7 @@ namespace api.Data
         public DbSet<Photo> Photo { get; set; }
         public DbSet<AppUser> AppUser { get; set; }
         public DbSet<UserNotifications> UserNotifications { get; set; }
+        public DbSet<OrderRecipient> OrderRecipient { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

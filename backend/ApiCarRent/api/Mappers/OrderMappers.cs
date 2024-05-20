@@ -26,31 +26,35 @@ namespace api.Mappers
                 OrderId = order.OrderId,
                 User = order.User?.ToAppUserDto(claims),
                 Car = order.Car?.ToCarDto(),
+                OrderRecipient = order.OrderRecipient?.ToOrderRecipientDto(),
+                Payment = order.Payment?.ToPaymentDto(),
                 LocationFrom = order.LocationFrom,
                 DateFrom = order.DateFrom,
                 TimeFrom = order.TimeFrom,
                 LocationTo = order.LocationTo,
                 DateTo = order.DateTo,
                 TimeTo = order.TimeTo,
-                TotalPrice = order.TotalPrice,
-                Status = order.Status,
+                StatusOrder = order.StatusOrder,
+                StatusPayment = order.StatusPayment,
             };
         }
 
-        public static Order ToOrderFromCreate(CreateOrderDto createOrderDto, AppUser user, Car car)
+        public static Order ToOrderFromCreate(CreateOrderDto createOrderDto, AppUser user, Car car, Payment payment, OrderRecipient orderRecipient)
         {
             return new Order
             {
                 User = user,
                 Car = car,
+                OrderRecipient = orderRecipient,
+                Payment = payment,
                 LocationFrom = createOrderDto.LocationFrom,
                 DateFrom = createOrderDto.DateFrom,
                 TimeFrom = createOrderDto.TimeFrom,
                 LocationTo = createOrderDto.LocationTo,
                 DateTo = createOrderDto.DateTo,
                 TimeTo = createOrderDto.TimeTo,
-                TotalPrice = createOrderDto.TotalPrice,
-                Status = createOrderDto.Status,
+                StatusOrder = createOrderDto.StatusOrder,
+                StatusPayment = createOrderDto.StatusPayment,
             };
         }
     }

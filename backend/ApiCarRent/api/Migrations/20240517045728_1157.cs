@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class _253 : Migration
+    public partial class _1157 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,8 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<bool>(type: "bit", nullable: false),
@@ -66,6 +68,24 @@ namespace api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Brand", x => x.BrandId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payment",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentReference = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Method = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payment", x => x.PaymentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,6 +195,28 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderRecipient",
+                columns: table => new
+                {
+                    OrderRecipientId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderRecipient", x => x.OrderRecipientId);
+                    table.ForeignKey(
+                        name: "FK_OrderRecipient_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserNotifications",
                 columns: table => new
                 {
@@ -253,15 +295,17 @@ namespace api.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    OrderRecipientId = table.Column<int>(type: "int", nullable: true),
                     CarId = table.Column<int>(type: "int", nullable: true),
+                    PaymentId = table.Column<int>(type: "int", nullable: true),
                     LocationFrom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeFrom = table.Column<TimeSpan>(type: "time", nullable: false),
                     LocationTo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeTo = table.Column<TimeSpan>(type: "time", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    StatusOrder = table.Column<int>(type: "int", nullable: false),
+                    StatusPayment = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -276,6 +320,16 @@ namespace api.Migrations
                         column: x => x.CarId,
                         principalTable: "Car",
                         principalColumn: "CarId");
+                    table.ForeignKey(
+                        name: "FK_Order_OrderRecipient_OrderRecipientId",
+                        column: x => x.OrderRecipientId,
+                        principalTable: "OrderRecipient",
+                        principalColumn: "OrderRecipientId");
+                    table.ForeignKey(
+                        name: "FK_Order_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payment",
+                        principalColumn: "PaymentId");
                 });
 
             migrationBuilder.CreateTable(
@@ -322,27 +376,6 @@ namespace api.Migrations
                         column: x => x.CarId,
                         principalTable: "Car",
                         principalColumn: "CarId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Payment",
-                columns: table => new
-                {
-                    PaymentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: true),
-                    Method = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payment", x => x.PaymentId);
-                    table.ForeignKey(
-                        name: "FK_Payment_Order_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Order",
-                        principalColumn: "OrderId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -405,14 +438,24 @@ namespace api.Migrations
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_OrderRecipientId",
+                table: "Order",
+                column: "OrderRecipientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_PaymentId",
+                table: "Order",
+                column: "PaymentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_UserId",
                 table: "Order",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_OrderId",
-                table: "Payment",
-                column: "OrderId");
+                name: "IX_OrderRecipient_AppUserId",
+                table: "OrderRecipient",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photo_AppUserId",
@@ -457,7 +500,7 @@ namespace api.Migrations
                 name: "CarFavorites");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Photo");
@@ -472,13 +515,16 @@ namespace api.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "OrderRecipient");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "Car");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Brand");

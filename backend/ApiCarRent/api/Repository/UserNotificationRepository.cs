@@ -6,6 +6,7 @@ using api.Data;
 using api.Dtos.UserNotification;
 using api.Interfaces;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -34,6 +35,18 @@ namespace api.Repository
             await _context.UserNotifications.AddAsync(userNotificationModel);
             await _context.SaveChangesAsync();
             return userNotificationModel;
+        }
+
+        public async Task<UserNotifications?> DeleteAsync(int notificationId)
+        {
+            var notificationModel = await _context.UserNotifications.FirstOrDefaultAsync(x => x.UserNotificationsId == notificationId);
+            if (notificationModel == null)
+            {
+                return null;
+            }
+            _context.UserNotifications.Remove(notificationModel);
+            await _context.SaveChangesAsync();
+            return notificationModel;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace api.Interfaces
     public interface IOrderRepository
     {
         Task<List<Order>> GetAllAsync(QueryObject query);
+        Task<List<Order>> GetAllByUserIdAsync(QueryObject query, string userId);
         Task<Order> GetByIdAsync(int id);
         Task<Order> CreateAsync(CreateOrderDto createOrderDto);
         Task<Order?> UpdateAsync(Order order);

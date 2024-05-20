@@ -109,18 +109,29 @@ namespace api.Controller
 
         [HttpPut("UpdateStatus/{id:int}")]
         [Authorize]
-        public async Task<IActionResult> UpdateStatus([FromRoute] int id, int status)
+        public async Task<IActionResult> UpdateStatus([FromRoute] int id, int statusOrder, int statusPayment)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var order = await _context.Order.FirstOrDefaultAsync(x => x.OrderId == id);
             if (order == null) return NotFound();
 
-            order.Status = status;
+            order.StatusOrder = statusOrder;
+            order.StatusPayment = statusPayment;
 
             await _orderRepo.UpdateStatusAsync(order);
-            return Ok(order.ToOrderDto());
+            return Ok();
         }
 
+        [HttpGet("{userId}")]
+        [Authorize]
+        public async Task<IActionResult> GetOrderByUserId([FromQuery] QueryObject query, string userId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var orders = await _orderRepo.GetAllByUserIdAsync(query, userId);
+            var ordersDto = orders.Select(c => c.ToOrderDto()).ToList();
+            return Ok(ordersDto);
+        }
     }
 }

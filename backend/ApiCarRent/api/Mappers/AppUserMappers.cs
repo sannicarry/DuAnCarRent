@@ -18,6 +18,8 @@ namespace api.Mappers
             {
                 UserId = appUser.Id,
                 Username = appUser.UserName,
+                FirstName = appUser.FirstName,
+                LastName = appUser.LastName,
                 Email = appUser.Email,
                 BirthDate = appUser.BirthDate,
                 Phone = appUser.PhoneNumber,
@@ -28,6 +30,7 @@ namespace api.Mappers
                 Photos = appUser.Photos.Where(c => c.PhotoType == 2).Select(c => c.ToPhotoDto()).ToList(),
                 CarFavorites = appUser.CarFavorites?.Select(x => x.ToCarFavoriteDto()).ToList(),
                 UserNotifications = appUser.UserNotifications?.Select(x => x.ToUserNotificationDto()).ToList(),
+                OrderRecipient = appUser.OrderRecipient?.Select(x => x.ToOrderRecipientDto()).ToList(),
             };
         }
 

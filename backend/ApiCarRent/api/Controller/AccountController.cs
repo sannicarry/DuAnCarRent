@@ -97,6 +97,8 @@ namespace api.Controller
                 var appUser = new AppUser
                 {
                     UserName = registerDto.Username,
+                    FirstName = registerDto.FirstName ?? "abc",
+                    LastName = registerDto.LastName ?? "abc",
                     Email = registerDto.Email,
                     BirthDate = registerDto.BirthDate ?? "",
                     Address = registerDto.Address ?? "",

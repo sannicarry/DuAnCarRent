@@ -10,6 +10,6 @@ namespace api.Interfaces
     public interface IUserNotificationRepository
     {
         Task<UserNotifications> CreateAsync(CreateNotificationDto notificationModel);
-
+        Task<UserNotifications?> DeleteAsync(int notificationId);
     }
 }

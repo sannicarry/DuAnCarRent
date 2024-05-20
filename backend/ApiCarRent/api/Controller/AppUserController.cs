@@ -123,6 +123,8 @@ namespace api.Controller
                 return NotFound($"User not found {AppUserId}");
             }
             userModel.UserName = appUserDto.Username;
+            userModel.FirstName = appUserDto.FirstName;
+            userModel.LastName = appUserDto.LastName;
             userModel.Email = appUserDto.Email;
             userModel.PhoneNumber = appUserDto.Phone;
             userModel.Address = appUserDto.Address;

@@ -35,5 +35,21 @@ namespace api.Controller
             return Ok(notificationDto);
 
         }
+
+        [HttpDelete("{notificationId:int}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(int notificationId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var notification = await _userNotificationRepo.DeleteAsync(notificationId);
+            if (notification == null)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

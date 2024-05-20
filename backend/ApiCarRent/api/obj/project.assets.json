@@ -4696,11 +4696,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\NextJS Project\\car_rent_with_api\\backend\\ApiCarRent\\api\\api.csproj",
+      "projectUniqueName": "E:\\NextJS Project\\car_rent_with_api\\backend\\ApiCarRent\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\NextJS Project\\car_rent_with_api\\backend\\ApiCarRent\\api\\api.csproj",
+      "projectPath": "E:\\NextJS Project\\car_rent_with_api\\backend\\ApiCarRent\\api\\api.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\NextJS Project\\car_rent_with_api\\backend\\ApiCarRent\\api\\obj\\",
+      "outputPath": "E:\\NextJS Project\\car_rent_with_api\\backend\\ApiCarRent\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

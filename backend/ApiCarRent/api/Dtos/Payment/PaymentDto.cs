@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace api.Dtos.Payment
 {
-    public class Payment
+    public class PaymentDto
     {
         public int PaymentId { get; set; }
         public string? PaymentReference { get; set; }

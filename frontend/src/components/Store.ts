@@ -1,8 +1,15 @@
 import {
+  BankProps,
   BrandProps,
+  CarFavoriteProps,
   CarProps,
+  ClaimProps,
+  LocationProps,
   OrderProps,
+  OrderRecipientProps,
+  PaymentProps,
   PhotoProps,
+  UserNotificationsProps,
   UserProps,
 } from "@/types";
 import { create } from "zustand";
@@ -26,6 +33,10 @@ type BooleanStore = {
   setOrder: (order: OrderProps) => void;
   username: string;
   setUsername: (username: string) => void;
+  firstName: string;
+  setFirstName: (firstName: string) => void;
+  lastName: string;
+  setLastName: (lastName: string) => void;
   email: string;
   setEmail: (username: string) => void;
   phone: string;
@@ -52,8 +63,8 @@ type BooleanStore = {
   setShowSignUpForm: (show: boolean) => void;
   token: string;
   setToken: (token: string) => void;
-  userRole: string | null;
-  setUserRole: (role: string | null) => void;
+  claims: ClaimProps[];
+  setClaims: (claims: ClaimProps[]) => void;
   showOptions: boolean;
   setShowOptions: (show: boolean) => void;
   showAddNewBrand: boolean;
@@ -94,20 +105,18 @@ type BooleanStore = {
   setTotalPages: (totalPages: number) => void;
   isLocked: boolean;
   setIsLocked: (isLocked: boolean) => void;
-  role: string;
-  setRole: (role: string) => void;
-  showSettings: boolean;
-  setShowSettings: (showSettings: boolean) => void;
   errorUsername: boolean;
   setErrorUsername: (errorUsername: boolean) => void;
   errorEmail: boolean;
   setErrorEmail: (errorUsername: boolean) => void;
   errorRegexEmail: boolean;
   setErrorRegexEmail: (errorUsername: boolean) => void;
-  emailBlurred: boolean;
-  setEmailBlurred: (emailBlurred: boolean) => void;
+  blurred: boolean;
+  setBlurred: (blurred: boolean) => void;
   showRentNow: boolean;
   setShowRentNow: (showRentNow: boolean) => void;
+  allLocations: LocationProps;
+  setAllLocations: (allLocations: LocationProps) => void;
   locationFrom: string;
   setLocationFrom: (locations: string) => void;
   locationTo: string;
@@ -134,6 +143,8 @@ type BooleanStore = {
   setApprove: (approve: number) => void;
   reject: number;
   setReject: (reject: number) => void;
+  finish: number;
+  setFinish: (finish: number) => void;
   confirmDelete: boolean;
   setConfirmDelete: (confirmDelete: boolean) => void;
   exists: boolean;
@@ -144,6 +155,20 @@ type BooleanStore = {
   setAllCars: (allCars: CarProps[]) => void;
   hrefAfterLogin: string;
   setHrefAfterLogin: (hrefAfterLogin: string) => void;
+  showPanel: string;
+  setShowPanel: (showPanel: string) => void;
+  carFavorites: CarFavoriteProps[];
+  setCarFavorites: (carFavorites: CarFavoriteProps[]) => void;
+  userNotifications: UserNotificationsProps[];
+  setUserNotifications: (userNotifications: UserNotificationsProps[]) => void;
+  orderRecipients: OrderRecipientProps[];
+  setOrderRecipients: (orderRecipients: OrderRecipientProps[]) => void;
+  methodPayment: string;
+  setMethodPayment: (methodPayment: string) => void;
+  payment: PaymentProps;
+  setPayment: (payment: PaymentProps) => void;
+  bankData: BankProps[];
+  setBankData: (bankData: BankProps[]) => void;
 };
 
 export const useStore = create<BooleanStore>((set) => ({
@@ -167,9 +192,9 @@ export const useStore = create<BooleanStore>((set) => ({
   setToken: (token: string) => {
     set(() => ({ token: token }));
   },
-  userRole: null,
-  setUserRole: (role: string | null) => {
-    set(() => ({ userRole: role }));
+  claims: [],
+  setClaims: (claims: ClaimProps[]) => {
+    set(() => ({ claims }));
   },
   userId: "",
   setUserId: (userId: string) => {
@@ -206,6 +231,14 @@ export const useStore = create<BooleanStore>((set) => ({
   username: "",
   setUsername: (username: string) => {
     set(() => ({ username: username }));
+  },
+  firstName: "",
+  setFirstName: (firstName: string) => {
+    set(() => ({ firstName }));
+  },
+  lastName: "",
+  setLastName: (lastName: string) => {
+    set(() => ({ lastName }));
   },
   birthDate: "",
   setBirthDate: (birthDate: string) => {
@@ -320,10 +353,6 @@ export const useStore = create<BooleanStore>((set) => ({
   setIsLocked: (isLocked: boolean) => {
     set(() => ({ isLocked: isLocked }));
   },
-  showSettings: false,
-  setShowSettings: (showSettings: boolean) => {
-    set(() => ({ showSettings: showSettings }));
-  },
   errorUsername: false,
   setErrorUsername: (errorUsername: boolean) => {
     set(() => ({ errorUsername: errorUsername }));
@@ -336,13 +365,17 @@ export const useStore = create<BooleanStore>((set) => ({
   setErrorRegexEmail: (errorRegexEmail: boolean) => {
     set(() => ({ errorRegexEmail: errorRegexEmail }));
   },
-  emailBlurred: false,
-  setEmailBlurred: (emailBlurred: boolean) => {
-    set(() => ({ emailBlurred: emailBlurred }));
+  blurred: false,
+  setBlurred: (blurred: boolean) => {
+    set(() => ({ blurred: blurred }));
   },
   showRentNow: false,
   setShowRentNow: (showRentNow: boolean) => {
     () => ({ showRentNow: showRentNow });
+  },
+  allLocations: {} as LocationProps,
+  setAllLocations: (allLocations: LocationProps) => {
+    set(() => ({ allLocations }));
   },
   locationFrom: "",
   setLocationFrom: (location: string) => {
@@ -396,6 +429,10 @@ export const useStore = create<BooleanStore>((set) => ({
   setReject: (reject: number) => {
     set(() => ({ reject }));
   },
+  finish: 3,
+  setFinish: (finish: number) => {
+    set(() => ({ finish }));
+  },
   confirmDelete: false,
   setConfirmDelete: (confirmDelete: boolean) => {
     set(() => ({ confirmDelete }));
@@ -416,8 +453,32 @@ export const useStore = create<BooleanStore>((set) => ({
   setHrefAfterLogin: (hrefAfterLogin: string) => {
     set(() => ({ hrefAfterLogin }));
   },
-  role: "",
-  setRole: (role: string) => {
-    set(() => ({ role }));
+  showPanel: "",
+  setShowPanel: (showPanel: string) => {
+    set(() => ({ showPanel }));
+  },
+  carFavorites: [],
+  setCarFavorites: (carFavorites: CarFavoriteProps[]) => {
+    set(() => ({ carFavorites }));
+  },
+  userNotifications: [],
+  setUserNotifications: (userNotifications: UserNotificationsProps[]) => {
+    set(() => ({ userNotifications }));
+  },
+  orderRecipients: [],
+  setOrderRecipients: (orderRecipients: OrderRecipientProps[]) => {
+    set(() => ({ orderRecipients }));
+  },
+  methodPayment: "",
+  setMethodPayment: (methodPayment: string) => {
+    set(() => ({ methodPayment }));
+  },
+  payment: {} as PaymentProps,
+  setPayment: (payment: PaymentProps) => {
+    set(() => ({ payment }));
+  },
+  bankData: [],
+  setBankData: (bankData: BankProps[]) => {
+    set(() => ({ bankData }));
   },
 }));

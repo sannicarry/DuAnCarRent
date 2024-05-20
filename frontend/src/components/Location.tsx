@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useStore } from "./Store";
 import { useEffect, useRef, useState } from "react";
 import { listProvince } from "@/utils";
+import { LocationProps } from "@/types";
 
 const Location = () => {
   const {
@@ -23,6 +24,7 @@ const Location = () => {
     setError,
     checkSelectedLocation,
     setCheckSelectedLocation,
+    setAllLocations,
   } = useStore();
 
   const [showSelectedCityFrom, setShowSelectedCityFrom] = useState(false);
@@ -95,6 +97,16 @@ const Location = () => {
       setCheckSelectedLocation(false);
     } else {
       setCheckSelectedLocation(true);
+
+      const allLocations: LocationProps = {
+        locationFrom: locationFrom,
+        locationTo: locationTo,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        timeFrom: timeFrom,
+        timeTo: timeTo,
+      };
+      setAllLocations(allLocations);
     }
 
     checkDateFrom();
@@ -131,13 +143,13 @@ const Location = () => {
               </div>
               {showSelectedCityFrom && (
                 <div
-                  className="absolute flex flex-col gap-2 z-10 p-2 bg-slate-300 border rounded-xl top-[30px] left-[-30px] h-[200px] w-[180px] overflow-y-scroll"
+                  className="absolute flex flex-col gap-2 z-10 p-2 bg-yellow-50 border rounded-xl top-[30px] left-[-30px] h-[200px] w-[180px] overflow-y-scroll"
                   // ref={formRef}
                 >
                   <input
                     type="text"
                     placeholder="Search Your City..."
-                    className="max-w-[150px] rounded-md px-2"
+                    className="max-w-[150px] text-sm font-medium p-2 rounded-md"
                     value={searchLocations}
                     onChange={(e) => {
                       setSearchLocations(e.target.value);
@@ -160,9 +172,9 @@ const Location = () => {
                               }}
                               className={`${
                                 locationFrom && locationFrom == province
-                                  ? `bg-slate-500`
+                                  ? `bg-slate-100`
                                   : ""
-                              } hover:bg-slate-500 hover:cursor-pointer`}
+                              } hover:bg-slate-300 hover:cursor-pointer`}
                             >
                               {province}
                             </option>
@@ -178,9 +190,9 @@ const Location = () => {
                             }}
                             className={`${
                               locationFrom && locationFrom == province
-                                ? `bg-slate-500`
+                                ? `bg-slate-100`
                                 : ""
-                            } hover:bg-slate-500 hover:cursor-pointer`}
+                            } hover:bg-slate-300 hover:cursor-pointer`}
                           >
                             {province}
                           </option>

@@ -7,22 +7,22 @@ import { useEffect } from "react";
 export default function Home() {
   const router = useRouter();
 
-  const { userRole } = useStore();
+  const { claims } = useStore();
   let loadingPage = true;
 
   useEffect(() => {
     loadingPage = false;
-    if (userRole === "Admin") {
+    if (claims?.find((x) => x.value === "ManageDashboard")) {
       router.push("/pages/dashboard");
     } else {
       router.push("/pages/home");
     }
-  }, [userRole]);
+  }, [claims]);
 
   return (
     <>
       {loadingPage && (
-        <div className="z-100 fixed flex justify-center items-center bg-slate-600 top-0 right-0 h-full w-full opacity-60">
+        <div className="z-50 fixed flex justify-center items-center bg-slate-600 top-0 right-0 h-full w-full opacity-60">
           <Image
             src="/loader.svg"
             alt="loading"

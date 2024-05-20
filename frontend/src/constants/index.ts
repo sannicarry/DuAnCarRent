@@ -1,3 +1,5 @@
+import { fetchApiBank } from "@/utils";
+
 export const footerLinks = [
   {
     title: "About",

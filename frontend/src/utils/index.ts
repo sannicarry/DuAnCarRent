@@ -154,7 +154,7 @@ export async function fetchCars(
   if (!searchValue) {
     url = `${SERVER_URL}/api/car?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
-    url = `${SERVER_URL}/api/car?CarName=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/car?Search=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
   if (currentPage != 0) {
     try {
@@ -430,21 +430,8 @@ export async function fetchUsers(
   }
 }
 
-export async function fetchUser(users: UserProps, token: string) {
-  const {
-    userId,
-    username,
-    email,
-    phone,
-    address,
-    birthDate,
-    gender,
-    isLocked,
-    photos,
-  } = users;
+export async function fetchUserByToken(token: string) {
   if (token != "") {
-    console.log("token index = ", token);
-    console.log("vao day khong1 ?");
     try {
       const response = await fetch(`${SERVER_URL}/api/user/currentUser`, {
         method: "GET",
@@ -453,8 +440,30 @@ export async function fetchUser(users: UserProps, token: string) {
         },
       });
       if (response.ok) {
-        console.log("vao day khong2 ?");
+        const data = await response.json();
+        return data;
+      } else {
+        throw new Error("Failed to fetch user data");
+      }
+    } catch (error) {
+      throw new Error("An error occurred while fetching user data: " + error);
+    }
+  }
+}
 
+export async function fetchUserById(userId: string, token: string) {
+  if (token != "") {
+    try {
+      const response = await fetch(
+        `${SERVER_URL}/api/user/userId?userId=${userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
         const data = await response.json();
         return data;
       } else {
@@ -625,6 +634,219 @@ export async function createUploadPhotoPromises(
   });
 
   return Promise.all(filePromises);
+}
+
+export async function fetchCreateCarFavorite(
+  userId: string,
+  carId: number,
+  token: string
+) {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/carFavorites`, {
+      method: "POST",
+      body: JSON.stringify({ userId, carId }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Error create carFavorite");
+    }
+  } catch (error) {
+    throw new Error("Error create carFavorite ");
+  }
+}
+
+export async function fetchDeleteCarFavorite(
+  userId: string,
+  carId: number,
+  token: string
+) {
+  try {
+    const response = await fetch(
+      `${SERVER_URL}/api/carFavorites/${userId}/${carId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Error deleting carFavorite");
+    }
+  } catch (error) {
+    throw new Error("Error deleting carFavorite ");
+  }
+}
+
+export async function fetchCreateNotificaton(
+  userCreateId: string,
+  carId: number,
+  userId: string,
+  message: string,
+  token: string
+) {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/UserNotification`, {
+      method: "POST",
+      body: JSON.stringify({ userCreateId, carId, userId, message }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Error create Notification");
+    }
+  } catch (error) {
+    throw new Error("Error create Notification ");
+  }
+}
+
+export async function fetchCreateOrderRecipient(
+  userId: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  phone: string,
+  token: string
+) {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/OrderRecipient`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        userId,
+        firstName,
+        lastName,
+        email,
+        phoneNumber: phone,
+      }),
+    });
+    return response.json();
+  } catch (error) {
+    throw new Error("Error create OrderRecipient ");
+  }
+}
+
+export async function fetchUpdateOrderRecipient(
+  id: number,
+  firstName: string,
+  lastName: string,
+  email: string,
+  token: string
+) {
+  try {
+    const response = await fetch(
+      `${SERVER_URL}/api/OrderRecipient?id=${id}&firstName=${firstName}&lastName=${lastName}&email=${email}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.json();
+  } catch (error) {
+    throw new Error("Error update OrderRecipient ");
+  }
+}
+
+export async function fetchCreatePayment(
+  paymentReference: string,
+  userId: string,
+  method: number,
+  price: number,
+  quantity: number,
+  paymentDate: string,
+  token: string
+) {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        paymentReference,
+        userId,
+        method,
+        price,
+        quantity,
+        paymentDate,
+      }),
+    });
+    return response.json();
+  } catch (error) {
+    throw new Error("Error create Payment ");
+  }
+}
+
+export async function fetchCreateOrder(
+  userId: string,
+  carId: number,
+  paymentId: number,
+  orderRecipientId: number,
+  locationFrom: string,
+  dateFrom: string,
+  timeFrom: string,
+  locationTo: string,
+  dateTo: string,
+  timeTo: string,
+  statusOrder: number,
+  statusPayment: number,
+  token: string
+) {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        userId,
+        carId,
+        paymentId,
+        orderRecipientId,
+        locationFrom,
+        dateFrom,
+        timeFrom,
+        locationTo,
+        dateTo,
+        timeTo,
+        statusOrder,
+        statusPayment,
+      }),
+    });
+    return response.json();
+  } catch (error) {
+    throw new Error("Error create Order ");
+  }
+}
+
+export async function fetchApiBank() {
+  let url = `https://api.vietqr.io/v2/banks`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch order data");
+    }
+  } catch (error) {
+    throw new Error("An error occurred while fetching order data: " + error);
+  }
 }
 
 export const getPhotoUrl = (photo: UploadPhoto) => {

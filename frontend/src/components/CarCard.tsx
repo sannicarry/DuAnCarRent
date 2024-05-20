@@ -1,20 +1,23 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { CustomButton, Payment } from ".";
 import { CarProps, UploadPhoto } from "@/types";
 import {
   calculateCarRent,
   createUploadPhotoPromises,
+  fetchCreateCarFavorite,
+  fetchDeleteCarFavorite,
   getPhotoUrl,
 } from "@/utils";
+import { useStore } from "./Store";
 
 interface CarCardProps {
   car: CarProps;
 }
 
-const CarCard = ({ car }: CarCardProps) => {
+const CarCard = memo(({ car }: CarCardProps) => {
   const {
     make,
     model,
@@ -27,7 +30,7 @@ const CarCard = ({ car }: CarCardProps) => {
     transmission,
   } = car;
 
-  const [isOpen, setIsOpen] = useState(false);
+  const { user, token, success, setSuccess, searchValue } = useStore();
 
   const carRent = calculateCarRent(cityMpg, Number(year));
   const [photos, setPhotos] = useState<UploadPhoto[]>([]);
@@ -53,22 +56,74 @@ const CarCard = ({ car }: CarCardProps) => {
     fetchPhoto();
   }, [car]);
 
+  const handleCarFavorite = async (carId: number) => {
+    const checkExistCar = user.carFavorites.find(
+      (x) => x.car.carId === car.carId
+    );
+
+    if (checkExistCar) {
+      const fetchDelete = await fetchDeleteCarFavorite(
+        user.userId,
+        car.carId,
+        token
+      );
+    } else {
+      const fetchCreate = await fetchCreateCarFavorite(
+        user.userId,
+        car.carId,
+        token
+      );
+    }
+    setSuccess(!success);
+  };
+
+  const containsSearchValue = (value: string) => {
+    return (
+      searchValue != "" &&
+      value.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  };
+
   return (
     <div className="flex flex-col bg-white p-5 rounded-xl">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-lg capitalize">
-          {make} {model}
+      <div className="grid grid-cols-5 items-center">
+        <h1 className="col-span-4 font-bold text-lg capitalize h-14 truncate">
+          {containsSearchValue(make) ? (
+            <span className="bg-blue-500">{make} </span>
+          ) : (
+            <>{make} </>
+          )}
+          {containsSearchValue(model) ? (
+            <span className="bg-blue-500">{model}</span>
+          ) : (
+            <>{model}</>
+          )}
         </h1>
-        <Image
-          src="/Like2.svg"
-          alt="like"
-          width={20}
-          height={20}
-          className=""
-        ></Image>
+        <button
+          onClick={() => {
+            handleCarFavorite(car.carId);
+          }}
+          className="h-full col-span-1 flex justify-end items-start"
+        >
+          <Image
+            src={
+              user.carFavorites?.find((x) => x.car.carId === car.carId)
+                ? "/LikeFill.svg"
+                : "/LikeNoFill.svg"
+            }
+            alt="like"
+            width={20}
+            height={20}
+            className="mt-1"
+          ></Image>
+        </button>
       </div>
-      <span className="text-[90A3BF] opacity-40 font-medium capitalize">
-        {type}
+      <span className="text-[90A3BF] opacity-60 font-medium capitalize">
+        {containsSearchValue(type) ? (
+          <span className="bg-blue-500">{type}</span>
+        ) : (
+          <>{type}</>
+        )}
       </span>
       <div className="relative w-full h-40 my-3 object-contain">
         <Image
@@ -133,7 +188,7 @@ const CarCard = ({ car }: CarCardProps) => {
         </div>
         <Link
           href={{
-            pathname: "/pages/rentnow",
+            pathname: "/pages/rentNow",
             query: { car: JSON.stringify(car) },
           }}
         >
@@ -146,6 +201,6 @@ const CarCard = ({ car }: CarCardProps) => {
       </div>
     </div>
   );
-};
+});
 
-export default CarCard;
+export default memo(CarCard);

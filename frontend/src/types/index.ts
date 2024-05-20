@@ -66,6 +66,8 @@ export interface BrandProps {
 export interface UserProps {
   userId: string;
   username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   address: string;
@@ -73,7 +75,10 @@ export interface UserProps {
   gender: boolean;
   isLocked: boolean;
   photos: PhotoProps[];
-  role: string;
+  claims: ClaimProps[];
+  carFavorites: CarFavoriteProps[];
+  userNotifications: UserNotificationsProps[];
+  orderRecipient: OrderRecipientProps[];
 }
 
 export interface OrderProps {
@@ -88,4 +93,56 @@ export interface OrderProps {
   timeTo: string;
   totalPrice: number;
   status: number;
+}
+
+export interface ClaimProps {
+  type: string;
+  value: string;
+}
+
+export interface CarFavoriteProps {
+  carFavoritesId: number;
+  car: CarProps;
+}
+
+export interface UserNotificationsProps {
+  userNotificationsId: number;
+  userIdCreate: string;
+  carId: number;
+  message: string;
+}
+
+export interface LocationProps {
+  locationFrom: string;
+  locationTo: string;
+  dateFrom: string;
+  dateTo: string;
+  timeFrom: string;
+  timeTo: string;
+}
+
+export interface OrderRecipientProps {
+  orderRecipientId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
+
+export interface PaymentProps {
+  paymentId: number;
+  paymentReference: string;
+  userId: string;
+  method: number;
+  price: number;
+  quantity: number;
+  totalPrice: number;
+  paymentDate: string;
+}
+
+export interface BankProps {
+  id: number;
+  logo: string;
+  name: string;
+  shortName: string;
 }

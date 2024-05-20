@@ -34,6 +34,8 @@ const BrandManagement = ({ allBrands, currentPage }: BrandManagementProps) => {
     loading,
   } = useStore();
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [brandModel, setBrandModel] = useState<BrandProps>({
     brandId: 0,
     brandName: "",
@@ -57,6 +59,20 @@ const BrandManagement = ({ allBrands, currentPage }: BrandManagementProps) => {
     return pageIndex === currentPage;
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setSearchValue(searchTerm);
+    }
+  };
+
+  const handleSearchClick = () => {
+    setSearchValue(searchTerm);
+  };
+
   return (
     <div className="relative flex flex-col h-full">
       <div className="flex justify-between items-center border-b px-6 py-4 bg-gray-50 dark:bg-gray-700">
@@ -70,16 +86,16 @@ const BrandManagement = ({ allBrands, currentPage }: BrandManagementProps) => {
               alt="search"
               height={20}
               width={20}
-              className="mx-3 object-contain"
+              className="mx-3 object-contain hover:cursor-pointer"
+              onClick={handleSearchClick}
             ></Image>
             <input
               type="text"
               className="border-none w-[100%] focus:outline-none truncate"
               placeholder="Search BrandName"
-              value={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
+              value={searchTerm}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
             />
           </div>
         </div>

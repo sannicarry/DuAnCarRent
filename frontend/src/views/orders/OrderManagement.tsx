@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useStore } from "@/components/Store";
 import { OrderProps } from "@/types";
+import { useState } from "react";
 
 interface OrderManagementProps {
   allOrders: OrderProps[];
@@ -14,8 +15,24 @@ const OrderManagement = ({ allOrders, currentPage }: OrderManagementProps) => {
   const { searchValue, setSearchValue, setCurrentPage, totalPages, loading } =
     useStore();
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const isActivePage = (pageIndex: number) => {
     return pageIndex === currentPage;
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setSearchValue(searchTerm);
+    }
+  };
+
+  const handleSearchClick = () => {
+    setSearchValue(searchTerm);
   };
 
   return (
@@ -31,16 +48,16 @@ const OrderManagement = ({ allOrders, currentPage }: OrderManagementProps) => {
               alt="search"
               height={20}
               width={20}
-              className="mx-3 object-contain"
+              className="mx-3 object-contain hover:cursor-pointer"
+              onClick={handleSearchClick}
             ></Image>
             <input
               type="text"
               className="border-none w-[100%] focus:outline-none truncate"
               placeholder="Search Order"
-              value={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
+              value={searchTerm}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
             />
           </div>
         </div>

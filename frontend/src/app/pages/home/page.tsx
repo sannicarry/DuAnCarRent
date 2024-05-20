@@ -3,46 +3,27 @@
 import { CarCard, Hero, Location, Sidebar } from "@/components";
 import { useStore } from "@/components/Store";
 import { PhotoProps } from "@/types";
-import { fetchCars } from "@/utils";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { fetchCarCount, fetchCars } from "@/utils";
+import { useEffect, useState, memo } from "react";
 
 const page = () => {
   const [allCars, setAllCars] = useState([]);
 
   const {
     make,
-    setMake,
     model,
-    setModel,
     type,
-    setType,
     gasoline,
-    setGasoline,
     capacity,
-    setCapacity,
     year,
-    setYear,
     cityMpg,
-    setCityMpg,
     fuel,
-    setFuel,
     transmission,
-    setTransmission,
     searchValue,
-    setSearchValue,
-    itemsPerPage,
-    setItemsPerPage,
     currentPage,
-    setCurrentPage,
-    totalPages,
-    setTotalPages,
     token,
-    userRole,
-    loading,
-    setLoading,
-    login,
-    setLogin,
+    user,
+    setUser,
   } = useStore();
 
   const [carId, setCarId] = useState(0);
@@ -50,6 +31,7 @@ const page = () => {
 
   const [limit, setLimit] = useState(10);
   const [photos, setPhotos] = useState<PhotoProps[]>([]);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
 
   const getCars = async () => {
     try {
@@ -80,7 +62,12 @@ const page = () => {
 
   useEffect(() => {
     getCars();
-  }, [token]);
+  }, [token, itemsPerPage, searchValue]);
+
+  const handleViewAll = async () => {
+    const countCar = await fetchCarCount(token);
+    setItemsPerPage(countCar);
+  };
 
   return (
     <>
@@ -91,9 +78,12 @@ const page = () => {
           <span className="text-[90A3BF] font-medium opacity-40">
             Popular Car
           </span>
-          <Link href="#">
-            <span className="text-blue-400 font-semibold">View All</span>
-          </Link>
+          <button
+            className="text-blue-400 font-semibold hover:opacity-80 p-2"
+            onClick={() => handleViewAll()}
+          >
+            View All
+          </button>
         </div>
         <div>
           {allCars.length > 0 ? (
@@ -119,4 +109,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default memo(page);

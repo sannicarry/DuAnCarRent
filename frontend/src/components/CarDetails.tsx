@@ -11,13 +11,11 @@ interface CarDetailsProps {
 }
 
 const CarDetails = ({ car }: CarDetailsProps) => {
-  const [photos, setPhotos] = useState<UploadPhoto[]>([
-    { file: new File([], ""), photoId: 0 },
-  ]);
-
+  const [photos, setPhotos] = useState<UploadPhoto[]>([]);
+  console.log("car = ", car);
   useEffect(() => {
     const fetchPhotos = async () => {
-      if (car && car?.carId !== 0) {
+      if (car && car?.carId !== undefined) {
         try {
           const baseURL = process.env.SERVER_URL;
 
@@ -50,11 +48,11 @@ const CarDetails = ({ car }: CarDetailsProps) => {
           </div>
           <div className="h-40 flex justify-center items-center">
             <Image
-              src={getPhotoUrl(photos[0]) ?? "/nophoto.png"}
+              src={getPhotoUrl(photos[0]) ?? "/NoCarPhoto.webp"}
               alt="car model"
-              width={40}
-              height={40}
-              className="object-contain h-full w-full"
+              width={160}
+              height={160}
+              className="object-contain"
             />
           </div>
         </div>

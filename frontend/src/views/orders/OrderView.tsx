@@ -1,13 +1,18 @@
 "use client";
 
 import { useStore } from "@/components/Store";
-import { OrderProps, UploadPhoto } from "@/types";
+import { OrderProps, UploadPhoto, UserNotificationsProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { createUploadPhotoPromises, getPhotoUrl } from "@/utils";
+import {
+  createUploadPhotoPromises,
+  fetchCreateNotificaton,
+  getPhotoUrl,
+} from "@/utils";
+import { SERVER_URL } from "@/constants";
 
 const OrderView = ({ order }: { order: OrderProps }) => {
   const router = useRouter();
@@ -19,9 +24,11 @@ const OrderView = ({ order }: { order: OrderProps }) => {
     setShowOptions,
     approve,
     reject,
+    finish,
     setSuccess,
     confirmDelete,
     setConfirmDelete,
+    user,
   } = useStore();
 
   const [photoCar, setPhotoCar] = useState<UploadPhoto[]>([]);
@@ -30,7 +37,7 @@ const OrderView = ({ order }: { order: OrderProps }) => {
     const fetchPhotos = async () => {
       if (order.car && order.car?.carId !== undefined) {
         try {
-          const baseURL = process.env.SERVER_URL || "http://localhost:5290";
+          const baseURL = SERVER_URL;
 
           const uploadPromises = createUploadPhotoPromises(
             order.car?.photos,
@@ -48,7 +55,7 @@ const OrderView = ({ order }: { order: OrderProps }) => {
 
   const handleOrderHandling = async (status: number) => {
     try {
-      const url = `http://localhost:5290/api/order/UpdateStatus/${order.orderId}?status=${status}`;
+      const url = `${SERVER_URL}/api/order/UpdateStatus/${order.orderId}?status=${status}`;
       const response = await fetch(url, {
         method: "PUT",
         headers: {
@@ -58,8 +65,25 @@ const OrderView = ({ order }: { order: OrderProps }) => {
       });
       const data = await response.json();
       if (response.ok) {
-        setSuccess(true);
         setShowOptions(false);
+        let message;
+        if (status == 1) {
+          message = "Your car rental application has been Approved !";
+        } else if (status == 2) {
+          message = "Your car rental application has been Rejected !";
+        } else {
+          message =
+            "Your car rental application has been Finish. You can rating for car !";
+        }
+        const fetchCreate = await fetchCreateNotificaton(
+          user.userId,
+          order.car.carId,
+          order.user.userId,
+          message,
+          token
+        );
+
+        setSuccess(true);
         alert("success");
         router.push("/pages/order", { scroll: false });
       } else {
@@ -72,7 +96,7 @@ const OrderView = ({ order }: { order: OrderProps }) => {
 
   const handleDeleteOrder = async () => {
     try {
-      const url = `http://localhost:5290/api/order/${order.orderId}`;
+      const url = `${SERVER_URL}/api/order/${order.orderId}`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -130,6 +154,14 @@ const OrderView = ({ order }: { order: OrderProps }) => {
                 }}
               >
                 Reject
+              </button>
+              <button
+                className="font-semibold border border-black rounded-sm bg-slate-100 text-slate-700 hover:bg-slate-700 hover:text-slate-100"
+                onClick={() => {
+                  handleOrderHandling(finish);
+                }}
+              >
+                Finish
               </button>
             </div>
           )}
@@ -196,7 +228,7 @@ const OrderView = ({ order }: { order: OrderProps }) => {
               {order.car?.make} {order.car?.model}
             </h3>
             <Image
-              src={getPhotoUrl(photoCar[0]) ?? "/loader.svg"}
+              src={getPhotoUrl(photoCar[0]) ?? "/NoCarPhoto.webp"}
               alt={`Photo Car`}
               width={160}
               height={160}

@@ -14,6 +14,10 @@ const page = () => {
   const {
     username,
     setUsername,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
     email,
     setEmail,
     phone,
@@ -69,6 +73,8 @@ const page = () => {
         },
         body: JSON.stringify({
           username,
+          firstName,
+          lastName,
           email,
           password,
           address,
@@ -135,14 +141,7 @@ const page = () => {
     <div className="content relative flex justify-center items-center">
       <div className="fixed top-0 z-10 h-full w-full flex justify-center items-center">
         <div className="relative flex gap-5 flex-col justify-center lg:px-8 h-[95%] w-[80%] sm:w-[50%] bg-white rounded-md border-2 border-gray-300">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm h-[100px]">
-            <Image
-              src="/Hero1.svg"
-              alt="Car rent"
-              className="mx-auto h-10 w-auto"
-              width={40}
-              height={40}
-            ></Image>
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Sign up to account!
             </h2>
@@ -178,6 +177,50 @@ const page = () => {
                       onChange={(e) => setUsername(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <label
+                      htmlFor="firstName"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      FirstName
+                    </label>
+                    <div className="">
+                      <input
+                        id="firstName"
+                        name="firstName"
+                        type="text"
+                        autoComplete="off"
+                        required
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-center">
+                      <label
+                        htmlFor="lastName"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        LastName
+                      </label>
+                    </div>
+                    <div className="">
+                      <input
+                        id="lastName"
+                        name="lastName"
+                        type="text"
+                        autoComplete="off"
+                        required
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -239,7 +282,7 @@ const page = () => {
                     </div>
                   </div>
                 </div>
-                <div>
+                <div className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="password"
@@ -261,24 +304,46 @@ const page = () => {
                     />
                   </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="birthDate"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    BirthDate
-                  </label>
-                  <div className="">
-                    <input
-                      id="birthDate"
-                      name="birthDate"
-                      type="text"
-                      autoComplete="off"
-                      required
-                      value={birthDate}
-                      onChange={(e) => setBirthDate(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
+                <div className="flex gap-2">
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="birthDate"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      BirthDate
+                    </label>
+                    <div className="">
+                      <input
+                        id="birthDate"
+                        name="birthDate"
+                        type="text"
+                        autoComplete="off"
+                        required
+                        value={birthDate}
+                        onChange={(e) => setBirthDate(e.target.value)}
+                        className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="address"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Address
+                    </label>
+                    <div className="">
+                      <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        autoComplete="off"
+                        required
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="block w-full rounded-md border-0 py-1.5 pl-2 pr-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">

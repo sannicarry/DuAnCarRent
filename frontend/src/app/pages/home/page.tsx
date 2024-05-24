@@ -1,9 +1,10 @@
 "use client";
 
-import { CarCard, Hero, Location, Sidebar } from "@/components";
+import { CarCard, Hero, Sidebar } from "@/components";
 import { useStore } from "@/components/Store";
 import { PhotoProps } from "@/types";
 import { fetchCarCount, fetchCars } from "@/utils";
+import LocationOrder from "@/views/locations/LocationOrder";
 import { useEffect, useState, memo } from "react";
 
 const page = () => {
@@ -24,6 +25,7 @@ const page = () => {
     token,
     user,
     setUser,
+    bank,
   } = useStore();
 
   const [carId, setCarId] = useState(0);
@@ -65,15 +67,14 @@ const page = () => {
   }, [token, itemsPerPage, searchValue]);
 
   const handleViewAll = async () => {
-    const countCar = await fetchCarCount(token);
+    const countCar = await fetchCarCount(searchValue, token);
     setItemsPerPage(countCar);
   };
 
   return (
     <>
       <div className="content overflow-hidden relative">
-        <Hero />
-        <Location />
+        <LocationOrder />
         <div className="flex justify-between px-5 py-5 sm:py-10">
           <span className="text-[90A3BF] font-medium opacity-40">
             Popular Car

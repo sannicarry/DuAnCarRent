@@ -63,7 +63,7 @@ const UserManagement = ({ allUsers, currentPage }: UserManagementProps) => {
         </div>
       </div>
       <div className="h-[50px] grid grid-cols-12 border-b py-2 items-center text-sm font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <div className="col-span-2 px-6">Username</div>
+        <div className="col-span-2 px-6">FullName</div>
         <div className="col-span-2">Email</div>
         <div className="col-span-2">Phone</div>
         <div className="col-span-2">Address</div>
@@ -80,7 +80,7 @@ const UserManagement = ({ allUsers, currentPage }: UserManagementProps) => {
                 className="h-[50px] grid grid-cols-12 items-center text-sm font-medium text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
               >
                 <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.username}
+                  {User.firstName} {User.lastName}
                 </div>
                 <div className="h-full flex items-center border-b  col-span-2 font-medium text-gray-900 whitespace-normal dark:text-white">
                   {User.email}
@@ -97,8 +97,8 @@ const UserManagement = ({ allUsers, currentPage }: UserManagementProps) => {
                 <div className="h-full flex items-center border-b  col-span-1 font-medium text-gray-900 whitespace-normal dark:text-white">
                   {User.gender ? "Male" : "Female"}
                 </div>
-                <div className="h-full flex items-center border-b  col-span-1 font-medium text-gray-900 whitespace-normal dark:text-white">
-                  {User.isLocked && "&checkmark"}
+                <div className="h-full flex items-center justify-center border-b  col-span-1 font-medium text-gray-900 whitespace-normal dark:text-white">
+                  {User.isLocked && "✓"}
                 </div>
               </div>
             ))
@@ -158,7 +158,7 @@ const UserManagement = ({ allUsers, currentPage }: UserManagementProps) => {
           </div>
         </div>
         {loading && (
-          <div className="absolute flex justify-center items-center top-[20%] right-[20%] h-1/2 w-1/2 opacity-60">
+          <div className="absolute flex justify-center items-center top-[50%] right-[50%] h-10 w-10 opacity-60">
             <Image
               src="/loader.svg"
               alt="loading"

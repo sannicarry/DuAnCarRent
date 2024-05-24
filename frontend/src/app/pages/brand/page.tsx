@@ -66,7 +66,7 @@ const Brand = () => {
 
   const getCountBrands = async () => {
     try {
-      const count = await fetchBrandCount(token);
+      const count = await fetchBrandCount(searchValue, token);
       setTotalPages(Math.ceil(count / itemsPerPage));
     } catch (err) {
       console.error(err);
@@ -78,7 +78,7 @@ const Brand = () => {
     if (totalPages > 0 && currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
-  }, [success, totalPages]);
+  }, [success, searchValue, totalPages]);
 
   return (
     <>

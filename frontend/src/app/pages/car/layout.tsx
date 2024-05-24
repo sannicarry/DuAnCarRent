@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function CarLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="content grid grid-cols-5 bg-[#F6F7F9]">
+    <div className="flex content bg-[#F6F7F9]">
       <Sidebar />
-      <div className="col-span-4 bg-white ml-16 border-2 rounded-md">
+      <div className="w-full ml-16 bg-white border-2 rounded-md">
         {children}
       </div>
     </div>

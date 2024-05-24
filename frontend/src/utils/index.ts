@@ -74,14 +74,17 @@ export async function fetchBrandByBrandId(brandId?: number, token?: string) {
   }
 }
 
-export async function fetchBrandCount(token: string) {
+export async function fetchBrandCount(searchValue: string, token: string) {
   try {
-    const response = await fetch(`${SERVER_URL}/api/brand/GetCount`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${SERVER_URL}/api/brand/GetCount?Search=${searchValue}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -232,14 +235,17 @@ export async function fetchDeleteCar(id: number, token: string) {
   }
 }
 
-export async function fetchCarCount(token: string) {
+export async function fetchCarCount(searchValue: string, token: string) {
   try {
-    const response = await fetch(`${SERVER_URL}/api/car/GetCount`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${SERVER_URL}/api/car/GetCount?Search=${searchValue}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -387,29 +393,20 @@ export async function fetchCheckEmail(email: string, token: string) {
 }
 
 export async function fetchUsers(
-  users: UserProps,
   token: string,
   currentPage?: number,
   itemsPerPage?: number,
   searchValue?: string
 ) {
-  const {
-    userId,
-    username,
-    email,
-    phone,
-    address,
-    birthDate,
-    gender,
-    isLocked,
-  } = users;
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
   if (!searchValue) {
     url = `${SERVER_URL}/api/user?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   } else {
-    url = `${SERVER_URL}/api/user?SearchUser=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    url = `${SERVER_URL}/api/user?Search=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
   }
+
+  console.log("url = ", url);
   if (currentPage != 0 && token != "") {
     try {
       const response = await fetch(url, {
@@ -475,15 +472,18 @@ export async function fetchUserById(userId: string, token: string) {
   }
 }
 
-export async function fetchUserCount(token: string) {
+export async function fetchUserCount(searchValue: string, token: string) {
   try {
     console.log("token Count = ", token);
-    const response = await fetch(`${SERVER_URL}/api/user/GetCount`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${SERVER_URL}/api/user/GetCount?Search=${searchValue}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -498,25 +498,11 @@ export async function fetchUserCount(token: string) {
 }
 
 export async function fetchOrders(
-  orders: OrderProps,
   token?: string,
   currentPage?: number,
   itemsPerPage?: number,
   searchValue?: string
 ) {
-  const {
-    orderId,
-    user,
-    car,
-    locationFrom,
-    dateFrom,
-    timeFrom,
-    locationTo,
-    dateTo,
-    timeTo,
-    totalPrice,
-    status,
-  } = orders;
   searchValue = searchValue?.replace(/\s/g, "");
   let url;
   if (!searchValue) {
@@ -546,7 +532,6 @@ export async function fetchOrders(
 
 export async function fetchOrderByOrderId(orderId?: number, token?: string) {
   let url = `${SERVER_URL}/api/order/${orderId}`;
-  console.log("url = ", url);
   if (token != "" && orderId != 0) {
     try {
       const response = await fetch(url, {
@@ -567,9 +552,43 @@ export async function fetchOrderByOrderId(orderId?: number, token?: string) {
   }
 }
 
-export async function fetchOrderCount(token: string) {
+export async function fetchOrderCount(searchValue: string, token: string) {
   try {
-    const response = await fetch(`${SERVER_URL}/api/order/GetCount`, {
+    const response = await fetch(
+      `${SERVER_URL}/api/order/GetCount?Search=${searchValue}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch count order data");
+    }
+  } catch (error) {
+    throw new Error(
+      "An error occurred while fetching count order data: " + error
+    );
+  }
+}
+
+export async function fetchOrderCountByUser(
+  userId: string,
+  searchValue: string,
+  token: string
+) {
+  try {
+    let url;
+    if (searchValue != "") {
+      url = `${SERVER_URL}/api/order/GetCountByUser?Search=${searchValue}&userId=${userId}`;
+    } else {
+      url = `${SERVER_URL}/api/order/GetCountByUser?userId=${userId}`;
+    }
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -579,7 +598,7 @@ export async function fetchOrderCount(token: string) {
       const data = await response.json();
       return data;
     } else {
-      throw new Error("Failed to fetch count order data");
+      throw new Error("Failed to fetch count order by user data");
     }
   } catch (error) {
     throw new Error(
@@ -846,6 +865,95 @@ export async function fetchApiBank() {
     }
   } catch (error) {
     throw new Error("An error occurred while fetching order data: " + error);
+  }
+}
+
+export async function fetchOrderIdLatest(token: string) {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/order/latest`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error("Failed to fetch orderIdLatest ");
+    }
+  } catch (error) {
+    throw new Error("An error occurred while fetching orderIdLatest: " + error);
+  }
+}
+
+export async function fetchOrderByUserId(
+  userId: string,
+  searchValue: string,
+  currentPage: number,
+  itemsPerPage: number,
+  token: string
+) {
+  try {
+    let url;
+    if (searchValue != "") {
+      url = `${SERVER_URL}/api/order/${userId}?Search=${searchValue}&PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    } else {
+      url = `${SERVER_URL}/api/order/${userId}?PageNumber=${currentPage}&PageSize=${itemsPerPage}`;
+    }
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error("Failed to fetch order by userId ");
+    }
+  } catch (error) {
+    throw new Error(
+      "An error occurred while fetching order by userId: " + error
+    );
+  }
+}
+
+export async function fetchCreateCardUser(
+  userId: string,
+  logo: string,
+  name: string,
+  shortName: string,
+  bin: string,
+  cardNumber: string,
+  release: string,
+  cardholderName: string,
+  token: string
+) {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/CardUser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        userId,
+        logo,
+        name,
+        shortName,
+        bin,
+        cardNumber,
+        release,
+        cardHolderName: cardholderName,
+      }),
+    });
+    return response.json();
+  } catch (error) {
+    throw new Error("Error create Card User ");
   }
 }
 

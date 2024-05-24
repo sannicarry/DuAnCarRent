@@ -79,6 +79,7 @@ export interface UserProps {
   carFavorites: CarFavoriteProps[];
   userNotifications: UserNotificationsProps[];
   orderRecipient: OrderRecipientProps[];
+  cardUser: CardUserProps[];
 }
 
 export interface OrderProps {
@@ -91,8 +92,10 @@ export interface OrderProps {
   locationTo: string;
   dateTo: string;
   timeTo: string;
-  totalPrice: number;
-  status: number;
+  statusOrder: number;
+  statusPayment: number;
+  orderRecipient: OrderRecipientProps;
+  payment: PaymentProps;
 }
 
 export interface ClaimProps {
@@ -145,4 +148,16 @@ export interface BankProps {
   logo: string;
   name: string;
   shortName: string;
+  bin: string;
+}
+
+export interface CardUserProps {
+  cardUserId: number;
+  logo: string;
+  name: string;
+  shortName: string;
+  bin: string;
+  cardNumber: string;
+  release: string;
+  cardHolderName: string;
 }

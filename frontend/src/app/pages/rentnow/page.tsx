@@ -3,7 +3,7 @@
 import { CarProps, PhotoProps, UserProps } from "@/types";
 import { SERVER_URL, features } from "@/constants";
 import { calculateCarRent } from "@/utils";
-import { CarDetails, Comment, CustomButton, Location } from "@/components";
+import { CarDetails, Comment, CustomButton } from "@/components";
 import { useSearchParams } from "next/navigation";
 
 import { useEffect, useState } from "react";
@@ -12,39 +12,20 @@ import Link from "next/link";
 import { useStore } from "@/components/Store";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
+import LocationOrder from "@/views/locations/LocationOrder";
 
 const page = () => {
   const router = useRouter();
 
   const {
-    locationFrom,
-    setLocationFrom,
-    locationTo,
-    setLocationTo,
-    dateFrom,
-    setDateFrom,
-    dateTo,
-    setDateTo,
-    timeFrom,
-    setTimeFrom,
-    timeTo,
-    setTimeTo,
-    error,
-    setError,
-    success,
-    setSuccess,
-    token,
-    user,
-    status,
-    setStatus,
     login,
     setLogin,
-    checkSelectedLocation,
     setHrefAfterLogin,
     car,
     setCar,
-    allLocations,
-    setAllLocations,
+    checkSelectedLocation,
+    setCheckSelectedLocation,
   } = useStore();
 
   const searchParams = useSearchParams();
@@ -84,10 +65,28 @@ const page = () => {
     },
   ];
 
+  const handleClickPayNow = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!login) {
+      setHrefAfterLogin(window.location.href);
+      toast.error("Please login", {
+        onClose: () => {
+          router.push("/pages/login");
+        },
+      });
+    } else if (!checkSelectedLocation) {
+      toast.error("Please select location");
+      return;
+    } else {
+      localStorage.setItem("car", JSON.stringify(car));
+      router.push("/pages/payNow");
+    }
+  };
+
   return (
     <>
       <div className="content bg-[#F6F7F9] gap-5 flex flex-col justify-center items-center">
-        <Location />
+        <LocationOrder />
         <div
           className="w-full relative transform rounded-2xl bg-gray-600 p-6 
         text-left shadow-xl transition-all flex flex-col gap-5"
@@ -103,7 +102,7 @@ const page = () => {
                 performance, inspired by the most unforgiving proving ground,
                 the "race track".
               </span>
-              <div className="flex gap-2 items-center">
+              {/* <div className="flex gap-2 items-center">
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((index) => (
                     <div key={index}>
@@ -117,7 +116,7 @@ const page = () => {
                   ))}
                 </div>
                 <span className="text-[3D5278] font-normal opacity-[0.8]">{`100+ Reviews`}</span>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex flex-col">
@@ -163,38 +162,17 @@ const page = () => {
                   </div>
                 </div>
               </div>
-              {login ? (
-                <>
-                  <Link
-                    href={{
-                      pathname: "/pages/payNow",
-                      query: {
-                        car: JSON.stringify(car),
-                        allLocations: JSON.stringify(allLocations),
-                      },
-                    }}
-                  >
-                    <CustomButton
-                      title="Pay Now"
-                      containerStyles="hover:opacity-80 text-white rounded-md max-xl:bg-primary-blue bg-primary-blue w-[120px]"
-                    />
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/pages/login"
-                    onClick={() => {
-                      setHrefAfterLogin(window.location.href);
-                    }}
-                  >
-                    <CustomButton
-                      title="Pay Now"
-                      containerStyles="hover:opacity-80 text-white rounded-md max-xl:bg-primary-blue bg-primary-blue w-[120px]"
-                    />
-                  </Link>
-                </>
-              )}
+              <div
+                className=""
+                onClick={(e) => {
+                  handleClickPayNow(e);
+                }}
+              >
+                <CustomButton
+                  title="Pay Now"
+                  containerStyles="hover:opacity-80 text-white rounded-md max-xl:bg-primary-blue bg-primary-blue w-[120px]"
+                />
+              </div>
             </div>
           </div>
           {/* <Comment /> */}

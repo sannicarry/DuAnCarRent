@@ -16,6 +16,9 @@ import { SERVER_URL } from "@/constants";
 import CarLike from "./CarFavorite";
 import CarFavorite from "./CarFavorite";
 import Notification from "./Notification";
+import { MdHistory } from "react-icons/md";
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const router = useRouter();
@@ -42,11 +45,14 @@ const Navbar = () => {
     setSearchValue,
     orderRecipients,
     setOrderRecipients,
+    cardsUser,
+    setCardsUser,
   } = useStore();
 
   const [showLogoutOption, setShowLogoutOption] = useState(false);
   const [photoUser, setPhotoUser] = useState<UploadPhoto[]>([]);
   const [loadingFetchPhoto, setLoadingFetchPhoto] = useState(false);
+  const [loadingGetToken, setLoadingGetToken] = useState(false);
 
   const togglePanel = (panel: string) => {
     if (showPanel === panel) {
@@ -68,10 +74,13 @@ const Navbar = () => {
     setUser({} as UserProps);
     setClaims([]);
     setShowLogoutOption(false);
-    setTimeout(() => {
-      setLogout(false);
-      router.push("/pages/home", { scroll: true });
-    }, 2000);
+    toast.success("Logout successfully!", {
+      position: "top-right",
+      onClose: () => {
+        setLogout(false);
+        router.push("/pages/home", { scroll: true });
+      },
+    });
   };
 
   useEffect(() => {
@@ -81,10 +90,11 @@ const Navbar = () => {
         setToken(isLogged);
         setLogin(true);
       }
+      setLoadingGetToken(true);
     };
 
     fetchData();
-  }, [success]);
+  }, [login]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -195,7 +205,7 @@ const Navbar = () => {
                           />
                         </div>
                       </button>
-                      <button onClick={() => togglePanel("notifications")}>
+                      {/* <button onClick={() => togglePanel("notifications")}>
                         <div className="w-10 h-10 relative hover:bg-slate-400 rounded-full overflow-hidden">
                           <Image
                             src="/Notification.svg"
@@ -205,7 +215,7 @@ const Navbar = () => {
                             height={40}
                           />
                         </div>
-                      </button>
+                      </button> */}
                       <button onClick={() => togglePanel("settings")}>
                         <div className="w-10 h-10 relative hover:bg-slate-400 rounded-full overflow-hidden">
                           <Image
@@ -220,10 +230,10 @@ const Navbar = () => {
                       {showPanel === "like" && (
                         <>
                           <div
-                            className="absolute w-[44vw] h-[60vh] top-[66px] right-0 flex flex-col gap-4 bg-slate-200 rounded-md overflow-x-hidden overflow-y-scroll"
+                            className="absolute w-[44vw] h-[60vh] top-[66px] right-0 flex flex-col gap-4 bg-gray-600 rounded-md overflow-x-hidden overflow-y-scroll"
                             ref={formRef}
                           >
-                            <h1 className="flex justify-center items-center text-pink-500 text-3xl font-bold p-4">
+                            <h1 className="flex justify-center items-center text-pink-500 text-3xl font-bold p-4 border-b border-b-gray-300">
                               Favorites Car
                             </h1>
                             {user.carFavorites.length > 0 ? (
@@ -338,7 +348,7 @@ const Navbar = () => {
                     className="cursor-pointer"
                     onClick={() => setShowLogoutOption(!showLogoutOption)}
                   >
-                    <div className="flex items-center w-10 h-10 relative hover:bg-slate-400 rounded-full overflow-hidden">
+                    <div className="relative flex items-center w-10 h-10 hover:bg-slate-400 rounded-full overflow-hidden">
                       <Image
                         src={getPhotoUrl(photoUser[0]) ?? "/Profil.svg"}
                         alt="LogoUser"
@@ -346,22 +356,39 @@ const Navbar = () => {
                         width={40}
                         height={40}
                       />
+                      {showLogoutOption && (
+                        <>
+                          <div
+                            className="fixed top-[88px] right-[66px] flex flex-col bg-slate-200 rounded-md"
+                            ref={formRef}
+                          >
+                            <Link
+                              href="/pages/orderHistory"
+                              className="flex gap-4 items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-400 py-4 px-6"
+                            >
+                              <MdHistory className="h-6 w-6" />
+                              <span className="text-[082431] font-semibold text-base opacity-60">
+                                Order History
+                              </span>
+                            </Link>
+                            <button
+                              className="flex gap-4 items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-400 py-4 px-6"
+                              onClick={() => handleLogout()}
+                            >
+                              <RiLogoutCircleRLine className="h-6 w-6" />
+                              <span className="text-[082431] font-semibold text-base opacity-60">
+                                Logout
+                              </span>
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
-                  {showLogoutOption && (
-                    <div className="absolute top-full right-0 bg-white border border-gray-200 shadow-lg mt-2 rounded-md">
-                      <button
-                        className="block w-full py-2 px-4 text-left text-gray-700 hover:bg-gray-100"
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
-          {!login && (
+          {!login && loadingGetToken && (
             <>
               <Link href="/pages/login">
                 <CustomButton
@@ -373,7 +400,7 @@ const Navbar = () => {
             </>
           )}
         </div>
-        {logout && (
+        {/* {logout && (
           <div className="fixed flex justify-center items-center bg-slate-600 top-0 right-0 h-full w-full opacity-60">
             <Image
               src="/loader.svg"
@@ -383,7 +410,7 @@ const Navbar = () => {
               className="animate-spin mt-10"
             ></Image>
           </div>
-        )}
+        )} */}
       </nav>
     </header>
   );

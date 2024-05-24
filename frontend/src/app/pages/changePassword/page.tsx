@@ -51,9 +51,9 @@ const page = () => {
 
   return (
     <div className="content flex justify-center items-center ">
-      <div className="border rounded-md h-[80vh] w-[40%] py-6 px-6 bg-gray-800 flex flex-col gap-6">
+      <div className="border border-#2563EB rounded-md h-[80vh] w-[40%] py-6 px-6 bg-#2563EB flex flex-col gap-6">
         <div className="flex justify-center">
-          <h1 className="font-bold text-3xl uppercase text-white">
+          <h1 className="font-bold text-lg uppercase  text-gray-600">
             Change Password
           </h1>
         </div>
@@ -66,7 +66,7 @@ const page = () => {
             <div className="relative flex flex-col gap-4 w-full">
               <label
                 htmlFor="oldPassword"
-                className="font-bold text-lg uppercase text-white"
+                className="font-bold text-lg uppercase text-gray-600"
               >
                 Old Password
               </label>
@@ -96,7 +96,7 @@ const page = () => {
             <div className="relative flex flex-col gap-4 w-full">
               <label
                 htmlFor="newPassword"
-                className="font-bold text-lg uppercase text-white"
+                className="font-bold text-lg uppercase  text-gray-600"
               >
                 New Password
               </label>
@@ -119,7 +119,7 @@ const page = () => {
             <div className="relative flex flex-col gap-4 w-full">
               <label
                 htmlFor="confirmNewPassword"
-                className="font-bold text-lg uppercase text-white"
+                className="font-bold text-lg uppercase  text-gray-600"
               >
                 Confirm New Password
               </label>

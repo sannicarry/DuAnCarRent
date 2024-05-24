@@ -79,22 +79,24 @@ const OrderManagement = ({ allOrders, currentPage }: OrderManagementProps) => {
                 className="h-[50px] grid grid-cols-11 items-center text-sm font-medium text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
               >
                 <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {order.user.username}
+                  {order.orderRecipient.firstName}{" "}
+                  {order.orderRecipient.lastName}
                 </div>
                 <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {order.user.phone}
+                  {order.orderRecipient.phoneNumber}
                 </div>
                 <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {order.user.email}
+                  {order.orderRecipient.email}
                 </div>
                 <div className="h-full flex items-center border-b px-6 col-span-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {`${order.car.make} ${order.car.model}`}
                 </div>
 
                 <div className="h-full text-center flex justify-center items-center border-b px-6 col-span-2 font-bold text-gray-900 whitespace-nowrap dark:text-white">
-                  {order.status == 0 && <>Pending approval</>}
-                  {order.status == 1 && <>Approved</>}
-                  {order.status == 2 && <>Rejected</>}
+                  {order.statusOrder == 1 && <>Pending</>}
+                  {order.statusOrder == 2 && <>Approved</>}
+                  {order.statusOrder == 3 && <>Rejected</>}
+                  {order.statusOrder == 4 && <>Finish</>}
                 </div>
                 <div className="h-full flex justify-center items-center border-b  px-6 col-span-1">
                   <Link
@@ -172,7 +174,7 @@ const OrderManagement = ({ allOrders, currentPage }: OrderManagementProps) => {
           </div>
         </div>
         {loading && (
-          <div className="absolute flex justify-center items-center top-[20%] right-[20%] h-1/2 w-1/2 opacity-60">
+          <div className="absolute flex justify-center items-center top-[50%] right-[50%] h-10 w-10 opacity-60">
             <Image
               src="/loader.svg"
               alt="loading"

@@ -8,6 +8,7 @@ import Link from "next/link";
 const Sidebar = () => {
   const { currentPageAdmin, setCurrentPageAdmin } = useStore();
   const [pageActive, setPageActive] = useState("");
+  const [checkClickMenu, setCheckClickMenu] = useState(false);
 
   useEffect(() => {
     if (currentPageAdmin) {
@@ -16,12 +17,48 @@ const Sidebar = () => {
   }, [currentPageAdmin]);
 
   return (
-    <div className="col-span-1 bg-[#F6F7F9] py-4 flex flex-col gap-5">
-      <div className="flex flex-col">
-        <span className="text-[082431] font-medium text-base opacity-50 px-6">
-          MENU
-        </span>
-        <Link href="/pages/dashboard">
+    <div
+      className={`${
+        checkClickMenu ? "w-[10%]" : "w-[20%]"
+      } bg-[#F6F7F9] py-4 flex flex-col gap-5`}
+    >
+      <div className={`flex flex-col ${checkClickMenu ? "items-center" : ""}`}>
+        <div
+          className="flex py-4 px-6 items-center hover:cursor-pointer hover:opacity-90 hover:text-[#0000FF] hover:bg-slate-200"
+          onClick={() => {
+            setCheckClickMenu(!checkClickMenu);
+          }}
+        >
+          <div className="flex  gap-4">
+            <Image src="/barMenu.svg" alt="menu" width={20} height={20}></Image>
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                MENU
+              </span>
+            )}
+          </div>
+        </div>
+        <Link href="/pages/order">
+          <div
+            className={`flex items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-200 ${
+              pageActive == `Order` ? `text-[#0000FF] bg-slate-200` : ``
+            } gap-4 py-4 px-6`}
+          >
+            <Image
+              src="/Cart.svg"
+              alt="Cart"
+              width={20}
+              height={20}
+              className=""
+            />
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                Order
+              </span>
+            )}
+          </div>
+        </Link>
+        {/* <Link href="/pages/dashboard">
           <div
             className={`flex items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-200 ${
               pageActive == `Dashboard` ? `text-[#0000FF] bg-slate-200` : ``
@@ -34,11 +71,13 @@ const Sidebar = () => {
               height={20}
               className=""
             />
-            <span className="text-[082431] font-semibold text-base opacity-60">
-              Dashboard
-            </span>
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                Dashboard
+              </span>
+            )}
           </div>
-        </Link>
+        </Link> */}
         <Link href="/pages/brand">
           <div
             className={`flex items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-200 ${
@@ -52,9 +91,11 @@ const Sidebar = () => {
               height={20}
               className=""
             />
-            <span className="text-[082431] font-semibold text-base opacity-60">
-              Brand
-            </span>
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                Brand
+              </span>
+            )}
           </div>
         </Link>
 
@@ -71,9 +112,11 @@ const Sidebar = () => {
               height={20}
               className=""
             />
-            <span className="text-[082431] font-semibold text-base opacity-60">
-              Car
-            </span>
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                Car
+              </span>
+            )}
           </div>
         </Link>
 
@@ -90,32 +133,15 @@ const Sidebar = () => {
               height={20}
               className=""
             />
-            <span className="text-[082431] font-semibold text-base opacity-60">
-              User
-            </span>
-          </div>
-        </Link>
-
-        <Link href="/pages/order">
-          <div
-            className={`flex items-center cursor-pointer hover:text-[#0000FF] hover:bg-slate-200 ${
-              pageActive == `Order` ? `text-[#0000FF] bg-slate-200` : ``
-            } gap-4 py-4 px-6`}
-          >
-            <Image
-              src="/Cart.svg"
-              alt="Cart"
-              width={20}
-              height={20}
-              className=""
-            />
-            <span className="text-[082431] font-semibold text-base opacity-60">
-              Order
-            </span>
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                User
+              </span>
+            )}
           </div>
         </Link>
       </div>
-      <div className="flex flex-col">
+      <div className={`flex flex-col ${checkClickMenu ? "items-center" : ""}`}>
         <span className="text-[082431] font-medium text-base opacity-50 px-6">
           OTHERS
         </span>
@@ -133,9 +159,11 @@ const Sidebar = () => {
               height={20}
               className=""
             />
-            <span className="text-[082431] font-semibold text-base opacity-60">
-              Settings
-            </span>
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                Settings
+              </span>
+            )}
           </div>
         </Link>
 
@@ -152,9 +180,11 @@ const Sidebar = () => {
               height={20}
               className=""
             />
-            <span className="text-[082431] font-semibold text-base opacity-60">
-              Payment
-            </span>
+            {!checkClickMenu && (
+              <span className="text-[082431] font-semibold text-base opacity-60">
+                Payment
+              </span>
+            )}
           </div>
         </Link>
       </div>

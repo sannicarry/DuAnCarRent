@@ -1,18 +1,14 @@
 "use client";
 
 import { useStore } from "@/components/Store";
-import { OrderProps, UploadPhoto, UserNotificationsProps } from "@/types";
+import { OrderProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
-import {
-  createUploadPhotoPromises,
-  fetchCreateNotificaton,
-  getPhotoUrl,
-} from "@/utils";
 import { SERVER_URL } from "@/constants";
+import { toast } from "react-toastify";
+import { FaBan } from "react-icons/fa";
+import OrderDetail from "./OrderDetail";
 
 const OrderView = ({ order }: { order: OrderProps }) => {
   const router = useRouter();
@@ -31,31 +27,12 @@ const OrderView = ({ order }: { order: OrderProps }) => {
     user,
   } = useStore();
 
-  const [photoCar, setPhotoCar] = useState<UploadPhoto[]>([]);
-
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      if (order.car && order.car?.carId !== undefined) {
-        try {
-          const baseURL = SERVER_URL;
-
-          const uploadPromises = createUploadPhotoPromises(
-            order.car?.photos,
-            baseURL
-          );
-          const uploadedPhotos = await uploadPromises;
-          setPhotoCar(uploadedPhotos);
-        } catch (error) {
-          console.error("Error loading car images:", error);
-        }
-      }
-    };
-    fetchPhotos();
-  }, [order.car]);
-
-  const handleOrderHandling = async (status: number) => {
+  const handleOrderHandling = async (
+    statusOrder: number,
+    statusPayment: number
+  ) => {
     try {
-      const url = `${SERVER_URL}/api/order/UpdateStatus/${order.orderId}?status=${status}`;
+      const url = `${SERVER_URL}/api/order/UpdateStatus/${order.orderId}?statusOrder=${statusOrder}&statusPayment=${statusPayment}`;
       const response = await fetch(url, {
         method: "PUT",
         headers: {
@@ -63,31 +40,16 @@ const OrderView = ({ order }: { order: OrderProps }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
       if (response.ok) {
         setShowOptions(false);
-        let message;
-        if (status == 1) {
-          message = "Your car rental application has been Approved !";
-        } else if (status == 2) {
-          message = "Your car rental application has been Rejected !";
-        } else {
-          message =
-            "Your car rental application has been Finish. You can rating for car !";
-        }
-        const fetchCreate = await fetchCreateNotificaton(
-          user.userId,
-          order.car.carId,
-          order.user.userId,
-          message,
-          token
-        );
-
         setSuccess(true);
-        alert("success");
-        router.push("/pages/order", { scroll: false });
+        toast.success("Order status updated Successfully!", {
+          onClose: () => {
+            router.push("/pages/order", { scroll: false });
+          },
+        });
       } else {
-        setError(data.message);
+        setError("error update order");
       }
     } catch (err) {
       console.error(err);
@@ -108,25 +70,28 @@ const OrderView = ({ order }: { order: OrderProps }) => {
       }
       setSuccess(true);
       setConfirmDelete(false);
-      alert("success");
-      router.push("/pages/order", { scroll: false });
+      toast.success("Deleted Order Successfully!", {
+        onClose: () => {
+          router.push("/pages/order", { scroll: false });
+        },
+      });
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div className="flex flex-col gap-4 p-6">
-      <h1 className="text-lg font-bold text-slate-700">Order Management</h1>
-      <div className="flex flex-col p-6 gap-2 bg-slate-300 rounded-lg">
+    <div className="flex flex-col gap-8 p-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-bold text-slate-700">Order Management</h1>
         <div className="relative flex gap-1 justify-end">
           <div
-            className="flex gap-2 items-center justify-between px-2 hover:bg-blue-400 hover:cursor-pointer bg-blue-600 border-slate-800 border rounded-md"
+            className="relative flex gap-2 items-center justify-between p-3 bg-gray-100 hover:bg-gray-300 hover:cursor-pointer border-slate-700 border rounded-md"
             onClick={() => {
               setShowOptions(!showOptions);
             }}
           >
-            <span className="text-base text-white font-medium">
+            <span className="text-base text-gray-700 font-medium">
               Order Handling
             </span>
             <Image
@@ -135,138 +100,130 @@ const OrderView = ({ order }: { order: OrderProps }) => {
               width={10}
               height={10}
             ></Image>
-          </div>
-
-          {showOptions && (
-            <div className="absolute w-[148px] flex flex-col top-[26px] right-[218px]">
-              <button
-                className="font-semibold border border-black rounded-sm bg-slate-100 text-slate-700 hover:bg-slate-700 hover:text-slate-100"
-                onClick={() => {
-                  handleOrderHandling(approve);
-                }}
-              >
-                Approve
-              </button>
-              <button
-                className="font-semibold border border-black rounded-sm bg-slate-100 text-slate-700 hover:bg-slate-700 hover:text-slate-100"
-                onClick={() => {
-                  handleOrderHandling(reject);
-                }}
-              >
-                Reject
-              </button>
-              <button
-                className="font-semibold border border-black rounded-sm bg-slate-100 text-slate-700 hover:bg-slate-700 hover:text-slate-100"
-                onClick={() => {
-                  handleOrderHandling(finish);
-                }}
-              >
-                Finish
-              </button>
-            </div>
-          )}
-          <div
-            className="flex gap-2 items-center justify-between px-2 hover:bg-red-400 hover:cursor-pointer bg-red-600 border-slate-800 border rounded-md"
-            onClick={() => {
-              setConfirmDelete(!confirmDelete);
-            }}
-          >
-            <span className="text-base text-white font-medium">
-              Order Delete
-            </span>
-            <Image src="/remove.svg" alt="more" width={10} height={10}></Image>
-          </div>
-
-          {confirmDelete && (
-            <div className="absolute rounded-md h-[120px] w-[214px] p-3 bg-slate-100 flex flex-col gap-4 top-[30px] right-0">
-              <h1 className="text-sm text-center font-semibold text-red-600 uppercase">
-                Do you want to delete this order ?
-              </h1>
-              <div className="flex justify-between items-center">
+            {showOptions && (
+              <div className="absolute w-full flex flex-col top-[50px] right-0 bg-slate-200">
                 <button
-                  className="font-semibold border border-black rounded-md p-2 text-slate-100 bg-yellow-400 hover:bg-yellow-600"
+                  className={`${
+                    order.statusOrder !== 1
+                      ? "relative opacity-70"
+                      : "cursor-pointer hover:text-[#0000FF] hover:bg-slate-400"
+                  } font-semibold rounded-sm ${
+                    order.statusOrder == 2
+                      ? "text-[#0000FF] bg-slate-400"
+                      : "text-[082431] bg-slate-200"
+                  } p-4`}
                   onClick={() => {
-                    setConfirmDelete(false);
+                    handleOrderHandling(approve, order.statusPayment);
                   }}
+                  disabled={order.statusOrder !== 1}
                 >
-                  NO
+                  Approve
+                  {order.statusOrder !== 1 && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center">
+                      <FaBan className="text-red-600 h-8 w-8" />
+                    </div>
+                  )}
                 </button>
                 <button
-                  className="font-semibold border border-black rounded-md p-2 text-slate-100 bg-blue-400 hover:bg-blue-600"
+                  className={`${
+                    order.statusOrder === 4 || order.statusOrder === 3
+                      ? "relative opacity-70"
+                      : "cursor-pointer hover:text-[#0000FF] hover:bg-slate-400"
+                  } font-semibold rounded-sm ${
+                    order.statusOrder == 3
+                      ? "text-[#0000FF] bg-slate-400"
+                      : "text-[082431] bg-slate-200"
+                  } p-4`}
                   onClick={() => {
-                    handleDeleteOrder();
+                    handleOrderHandling(reject, order.statusPayment);
                   }}
+                  disabled={order.statusOrder === 4 || order.statusOrder === 3}
                 >
-                  YES
+                  Reject
+                  {(order.statusOrder === 4 || order.statusOrder === 3) && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center">
+                      <FaBan className="text-red-600 h-8 w-8" />
+                    </div>
+                  )}
+                </button>
+                <button
+                  className={`${
+                    order.statusOrder !== 2
+                      ? "relative opacity-70"
+                      : "cursor-pointer hover:text-[#0000FF] hover:bg-slate-400"
+                  } font-semibold rounded-sm ${
+                    order.statusOrder == 4
+                      ? "text-[#0000FF] bg-slate-400"
+                      : "text-[082431] bg-slate-200"
+                  } p-4`}
+                  onClick={() => {
+                    handleOrderHandling(finish, 1);
+                  }}
+                  disabled={order.statusOrder !== 2}
+                >
+                  Finish
+                  {order.statusOrder !== 2 && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center">
+                      <FaBan className="text-red-600 h-8 w-8" />
+                    </div>
+                  )}
                 </button>
               </div>
+            )}
+          </div>
+
+          {order.statusOrder === 3 && (
+            <div
+              className="relative flex gap-2 items-center justify-between px-2 hover:bg-red-600 hover:cursor-pointer bg-red-500 border-slate-800 border rounded-md"
+              onClick={() => {
+                setConfirmDelete(!confirmDelete);
+              }}
+            >
+              <span className="text-base text-white font-medium">
+                Order Delete
+              </span>
+              <Image
+                src="/remove.svg"
+                alt="more"
+                width={10}
+                height={10}
+              ></Image>
+              {confirmDelete && (
+                <div className="absolute rounded-md h-[120px] w-[214px] p-3 bg-slate-100 flex flex-col gap-4 top-[50px] right-0">
+                  <h1 className="text-sm text-center font-semibold text-red-600 uppercase">
+                    Do you want to delete this order ?
+                  </h1>
+                  <div className="flex justify-between items-center">
+                    <button
+                      className="font-semibold border border-black rounded-md p-2 text-slate-100 bg-yellow-400 hover:bg-yellow-600"
+                      onClick={() => {
+                        setConfirmDelete(false);
+                      }}
+                    >
+                      NO
+                    </button>
+                    <button
+                      className="font-semibold border border-black rounded-md p-2 text-slate-100 bg-blue-400 hover:bg-blue-600"
+                      onClick={() => {
+                        handleDeleteOrder();
+                      }}
+                    >
+                      YES
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
+
           <Link href="/pages/order" className="flex items-center ">
             <button className="w-[80px] h-full px-2 text-base text-white font-medium border border-slate-800 rounded-md bg-blue-500 hover:bg-white hover:text-blue-500">
               Back
             </button>
           </Link>
         </div>
-
-        <div className="grid gap-8 text-slate-700 text-base">
-          <div className="grid grid-cols-3 items-center">
-            <span className="col-span-1 font-medium">Customer Name:</span>
-            <h3 className="col-span-1 font-semibold">{order.user?.username}</h3>
-          </div>
-          <div className="grid grid-cols-3  items-center ">
-            <span className="col-span-1 font-medium ">Phone:</span>
-            <h3 className="col-span-1 font-semibold">{order.user?.phone}</h3>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Email:</span>
-            <h3 className="col-span-1 font-semibold">{order.user?.email}</h3>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Car Rented:</span>
-            <h3 className="col-span-1 font-semibold">
-              {order.car?.make} {order.car?.model}
-            </h3>
-            <Image
-              src={getPhotoUrl(photoCar[0]) ?? "/NoCarPhoto.webp"}
-              alt={`Photo Car`}
-              width={160}
-              height={160}
-              className="col-span-1 object-cover border-gray-400"
-            ></Image>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Location From:</span>
-            <h3 className="col-span-1 font-semibold">{order.locationFrom}</h3>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Date From:</span>
-            <h3 className="col-span-1 font-semibold">
-              {order.dateFrom
-                ? format(new Date(order.dateFrom), "yyyy-MM-dd")
-                : ""}
-            </h3>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Time From:</span>
-            <h3 className="col-span-1 font-semibold">{order.timeFrom}</h3>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Location To:</span>
-            <h3 className="col-span-1 font-semibold">{order.locationTo}</h3>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Date To:</span>
-            <h3 className="col-span-1 font-semibold">
-              {order.dateTo ? format(new Date(order.dateTo), "yyyy-MM-dd") : ""}
-            </h3>
-          </div>
-          <div className="grid grid-cols-3  items-center">
-            <span className="col-span-1 font-medium ">Time To:</span>
-            <h3 className="col-span-1 font-semibold">{order.timeTo}</h3>
-          </div>
-        </div>
       </div>
+      <OrderDetail order={order} />
     </div>
   );
 };

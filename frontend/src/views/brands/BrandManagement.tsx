@@ -296,7 +296,7 @@ const BrandManagement = ({ allBrands, currentPage }: BrandManagementProps) => {
           </div>
         </div>
         {loading && (
-          <div className="absolute flex justify-center items-center top-[20%] right-[20%] h-1/2 w-1/2 opacity-60">
+          <div className="absolute flex justify-center items-center top-[50%] right-[50%] h-10 w-10 opacity-60">
             <Image
               src="/loader.svg"
               alt="loading"

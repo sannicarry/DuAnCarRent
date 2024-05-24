@@ -6,10 +6,6 @@ import { useStore } from "@/components/Store";
 import OrderManagement from "@/views/orders/OrderManagement";
 
 const page = () => {
-  const [allOrders, setAllOrders] = useState([]);
-
-  const [orderId, setOrderId] = useState(0);
-
   const {
     user,
     car,
@@ -35,6 +31,8 @@ const page = () => {
     success,
     setSuccess,
     setCurrentPageAdmin,
+    allOrders,
+    setAllOrders,
   } = useStore();
 
   useEffect(() => {
@@ -45,19 +43,6 @@ const page = () => {
     try {
       setLoading(true);
       const result = await fetchOrders(
-        {
-          orderId,
-          user,
-          car,
-          locationFrom,
-          dateFrom,
-          timeFrom,
-          locationTo,
-          dateTo,
-          timeTo,
-          totalPrice,
-          status,
-        },
         token,
         currentPage,
         itemsPerPage,
@@ -78,7 +63,7 @@ const page = () => {
 
   const getCountOrder = async () => {
     try {
-      const count = await fetchOrderCount(token);
+      const count = await fetchOrderCount(searchValue, token);
       setTotalPages(Math.ceil(count / itemsPerPage));
     } catch (err) {
       console.log(err);
@@ -90,8 +75,7 @@ const page = () => {
     if (totalPages > 0 && currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
-  }, [success, totalPages]);
-
+  }, [success, searchValue, totalPages]);
   return (
     <>
       <OrderManagement allOrders={allOrders} currentPage={currentPage} />

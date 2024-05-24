@@ -3,12 +3,14 @@ import {
   BrandProps,
   CarFavoriteProps,
   CarProps,
+  CardUserProps,
   ClaimProps,
   LocationProps,
   OrderProps,
   OrderRecipientProps,
   PaymentProps,
   PhotoProps,
+  UploadPhoto,
   UserNotificationsProps,
   UserProps,
 } from "@/types";
@@ -133,6 +135,8 @@ type BooleanStore = {
   setLoading: (loading: boolean) => void;
   status: number;
   setStatus: (status: number) => void;
+  price: number;
+  setPrice: (price: number) => void;
   totalPrice: number;
   setTotalPrice: (totalPrice: number) => void;
   showViewOrder: boolean;
@@ -153,6 +157,8 @@ type BooleanStore = {
   setCheckSelectedLocation: (checkSelectedLocation: boolean) => void;
   allCars: CarProps[];
   setAllCars: (allCars: CarProps[]) => void;
+  allOrders: OrderProps[];
+  setAllOrders: (allOrders: OrderProps[]) => void;
   hrefAfterLogin: string;
   setHrefAfterLogin: (hrefAfterLogin: string) => void;
   showPanel: string;
@@ -169,6 +175,30 @@ type BooleanStore = {
   setPayment: (payment: PaymentProps) => void;
   bankData: BankProps[];
   setBankData: (bankData: BankProps[]) => void;
+  quantityOfDay: number;
+  setQuantityOfDay: (quantityOfDay: number) => void;
+  photosCar: UploadPhoto[];
+  setPhotosCar: (photosCar: UploadPhoto[]) => void;
+  bank: BankProps;
+  setBank: (bank: BankProps) => void;
+  cardNumber: string;
+  setCardNumber: (cardNumber: string) => void;
+  release: string;
+  setRelease: (release: string) => void;
+  cardholderName: string;
+  setCardholderName: (cardholderName: string) => void;
+  orderIdLatest: number;
+  setOrderIdLatest: (orderIdLatest: number) => void;
+  cardsUser: CardUserProps[];
+  setCardsUser: (cardsUser: CardUserProps[]) => void;
+  cardUser: CardUserProps;
+  setCardUser: (cardUser: CardUserProps) => void;
+  checkStateLoadingCardUser: boolean;
+  setCheckStateLoadingCardUser: (checkStateLoadingCardUser: boolean) => void;
+  checkStateAddCard: boolean;
+  setCheckStateAddCard: (checkStateAddCard: boolean) => void;
+  currentPageSideUser: string;
+  setCurrentPageSideUser: (currentPageSideUser: string) => void;
 };
 
 export const useStore = create<BooleanStore>((set) => ({
@@ -409,6 +439,10 @@ export const useStore = create<BooleanStore>((set) => ({
   setStatus: (status: number) => {
     set(() => ({ status: status }));
   },
+  price: 0,
+  setPrice: (price: number) => {
+    set(() => ({ price }));
+  },
   totalPrice: 0,
   setTotalPrice: (totalPrice: number) => {
     set(() => ({ totalPrice: totalPrice }));
@@ -417,19 +451,19 @@ export const useStore = create<BooleanStore>((set) => ({
   setShowViewOrder: (showViewOrder: boolean) => {
     set(() => ({ showViewOrder: showViewOrder }));
   },
-  currentPageAdmin: "Dashboard",
+  currentPageAdmin: "Order",
   setCurrentPageAdmin: (currentPageAdmin: string) => {
     set(() => ({ currentPageAdmin: currentPageAdmin }));
   },
-  approve: 1,
+  approve: 2,
   setApprove: (approve: number) => {
     set(() => ({ approve }));
   },
-  reject: 2,
+  reject: 3,
   setReject: (reject: number) => {
     set(() => ({ reject }));
   },
-  finish: 3,
+  finish: 4,
   setFinish: (finish: number) => {
     set(() => ({ finish }));
   },
@@ -469,7 +503,7 @@ export const useStore = create<BooleanStore>((set) => ({
   setOrderRecipients: (orderRecipients: OrderRecipientProps[]) => {
     set(() => ({ orderRecipients }));
   },
-  methodPayment: "",
+  methodPayment: "card",
   setMethodPayment: (methodPayment: string) => {
     set(() => ({ methodPayment }));
   },
@@ -480,5 +514,57 @@ export const useStore = create<BooleanStore>((set) => ({
   bankData: [],
   setBankData: (bankData: BankProps[]) => {
     set(() => ({ bankData }));
+  },
+  quantityOfDay: 0,
+  setQuantityOfDay: (quantityOfDay: number) => {
+    set(() => ({ quantityOfDay }));
+  },
+  photosCar: [],
+  setPhotosCar: (photosCar: UploadPhoto[]) => {
+    set(() => ({ photosCar }));
+  },
+  bank: {} as BankProps,
+  setBank: (bank: BankProps) => {
+    set(() => ({ bank }));
+  },
+  cardNumber: "",
+  setCardNumber: (cardNumber: string) => {
+    set(() => ({ cardNumber }));
+  },
+  release: "",
+  setRelease: (release: string) => {
+    set(() => ({ release }));
+  },
+  cardholderName: "",
+  setCardholderName: (cardholderName: string) => {
+    set(() => ({ cardholderName }));
+  },
+  orderIdLatest: 0,
+  setOrderIdLatest: (orderIdLatest: number) => {
+    set(() => ({ orderIdLatest }));
+  },
+  cardsUser: [],
+  setCardsUser: (cardsUser: CardUserProps[]) => {
+    set(() => ({ cardsUser }));
+  },
+  cardUser: {} as CardUserProps,
+  setCardUser: (cardUser: CardUserProps) => {
+    set(() => ({ cardUser }));
+  },
+  checkStateLoadingCardUser: false,
+  setCheckStateLoadingCardUser: (checkStateLoadingCardUser: boolean) => {
+    set(() => ({ checkStateLoadingCardUser }));
+  },
+  checkStateAddCard: false,
+  setCheckStateAddCard: (checkStateAddCard: boolean) => {
+    set(() => ({ checkStateAddCard }));
+  },
+  allOrders: [],
+  setAllOrders: (allOrders: OrderProps[]) => {
+    set(() => ({ allOrders }));
+  },
+  currentPageSideUser: "OrderHistory",
+  setCurrentPageSideUser: (currentPageSideUser: string) => {
+    set(() => ({ currentPageSideUser }));
   },
 }));

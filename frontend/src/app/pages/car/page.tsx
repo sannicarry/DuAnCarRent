@@ -79,7 +79,7 @@ const page = () => {
 
   const getCountCars = async () => {
     try {
-      const count = await fetchCarCount(token);
+      const count = await fetchCarCount(searchValue, token);
       setTotalPages(Math.ceil(count / itemsPerPage));
     } catch (err) {
       console.log(err);
@@ -91,7 +91,7 @@ const page = () => {
     if (totalPages > 0 && currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
-  }, [success, totalPages]);
+  }, [success, searchValue, totalPages]);
 
   return (
     <>

@@ -54,7 +54,7 @@ const CarFavorite = ({ car }: HistoryCarFavoriteProps) => {
     fetchPhoto();
   }, [car]);
   return (
-    <div className="px-4">
+    <div className="p-4 border-b border-b-gray-300">
       <div className="grid grid-cols-5 bg-white rounded-lg">
         <div className="col-span-1 flex items-center">
           <Image

@@ -12,9 +12,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="content grid grid-cols-5 bg-[#F6F7F9]">
+    <div className="flex content bg-[#F6F7F9]">
       <Sidebar />
-      {children}
+      <div className="w-full ml-16 bg-white border-2 rounded-md">
+        {children}
+      </div>
     </div>
   );
 }

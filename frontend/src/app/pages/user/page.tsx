@@ -48,20 +48,6 @@ const page = () => {
     try {
       setLoading(true);
       const result = await fetchUsers(
-        {
-          userId,
-          username,
-          email,
-          phone,
-          address,
-          birthDate,
-          gender,
-          isLocked,
-          photos,
-          claims,
-          carFavorites,
-          userNotifications,
-        },
         token,
         currentPage,
         itemsPerPage,
@@ -84,7 +70,7 @@ const page = () => {
   const getCountUsers = async () => {
     if (token != "") {
       try {
-        const count = await fetchUserCount(token);
+        const count = await fetchUserCount(searchValue, token);
         setTotalPages(Math.ceil(count / itemsPerPage));
       } catch (err) {
         console.error(err);
@@ -97,7 +83,7 @@ const page = () => {
     if (totalPages > 0 && currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
-  }, [totalPages]);
+  }, [searchValue, totalPages]);
 
   return (
     <>

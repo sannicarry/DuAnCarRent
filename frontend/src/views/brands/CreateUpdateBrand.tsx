@@ -196,7 +196,7 @@ const CreateUpdateBrand = ({ brand }: { brand: BrandProps }) => {
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <Link href="/Brand">
+          <Link href="/pages/brand">
             <CustomButton
               title={`Back`}
               textStyles="font-bold text-base"

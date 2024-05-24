@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useStore } from "@/components/Store";
 import { SERVER_URL } from "@/constants";
+import { toast } from "react-toastify";
 
 const page = () => {
   const router = useRouter();
@@ -19,6 +20,7 @@ const page = () => {
     setLogin,
     loading,
     setLoading,
+    success,
     setSuccess,
     hrefAfterLogin,
   } = useStore();
@@ -41,12 +43,14 @@ const page = () => {
         localStorage.setItem("token", data.token);
         setLogin(true);
         setLoading(true);
-        setSuccess(true);
-        setTimeout(() => {
-          setLoading(false);
-          console.log(hrefAfterLogin);
-          router.push(hrefAfterLogin, { scroll: true });
-        }, 2000);
+        // setSuccess(true);
+        toast.success("Login successfully!", {
+          position: "top-right",
+          onClose: () => {
+            setLoading(false);
+            router.push(hrefAfterLogin, { scroll: true });
+          },
+        });
       } else {
         setError(data.message);
       }
@@ -172,7 +176,7 @@ const page = () => {
             </button>
           </Link>
 
-          {loading && login && (
+          {/* {loading && login && (
             <div className="fixed flex justify-center items-center bg-slate-600 top-0 right-0 h-full w-full opacity-60">
               <Image
                 src="/loader.svg"
@@ -182,7 +186,7 @@ const page = () => {
                 className="animate-spin mt-10"
               ></Image>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

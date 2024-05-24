@@ -17,5 +17,6 @@ namespace api.Models
         public virtual List<CarFavorites> CarFavorites { get; set; } = new List<CarFavorites>();
         public virtual List<UserNotifications> UserNotifications { get; set; } = new List<UserNotifications>();
         public virtual List<OrderRecipient> OrderRecipient { get; set; } = new List<OrderRecipient>();
+        public virtual List<CardUser> CardUser { get; set; } = new List<CardUser>();
     }
 }

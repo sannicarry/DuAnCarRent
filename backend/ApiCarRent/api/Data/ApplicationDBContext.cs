@@ -26,6 +26,7 @@ namespace api.Data
         public DbSet<AppUser> AppUser { get; set; }
         public DbSet<UserNotifications> UserNotifications { get; set; }
         public DbSet<OrderRecipient> OrderRecipient { get; set; }
+        public DbSet<CardUser> CardUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

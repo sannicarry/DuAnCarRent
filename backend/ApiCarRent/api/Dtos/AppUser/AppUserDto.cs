@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Car;
+using api.Dtos.CardUser;
 using api.Dtos.CarFavorite;
 using api.Dtos.OrderRecipient;
 using api.Dtos.Photo;
@@ -28,6 +29,7 @@ namespace api.Dtos.AppUser
         public List<CarFavoriteDto>? CarFavorites { get; set; }
         public List<UserNotificationDto>? UserNotifications { get; set; }
         public List<OrderRecipientDto>? OrderRecipient { get; set; }
+        public List<CardUserDto>? CardUser { get; set; }
 
     }
 }

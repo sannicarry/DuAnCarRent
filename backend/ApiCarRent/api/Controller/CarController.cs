@@ -133,11 +133,11 @@ namespace api.Controller
 
         [HttpGet("GetCount")]
 
-        public async Task<int> GetCountCars()
+        public async Task<int> GetCountCars([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
                 return 0;
-            var countCars = await _carRepo.GetCountCarsAsync();
+            var countCars = await _carRepo.GetCountCarsAsync(query);
             return countCars;
         }
 

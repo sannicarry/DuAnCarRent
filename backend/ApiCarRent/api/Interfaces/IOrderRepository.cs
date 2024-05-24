@@ -16,7 +16,8 @@ namespace api.Interfaces
         Task<Order> CreateAsync(CreateOrderDto createOrderDto);
         Task<Order?> UpdateAsync(Order order);
         Task<Order?> DeleteAsync(int id);
-        Task<int> GetCountOrdersAsync();
+        Task<int> GetCountOrdersAsync(QueryObject query);
+        Task<int> GetCountOrdersByUserIdAsync(QueryObject query, string userId);
         Task<Order?> UpdateStatusAsync(Order order);
     }
 }

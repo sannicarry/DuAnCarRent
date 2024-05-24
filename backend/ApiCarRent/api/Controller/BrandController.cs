@@ -99,11 +99,11 @@ namespace api.Controller
 
         [HttpGet("GetCount")]
         [Authorize(Policy = "ManageBrand")]
-        public async Task<int> GetCountBrands()
+        public async Task<int> GetCountBrands([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
                 return 0;
-            var countBrands = await _brandRepo.GetCountBrandsAsync();
+            var countBrands = await _brandRepo.GetCountBrandsAsync(query);
             return countBrands;
         }
 

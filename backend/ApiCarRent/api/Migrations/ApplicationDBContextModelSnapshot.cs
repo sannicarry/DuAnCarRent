@@ -338,6 +338,45 @@ namespace api.Migrations
                     b.ToTable("CarFavorites");
                 });
 
+            modelBuilder.Entity("api.Models.CardUser", b =>
+                {
+                    b.Property<int>("CardUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CardUserId"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Bin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardHolderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Release")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CardUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("CardUser");
+                });
+
             modelBuilder.Entity("api.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -616,6 +655,15 @@ namespace api.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("api.Models.CardUser", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("CardUser")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("api.Models.Order", b =>
                 {
                     b.HasOne("api.Models.Car", "Car")
@@ -688,6 +736,8 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Navigation("CarFavorites");
+
+                    b.Navigation("CardUser");
 
                     b.Navigation("OrderRecipient");
 

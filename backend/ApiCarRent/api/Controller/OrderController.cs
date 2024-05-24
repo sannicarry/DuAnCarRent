@@ -99,11 +99,21 @@ namespace api.Controller
 
         [HttpGet("GetCount")]
 
-        public async Task<int> GetCountOrders()
+        public async Task<int> GetCountOrders([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
                 return 0;
-            var countOrder = await _orderRepo.GetCountOrdersAsync();
+            var countOrder = await _orderRepo.GetCountOrdersAsync(query);
+            return countOrder;
+        }
+
+        [HttpGet("GetCountByUser")]
+
+        public async Task<int> GetCountOrders([FromQuery] QueryObject query, string userId)
+        {
+            if (!ModelState.IsValid)
+                return 0;
+            var countOrder = await _orderRepo.GetCountOrdersByUserIdAsync(query, userId);
             return countOrder;
         }
 
@@ -132,6 +142,24 @@ namespace api.Controller
             var orders = await _orderRepo.GetAllByUserIdAsync(query, userId);
             var ordersDto = orders.Select(c => c.ToOrderDto()).ToList();
             return Ok(ordersDto);
+        }
+
+        [HttpGet("latest")]
+        [Authorize]
+        public async Task<IActionResult> GetLatestOrderId()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var latestOrder = await _context.Order.OrderByDescending(o => o.OrderId).FirstOrDefaultAsync();
+            if (latestOrder == null)
+            {
+                return Ok(0);
+            }
+
+            return Ok(latestOrder.OrderId);
         }
     }
 }

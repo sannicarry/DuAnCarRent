@@ -15,7 +15,7 @@ namespace api.Interfaces
         Task<Car> CreateAsync(Car carModel);
         Task<Car?> UpdateAsync(Car carModel);
         Task<Car?> DeleteAsync(int id);
-        Task<int> GetCountCarsAsync();
+        Task<int> GetCountCarsAsync(QueryObject query);
 
         Task<bool> CarExistsFromOrders(int carId);
     }

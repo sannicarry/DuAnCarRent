@@ -61,9 +61,10 @@ namespace api.Repository
             return await _context.Car.Include(u => u.Photos).FirstOrDefaultAsync(x => x.CarId == id);
         }
 
-        public async Task<int> GetCountCarsAsync()
+        public async Task<int> GetCountCarsAsync(QueryObject query)
         {
-            var count = await _context.Car.CountAsync();
+            var count = await _context.Car.Where(s => string.IsNullOrWhiteSpace(query.Search) || (s.Make + s.Model).Replace(" ", "").Contains(query.Search)
+                || s.Type.Contains(query.Search)).CountAsync();
             return count;
         }
 

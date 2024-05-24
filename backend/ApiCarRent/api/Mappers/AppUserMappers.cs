@@ -31,6 +31,7 @@ namespace api.Mappers
                 CarFavorites = appUser.CarFavorites?.Select(x => x.ToCarFavoriteDto()).ToList(),
                 UserNotifications = appUser.UserNotifications?.Select(x => x.ToUserNotificationDto()).ToList(),
                 OrderRecipient = appUser.OrderRecipient?.Select(x => x.ToOrderRecipientDto()).ToList(),
+                CardUser = appUser.CardUser?.Select(x => x.ToCardUserDto()).ToList(),
             };
         }
 

@@ -144,11 +144,15 @@ namespace api.Controller
 
         [HttpGet("GetCount")]
         [Authorize]
-        public async Task<int> GetCountUsers()
+        public async Task<int> GetCountUsers([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
                 return 0;
-            var countUsers = await _userManager.Users.CountAsync();
+            var countUsers = await _userManager.Users.Where(s =>
+                    string.IsNullOrWhiteSpace(query.Search) ||
+                        (s.FirstName != null && s.LastName != null && (s.FirstName + s.LastName).Replace(" ", "").ToLower().Contains(query.Search.ToLower())) ||
+                        (s.Email != null && s.Email.Contains(query.Search)) ||
+                        (s.PhoneNumber != null && s.PhoneNumber.Contains(query.Search))).CountAsync();
             return countUsers;
         }
     }

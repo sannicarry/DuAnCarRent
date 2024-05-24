@@ -124,6 +124,7 @@ builder.Services.AddScoped<IUserClaimService, UserClaimService>();
 builder.Services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IOrderRecipientRepository, OrderRecipientRepository>();
+builder.Services.AddScoped<ICardUserRepository, CardUserRepository>();
 builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 {
     build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();

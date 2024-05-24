@@ -75,9 +75,9 @@ namespace api.Repository
             return _context.Brand.AnyAsync(s => s.BrandId == id);
         }
 
-        public async Task<int> GetCountBrandsAsync()
+        public async Task<int> GetCountBrandsAsync(QueryObject query)
         {
-            var count = await _context.Brand.CountAsync();
+            var count = await _context.Brand.Where(s => string.IsNullOrWhiteSpace(query.Search) && s.BrandName.Contains(query.Search)).CountAsync();
             return count;
         }
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Order;
@@ -36,10 +38,10 @@ namespace api.Repository
             var orders = await _context.Order.Include(c => c.User).ThenInclude(c => c.Photos).Include(c => c.Car).ThenInclude(c => c.Photos)
                 .Include(c => c.Payment).Include(c => c.OrderRecipient)
                 .Where(s => string.IsNullOrWhiteSpace(query.Search)
-                || (s.Car != null && (s.Car.Make + s.Car.Model).Replace(" ", "").Contains(query.Search))
-                || (s.User.UserName != null && s.User.UserName.Contains(query.Search))
-                || (s.User.Email != null && s.User.Email.Contains(query.Search))
-                || (s.User.PhoneNumber != null && s.User.PhoneNumber.Contains(query.Search)))
+                || (s.Car != null && (s.Car.Make + s.Car.Model).Replace(" ", "").ToLower().Contains(query.Search.ToLower()))
+                || (s.User != null && (s.User.FirstName + s.User.LastName).Replace(" ", "").ToLower().Contains(query.Search.ToLower()))
+                || (s.User.Email != null && s.User.Email.ToLower().Contains(query.Search.ToLower()))
+                || (s.User.PhoneNumber != null && s.User.PhoneNumber.ToLower().Contains(query.Search.ToLower())))
 
                 .Skip((query.PageSize > 0 ? (query.PageNumber - 1) * query.PageSize : 0))
                 .Take((query.PageSize > 0 ? query.PageSize : int.MaxValue))
@@ -93,14 +95,18 @@ namespace api.Repository
             if (orderModel == null) return null;
             _context.Order.Remove(orderModel);
             //Xóa luôn payment khi xóa order (trường hợp thanh toán tiền mặt sau đó hủy);
-            await _paymentRepo.DeleteAsync(orderModel.Payment.PaymentId);
+            // await _paymentRepo.DeleteAsync(orderModel.Payment.PaymentId);
             await _context.SaveChangesAsync();
             return orderModel;
         }
 
-        public async Task<int> GetCountOrdersAsync()
+        public async Task<int> GetCountOrdersAsync(QueryObject query)
         {
-            var count = await _context.Order.CountAsync();
+            var count = await _context.Order.Where(s => string.IsNullOrWhiteSpace(query.Search)
+                || (s.Car != null && (s.Car.Make + s.Car.Model).Replace(" ", "").ToLower().Contains(query.Search.ToLower()))
+                || (s.User != null && (s.User.FirstName + s.User.LastName).Replace(" ", "").ToLower().Contains(query.Search.ToLower()))
+                || (s.User.Email != null && s.User.Email.ToLower().Contains(query.Search.ToLower()))
+                || (s.User.PhoneNumber != null && s.User.PhoneNumber.ToLower().Contains(query.Search.ToLower()))).CountAsync();
             return count;
         }
 
@@ -112,19 +118,41 @@ namespace api.Repository
 
         public async Task<List<Order>> GetAllByUserIdAsync(QueryObject query, string userId)
         {
-            var orders = await _context.Order.Include(c => c.User).ThenInclude(c => c.Photos).Include(c => c.Car).ThenInclude(c => c.Photos)
-                .Include(c => c.Payment).Include(c => c.OrderRecipient)
-                .Where(s => s.User.Id == userId && string.IsNullOrWhiteSpace(query.Search)
-                || (s.Car != null && (s.Car.Make + s.Car.Model).Replace(" ", "").Contains(query.Search))
-                || (s.User.UserName != null && s.User.UserName.Contains(query.Search))
-                || (s.User.Email != null && s.User.Email.Contains(query.Search))
-                || (s.User.PhoneNumber != null && s.User.PhoneNumber.Contains(query.Search)))
-
-                .Skip((query.PageSize > 0 ? (query.PageNumber - 1) * query.PageSize : 0))
-                .Take((query.PageSize > 0 ? query.PageSize : int.MaxValue))
-                .ToListAsync();
-
+            var orders = await _context.Order
+                        .Include(c => c.User).ThenInclude(c => c.Photos)
+                        .Include(c => c.Car).ThenInclude(c => c.Photos)
+                        .Include(c => c.Payment)
+                        .Include(c => c.OrderRecipient)
+                        .Where(s => s.User.Id == userId &&
+                            (s.Car != null &&
+                            ((s.Car.Make + s.Car.Model).Replace(" ", "")).ToLower().Contains(query.Search.ToLower()) ||
+                            (!string.IsNullOrWhiteSpace(s.LocationFrom) && s.LocationFrom.ToLower().Contains(query.Search.ToLower())) ||
+                            (!string.IsNullOrWhiteSpace(s.LocationTo) && s.LocationTo.ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 1 && "Pending".ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 2 && "Approve".ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 3 && "Rejected".ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 4 && "Finish".ToLower().Contains(query.Search.ToLower()))))
+                        .Skip((query.PageSize > 0 ? (query.PageNumber - 1) * query.PageSize : 0))
+                        .Take((query.PageSize > 0 ? query.PageSize : int.MaxValue))
+                        .ToListAsync();
             return orders;
+
+        }
+
+
+        public async Task<int> GetCountOrdersByUserIdAsync(QueryObject query, string userId)
+        {
+            var count = await _context.Order.Where(s => s.User.Id == userId &&
+                            (s.Car != null &&
+                            ((s.Car.Make + s.Car.Model).Replace(" ", "")).ToLower().Contains(query.Search.ToLower()) ||
+                            (!string.IsNullOrWhiteSpace(s.LocationFrom) && s.LocationFrom.ToLower().Contains(query.Search.ToLower())) ||
+                            (!string.IsNullOrWhiteSpace(s.LocationTo) && s.LocationTo.ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 1 && "Pending".ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 2 && "Approve".ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 3 && "Rejected".ToLower().Contains(query.Search.ToLower())) ||
+                            (s.StatusOrder == 4 && "Finish".ToLower().Contains(query.Search.ToLower()))))
+                            .CountAsync();
+            return count;
         }
     }
 }
